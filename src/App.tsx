@@ -9,6 +9,7 @@ import ResultPage from './components/dashboard/election/result/ResultPage';
 import CurrentElection from './components/dashboard/election/current-election/CurrentElection';
 import CampusFacilityBooking from './components/dashboard/facility-booking/CampusFacilityBooking';
 import Login from './auth/Login';
+import CheatingIncidentsList from './components/dashboard/cheating-record/CheatingIncident';
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
             {/* <Route index element={<Navigate to="profile" replace />} /> */}
             <Route path="profile" element={<MyProfile />} />
             <Route path="messages" element={<ChatRoom />} />
+            <Route path="cheatings" element={<CheatingIncidentsList />} />
+
             <Route path="complaints" element={<ComplaintRoom />} />
             <Route path="current-election" element={<CurrentElection />} />
             <Route path="election-result" element={<ResultPage />} />

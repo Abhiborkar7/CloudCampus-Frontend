@@ -244,14 +244,14 @@ export default function Sidebar() {
             <SidebarListItemButton
               // role="menuitem"
               // component="a"
-              selected={isPathMatch('/messages')}
-              to="/messages"
+              selected={isPathMatch('/cheatings')}
+              to="/cheatings"
               icon={<QuestionAnswerRoundedIcon />}
 
             >
               <QuestionAnswerRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Messages</Typography>
+                <Typography level="title-sm">Cheating Records</Typography>
               </ListItemContent>
               <Chip size="sm" color="primary" variant="solid">
                 4

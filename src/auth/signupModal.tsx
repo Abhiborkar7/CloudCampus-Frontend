@@ -7,10 +7,11 @@ import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
-import { extractTextFromImage, getOtp, registerUser, uploadImageToCloudinary } from '../services/auth.service';
+import { extractTextFromImage, getOtp, registerUser } from '../services/auth.service';
 import DropZone from './DropZone';
 import OTPInput from '../services/OtpInput';
 import {  SignupForm } from '../types/types';
+import { uploadImageToCloudinary } from '../services/uploadImage.service';
 
 export const SignupModal = () => {
   const [open, setOpen] = React.useState<boolean>(false);
