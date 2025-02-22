@@ -131,7 +131,7 @@ export default function Navigation() {
 
         </List>
       </ListItem>
-      <ListItem nested sx={{ mt: 2 }}>
+      {/* <ListItem nested sx={{ mt: 2 }}>
         <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
           Tags
         </ListSubheader>
@@ -213,7 +213,7 @@ export default function Navigation() {
             </ListItemButton>
           </ListItem>
         </List>
-      </ListItem>
+      </ListItem> */}
     </List>
   );
 }
