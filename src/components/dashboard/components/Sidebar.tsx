@@ -232,9 +232,9 @@ export default function Sidebar() {
               <ListItemContent>
                 <Typography level="title-sm">Messages</Typography>
               </ListItemContent>
-              <Chip size="sm" color="primary" variant="solid">
+              {/* <Chip size="sm" color="primary" variant="solid">
                 4
-              </Chip>
+              </Chip> */}
             </SidebarListItemButton>
           </ListItem>
           
@@ -253,9 +253,9 @@ export default function Sidebar() {
               <ListItemContent>
                 <Typography level="title-sm">Cheating Records</Typography>
               </ListItemContent>
-              <Chip size="sm" color="primary" variant="solid">
+              {/* <Chip size="sm" color="primary" variant="solid">
                 4
-              </Chip>
+              </Chip> */}
             </SidebarListItemButton>
           </ListItem>
 
@@ -272,9 +272,9 @@ export default function Sidebar() {
               <ListItemContent>
                 <Typography level="title-sm">Complaints</Typography>
               </ListItemContent>
-              <Chip size="sm" color="primary" variant="solid">
+              {/* <Chip size="sm" color="primary" variant="solid">
                 1
-              </Chip>
+              </Chip> */}
             </SidebarListItemButton>
           </ListItem>
 

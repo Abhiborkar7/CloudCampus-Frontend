@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import { uploadImage, uploadImageToCloudinary } from '../../../services/uploadImage.service';
 import { CheatingModal } from './CheatingModal';
 import { getCheatings } from '../../../services/cheating.service';

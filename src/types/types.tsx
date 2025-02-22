@@ -13,4 +13,17 @@ export interface CheatingForm {
   title: string;
   description: string;
   proof: string;
+  imageUrl?: string;
+}
+
+export interface Complaint {
+  title: string;
+  complaintTo: string;
+  description: string;
+  student: string;
+  keepAnonymousCount?: number;
+  status: string;
+  attachments?: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }

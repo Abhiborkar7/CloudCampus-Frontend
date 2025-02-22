@@ -14,14 +14,73 @@ import Navigation from './Navigation';
 import Mails from './Mails';
 import EmailContent from './EmailContent';
 import WriteEmail from './WriteEmail';
-import { useSidebar } from '../../../contexts/SidebarContext';
-import { IconButton, Sheet, Stack } from '@mui/joy';
+import { IconButton, Stack } from '@mui/joy';
 import { closeEmailContent, toggleComplainPane, toggleEmailContent } from '../utils';
+import { Complaint } from '../../../types/types';
 
 export default function ComplaintRoom() {
 
   const [open, setOpen] = React.useState(false);
+  const [selectedComplaint, setSelectedComplaint] = React.useState(0);
 
+
+  const complaints : Complaint[] = [
+    {
+      "title": "Poor Wi-Fi Connectivity in Hostel",
+      "complaintTo": "IT Department",
+      "description": "The Wi-Fi in the hostel is extremely slow and frequently disconnects. This is affecting our ability to attend online classes and complete assignments.",
+      "student": "65b9087c24d4adf22ada711d", // Replace with a valid Student _id
+      "keepAnonymousCount": 3,
+      "status": "Pending",
+      "attachments": [
+        "https://example.com/wifi-issue-1.jpg",
+        "https://example.com/wifi-issue-2.jpg"
+      ]
+    },
+    {
+      "title": "Unhygienic Food in Mess",
+      "complaintTo": "Mess Committee",
+      "description": "The food served in the mess is often unhygienic and of poor quality. Several students have reported stomach issues after eating.",
+      "student": "65b9087c24d4adf22ada711e", // Replace with a valid Student _id
+      "keepAnonymousCount": 5,
+      "status": "Under Review",
+      "attachments": [
+        "https://example.com/mess-food-1.jpg",
+        "https://example.com/mess-food-2.jpg"
+      ]
+    },
+    {
+      "title": "Broken Furniture in Classroom",
+      "complaintTo": "Maintenance Department",
+      "description": "Several chairs and desks in Room 205 are broken and need immediate repair. This is causing inconvenience during lectures.",
+      "student": "65b9087c24d4adf22ada711f", // Replace with a valid Student _id
+      "keepAnonymousCount": 2,
+      "status": "Resolved",
+      "attachments": [
+        "https://example.com/broken-furniture-1.jpg"
+      ]
+    },
+    {
+      "title": "No Water Supply in Hostel",
+      "complaintTo": "Hostel Management",
+      "description": "There has been no water supply in the hostel for the past 24 hours. This is causing severe inconvenience to all residents.",
+      "student": "65b9087c24d4adf22ada7120", // Replace with a valid Student _id
+      "keepAnonymousCount": 0,
+      "status": "Rejected",
+      "attachments": []
+    },
+    {
+      "title": "Loud Noise from Construction Site",
+      "complaintTo": "Administration",
+      "description": "The construction work near the hostel is causing excessive noise, especially during early morning hours, disturbing our sleep.",
+      "student": "65b9087c24d4adf22ada7121", // Replace with a valid Student _id
+      "keepAnonymousCount": 1,
+      "status": "Pending",
+      "attachments": [
+        "https://example.com/construction-noise-1.jpg"
+      ]
+    }
+  ]
   React.useEffect(() => {
     return () => {
       closeEmailContent();
@@ -45,7 +104,7 @@ export default function ComplaintRoom() {
           top: 52,
         }}
         onClose={() => toggleComplainPane()}
-        >
+      >
         <Navigation />
       </Layout.SideDrawer>
 
@@ -63,9 +122,13 @@ export default function ComplaintRoom() {
           top: 52,
         }}
         onClose={() => toggleEmailContent()}
-        >
-        <EmailContent />
-      </Layout.SideDrawer>
+      >
+        {
+          selectedComplaint !== -1 && (
+            <EmailContent complaint={complaints[selectedComplaint]} />
+          )
+        }    
+          </Layout.SideDrawer>
 
 
       <Layout.Root>
@@ -120,10 +183,14 @@ export default function ComplaintRoom() {
               <WriteEmail open={open} onClose={() => setOpen(false)} />
             </FocusTrap>
           </Box>
-          <Mails />
+          <Mails complaints={complaints} selectedComplaint={selectedComplaint} setSelectedComplaint={setSelectedComplaint} />
         </Layout.SidePane>
         <Layout.Main>
-          <EmailContent />
+          {
+            selectedComplaint !== -1 && (
+              <EmailContent complaint={complaints[selectedComplaint]} />
+            )
+          }
         </Layout.Main>
       </Layout.Root>
     </CssVarsProvider>

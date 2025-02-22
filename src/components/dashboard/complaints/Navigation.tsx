@@ -125,45 +125,13 @@ export default function Navigation() {
               <ListItemDecorator>
                 <OutboxRoundedIcon fontSize="small" />
               </ListItemDecorator>
-              <ListItemContent>Sent</ListItemContent>
+              <ListItemContent>My Complaints</ListItemContent>
             </ListItemButton>
           </ListItem>
-          <ListItem>
-            <ListItemButton
-              onClick={() => onOptionClick(2)}
-              selected={selectedIndex === 2}
-            >
-              <ListItemDecorator>
-                <DraftsRoundedIcon fontSize="small" />
-              </ListItemDecorator>
-              <ListItemContent>Draft</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton
-              onClick={() => onOptionClick(3)}
-              selected={selectedIndex === 3}
-            >
-              <ListItemDecorator>
-                <AssistantPhotoRoundedIcon fontSize="small" />
-              </ListItemDecorator>
-              <ListItemContent>Flagged</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton
-              onClick={() => onOptionClick(4)}
-              selected={selectedIndex === 4}
-            >
-              <ListItemDecorator>
-                <DeleteRoundedIcon fontSize="small" />
-              </ListItemDecorator>
-              <ListItemContent>Trash</ListItemContent>
-            </ListItemButton>
-          </ListItem>
+
         </List>
       </ListItem>
-      <ListItem nested sx={{ mt: 2 }}>
+      {/* <ListItem nested sx={{ mt: 2 }}>
         <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
           Tags
         </ListSubheader>
@@ -245,7 +213,7 @@ export default function Navigation() {
             </ListItemButton>
           </ListItem>
         </List>
-      </ListItem>
+      </ListItem> */}
     </List>
   );
 }
