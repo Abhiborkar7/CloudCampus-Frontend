@@ -46,7 +46,7 @@ const WriteEmail = React.forwardRef<HTMLDivElement, WriteEmailProps>(
         ]}
       >
         <Box sx={{ mb: 2 }}>
-          <Typography level="title-sm">New message</Typography>
+          <Typography level="title-sm">New complaint</Typography>
           <ModalClose id="close-icon" onClick={onClose} />
         </Box>
         <Box
@@ -56,10 +56,7 @@ const WriteEmail = React.forwardRef<HTMLDivElement, WriteEmailProps>(
             <FormLabel>To</FormLabel>
             <Input placeholder="email@email.com" aria-label="Message" />
           </FormControl>
-          <FormControl>
-            <FormLabel>CC</FormLabel>
-            <Input placeholder="email@email.com" aria-label="Message" />
-          </FormControl>
+
           <Input placeholder="Subject" aria-label="Message" />
           <FormControl sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Textarea

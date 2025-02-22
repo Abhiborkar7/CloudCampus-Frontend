@@ -14,7 +14,6 @@ import Navigation from './Navigation';
 import Mails from './Mails';
 import EmailContent from './EmailContent';
 import WriteEmail from './WriteEmail';
-import { useSidebar } from '../../../contexts/SidebarContext';
 import { IconButton, Sheet, Stack } from '@mui/joy';
 import { closeEmailContent, toggleComplainPane, toggleEmailContent } from '../utils';
 
@@ -45,7 +44,7 @@ export default function ComplaintRoom() {
           top: 52,
         }}
         onClose={() => toggleComplainPane()}
-        >
+      >
         <Navigation />
       </Layout.SideDrawer>
 
@@ -63,7 +62,7 @@ export default function ComplaintRoom() {
           top: 52,
         }}
         onClose={() => toggleEmailContent()}
-        >
+      >
         <EmailContent />
       </Layout.SideDrawer>
 
