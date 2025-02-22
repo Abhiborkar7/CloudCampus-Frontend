@@ -1,11 +1,12 @@
 import * as React from 'react';
 import Sheet from '@mui/joy/Sheet';
 
-import MessagesPane from './MessagesPane';
+// import MessagesPane from './student/messagesPane';
 import ChatsPane from './ChatsPane';
 import { ChatProps } from '../../../types/chat.types';
 import { chats } from '../../../demo/data';
 import { closeMessagesPane, openMessagesPane } from '../utils';
+import MessagesPane from './MessagesPane';
 
 export default function ChatRoom() {
   const [selectedChat, setSelectedChat] = React.useState<ChatProps>(chats[0]);

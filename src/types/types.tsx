@@ -27,3 +27,27 @@ export interface Complaint {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface LeaveData {
+  studentId: string;
+  mailTo: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+}
+
+export interface LeaveForm {
+  studentId: string;
+  mailTo: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+}
+
+export  interface CreateLeave {
+    studentId: string;
+    mailTo: string;
+    startDate: Date;
+    endDate: Date;
+    title: string;
+  }

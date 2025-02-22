@@ -1,16 +1,20 @@
 import { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
-import DashboardLayout from './components/dashboard/DashboardLayout';
-import MyProfile from './components/dashboard/my-profile/MyProfile';
-import ChatRoom from './components/dashboard/chat-room/ChatRoom';
-import ComplaintRoom from './components/dashboard/complaints/ComplaintRoom';
-import ResultPage from './components/dashboard/election/result/ResultPage';
-import CurrentElection from './components/dashboard/election/current-election/CurrentElection';
-import CampusFacilityBooking from './components/dashboard/facility-booking/CampusFacilityBooking';
+import DashboardLayout from './components/dashboard-student/DashboardLayoutStudent';
+import MyProfile from './components/dashboard-student/my-profile/MyProfile';
+import ChatRoom from './components/dashboard-student/chat-room/ChatRoom';
+import ComplaintRoom from './components/dashboard-student/complaints/ComplaintRoom';
+import ResultPage from './components/dashboard-student/election/result/ResultPage';
+import CurrentElection from './components/dashboard-student/election/current-election/CurrentElection';
+import CampusFacilityBooking from './components/dashboard-student/facility-booking/CampusFacilityBooking';
 import Login from './auth/Login';
-import CheatingIncidentsList from './components/dashboard/cheating-record/CheatingIncident';
+import CheatingIncidentsList from './components/dashboard-student/cheating-record/CheatingIncident';
 import { Box, CircularProgress } from '@mui/joy';
+import Dashboard from './components/dashboard-student/dashboard/Dashboard';
+import DashboardLayoutStudent from './components/dashboard-student/DashboardLayoutStudent';
+import DashboardLayoutFaculty from './components/dashboard-faculty/DashboardLayoutFaculty';
+import LeavePage from './components/dashboard-faculty/leave/LeavePage';
 
 function App() {
   return (
@@ -22,14 +26,15 @@ function App() {
 
           {/* Protected Routes */}
           <Route
-            path="/"
+            path="/student"
             element={
               <ProtectedRoute>
-                <DashboardLayout />
+                <DashboardLayoutStudent />
               </ProtectedRoute>
             }
           >
             {/* <Route index element={<Navigate to="profile" replace />} /> */}
+            <Route path="dashboard" element={<Dashboard />} />
             <Route path="profile" element={<MyProfile />} />
             <Route path="messages" element={<ChatRoom />} />
             <Route path="cheatings" element={<CheatingIncidentsList />} />
@@ -43,6 +48,31 @@ function App() {
             {/* <Route path="*" element={<h1>404 - Not Found</h1>} /> */}
           </Route>
 
+
+
+          <Route
+            path="/faculty"
+            element={
+              <ProtectedRoute>
+                <DashboardLayoutFaculty />
+              </ProtectedRoute>
+            }
+          >
+            {/* <Route index element={<Navigate to="profile" replace />} /> */}
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="profile" element={<MyProfile />} />
+            <Route path="messages" element={<ChatRoom />} />
+            <Route path="cheatings" element={<CheatingIncidentsList />} />
+
+            <Route path="complaints" element={<ComplaintRoom />} />
+            <Route path="current-election" element={<CurrentElection />} />
+            <Route path="election-result" element={<ResultPage />} />
+            <Route path="facility-booking" element={<CampusFacilityBooking />} />
+            <Route path="leave" element={<LeavePage />} />
+
+            <Route path="coming-soon" element={<h1>Coming Soon</h1>} />
+            {/* <Route path="*" element={<h1>404 - Not Found</h1>} /> */}
+          </Route>
           {/* Catch-all Route */}
         </Routes>
       </Router>

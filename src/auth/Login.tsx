@@ -188,7 +188,7 @@ export default function Login() {
             'url(https://images.unsplash.com/photo-1622470190232-81df3782484b?q=80&w=1959&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundImage:
-              'url(https://images.unsplash.com/photo-1494351651467-29e2791a2cee?q=80&w=1782&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+              'url(https://images.unsplash.com/photo-1622470190232-81df3782484b?q=80&w=1959&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
           },
         })}
       />

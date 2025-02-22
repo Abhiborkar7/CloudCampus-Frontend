@@ -25,13 +25,13 @@ import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd'; 
+import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils';
 import ErrorIcon from '@mui/icons-material/Error';
-
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 function Toggler({
   defaultExpanded = false,
   renderToggle,
@@ -172,7 +172,7 @@ export default function Sidebar() {
             '--ListItem-radius': (theme) => theme.vars.radius.sm,
           }}
         >
-          <ListItem>
+          {/* <ListItem>
             <SidebarListItemButton
               to="#"
               icon={<DashboardRoundedIcon />}
@@ -180,8 +180,27 @@ export default function Sidebar() {
             >
               <DashboardRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Dashboard</Typography>
+                <SidebarListItemButton to='current-election' >Current Elections</SidebarListItemButton>
               </ListItemContent>
+            </SidebarListItemButton>
+          </ListItem> */}
+
+          <ListItem>
+            <SidebarListItemButton
+              // role="menuitem"
+              // component="a"
+              selected={isPathMatch('/faculty/dashboard')}
+              to="/faculty/dashboard"
+              icon={<QuestionAnswerRoundedIcon />}
+
+            >
+              <DashboardRoundedIcon />
+              <ListItemContent>
+                <Typography level="title-sm"> Dashboard</Typography>
+              </ListItemContent>
+              {/* <Chip size="sm" color="primary" variant="solid">
+                4
+              </Chip> */}
             </SidebarListItemButton>
           </ListItem>
 
@@ -223,8 +242,8 @@ export default function Sidebar() {
             <SidebarListItemButton
               // role="menuitem"
               // component="a"
-              selected={isPathMatch('/messages')}
-              to="/messages"
+              selected={isPathMatch('/faculty/messages')}
+              to="/faculty/messages"
               icon={<QuestionAnswerRoundedIcon />}
 
             >
@@ -237,15 +256,15 @@ export default function Sidebar() {
               </Chip> */}
             </SidebarListItemButton>
           </ListItem>
-          
+
 
 
           <ListItem>
             <SidebarListItemButton
               // role="menuitem"
               // component="a"
-              selected={isPathMatch('/cheatings')}
-              to="/cheatings"
+              selected={isPathMatch('/faculty/cheatings')}
+              to="/faculty/cheatings"
               icon={<QuestionAnswerRoundedIcon />}
 
             >
@@ -262,26 +281,20 @@ export default function Sidebar() {
 
           <ListItem>
             <SidebarListItemButton
-              // role="menuitem"
-              // component="a"
-              to='/complaints'
-              // onClick={() => {navigate('/complaints'), setComplaintsSelected(true)}}
-              selected={isPathMatch('/complaints')}
+              to='/faculty/complaints'
+              selected={isPathMatch('/faculty/complaints')}
             >
               <ErrorIcon />
               <ListItemContent>
                 <Typography level="title-sm">Complaints</Typography>
               </ListItemContent>
-              {/* <Chip size="sm" color="primary" variant="solid">
-                1
-              </Chip> */}
             </SidebarListItemButton>
           </ListItem>
 
           <ListItem >
             <SidebarListItemButton
-              to='/facility-booking'
-              selected={isPathMatch('/facility-booking')}
+              to='/faculty/facility-booking'
+              selected={isPathMatch('/faculty/facility-booking')}
             >
               <BookmarkAddIcon />
               <ListItemContent>
@@ -289,43 +302,30 @@ export default function Sidebar() {
               </ListItemContent>
             </SidebarListItemButton>
           </ListItem>
-
-
-          <ListItem nested>
-            <Toggler
-              defaultExpanded
-              renderToggle={({ open, setOpen }) => (
-                <ListItemButton onClick={() => setOpen(!open)}>
-                  <GroupRoundedIcon />
-                  <ListItemContent>
-                    <Typography level="title-sm">Users</Typography>
-                  </ListItemContent>
-                  <KeyboardArrowDownIcon
-                    sx={[
-                      open ? { transform: 'rotate(180deg)' } : { transform: 'none' },
-                    ]}
-                  />
-                </ListItemButton>
-              )}
+        
+          <ListItem>
+            <SidebarListItemButton
+              to='/faculty/profile'
+              selected={isPathMatch('/faculty/profile')}
             >
-              <List sx={{ gap: 0.5 }}>
-                <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton
-                    selected={isPathMatch('/profile')}
-                    onClick={() => navigate('/profile')}
-                  >My profile</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton
-                    onClick={() => navigate('/coming-soon')}
-                  >Create a new user</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>Roles & permission</ListItemButton>
-                </ListItem>
-              </List>
-            </Toggler>
+              <AccountBoxIcon />
+              <ListItemContent>
+                <Typography level="title-sm">My profile</Typography>
+              </ListItemContent>
+            </SidebarListItemButton>
           </ListItem>
+          <ListItem>
+            <SidebarListItemButton
+              to='/faculty/leave'
+              selected={isPathMatch('/faculty/leave')}
+            >
+              <LogoutRoundedIcon />
+              <ListItemContent>
+                <Typography level="title-sm">Leave</Typography>
+              </ListItemContent>
+            </SidebarListItemButton>
+          </ListItem>
+
         </List>
         <List
           size="sm"
