@@ -17,6 +17,7 @@ import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import { SignupModal } from './signupModal';
 import { loginUser } from '../services/auth.service';
+import { useNavigate } from "react-router-dom";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -27,18 +28,26 @@ interface SignInFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-async function loginAccount(data: { email: string; password: string; persistent: boolean }) {
-  console.log('Logging in with:', data);
-  try {
-    const response = await loginUser(data.email, data.password);
-    const result = await response.data;
-    console.log('Login successful:', result);
-  } catch (error) { 
-    console.error('Error during login:', error);
-  }
-}
+
+
 
 export default function Login() {
+
+  const navigate = useNavigate();
+
+  async function loginAccount(data: { email: string; password: string; persistent: boolean }) {
+    console.log("Logging in with:", data);
+    try {
+      const res = await loginUser(data.email, data.password);
+      console.log("Login successful:", res);
+
+      // Redirect to "/complaints" route after successful login
+      navigate("/current-elections");
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+  }
+
   return (
     <CssVarsProvider theme={customTheme} disableTransitionOnChange>
       <CssBaseline />

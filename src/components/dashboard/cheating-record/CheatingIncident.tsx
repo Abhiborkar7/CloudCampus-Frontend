@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { uploadImageToCloudinary } from '../../../services/uploadImage.service';
+import React, { useEffect, useState } from 'react';
+import { uploadImage, uploadImageToCloudinary } from '../../../services/uploadImage.service';
 import { CheatingModal } from './CheatingModal';
+import { getCheatings } from '../../../services/cheating.service';
 // import { uploadImageToCloudinary } from '../../../services/auth.service';
 
 // Define the TypeScript interface for the cheating incident
@@ -12,36 +13,25 @@ interface CheatingIncident {
   caughtBy?: { name: string };
 }
 
-// Mock data for cheating incidents
-const mockCheatingIncidents: CheatingIncident[] = [
-  {
-    student: { name: 'John Doe' },
-    title: 'Using Mobile Phone',
-    description: 'Student was caught using a mobile phone to access answers.',
-    proof: 'https://via.placeholder.com/300', // Placeholder image URL
-    caughtBy: { name: 'Prof. Smith' },
-  },
-  {
-    student: { name: 'Jane Smith' },
-    title: 'Cheat Sheet',
-    description: 'Student was found with a handwritten cheat sheet.',
-    proof: 'https://via.placeholder.com/300', // Placeholder image URL
-    caughtBy: { name: 'Dr. Brown' },
-  },
-  {
-    student: { name: 'Alice Johnson' },
-    title: 'Talking to Another Student',
-    description: 'Student was caught discussing answers with another student.',
-    proof: 'https://via.placeholder.com/300', // Placeholder image URL
-    caughtBy: { name: 'Mr. White' },
-  },
-];
 
 
 // React component to display the list of cheating incidents in a card layout
 const CheatingIncidentsList: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
-  const [incidents, setIncidents] = useState<CheatingIncident[]>(mockCheatingIncidents);
+  const [incidents, setIncidents] = useState<CheatingIncident[]>([]);
+  const fetchCheatings = async () => {
+    try {
+      const data = await getCheatings();
+      console.log(data)
+      setIncidents(data);
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+  }, [])
+  fetchCheatings();
 
   // Form state
   const [studentName, setStudentName] = useState('');
@@ -51,23 +41,8 @@ const CheatingIncidentsList: React.FC = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  // Handle image upload
-  const handleContinueToUpload = async () => {
-    console.log('Selected File:', selectedFile);
-    setIsUploading(true);
-    if (selectedFile) {
-      try {
-        const response = await uploadImageToCloudinary(selectedFile);
-        console.log('Response:', response);
-        // setImageFile()
-        setProof(response.secure_url);
-      } catch (error) {
-        console.error('Failed to extract text from image', error);
-      }
-    }
-    setIsUploading(false);
-  };
 
+  console.log("vdnkdnd")
 
 
   // Handle form submission
@@ -189,14 +164,7 @@ const CheatingIncidentsList: React.FC = () => {
                     onChange={handleImageChange}
                     style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
                   />
-                  <button
-                    type="button"
-                    onClick={handleContinueToUpload}
-                    disabled={!selectedFile || isUploading}
-                    style={{ padding: '8px 16px', borderRadius: '4px', backgroundColor: '#007bff', color: '#fff' }}
-                  >
-                    {isUploading ? 'Uploading...' : 'Upload'}
-                  </button>
+
                 </div>
                 {proof && (
                   <p style={{ margin: '4px 0', fontSize: '14px', color: '#666' }}>

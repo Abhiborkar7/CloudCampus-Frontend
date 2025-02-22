@@ -13,5 +13,4 @@ export interface CheatingForm {
   title: string;
   description: string;
   proof: string;
-  imageUrl: string;
 }

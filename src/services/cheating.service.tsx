@@ -2,38 +2,28 @@ import axios from "axios"
 import { VITE_BASE_URL, VITE_ML_URL } from "../main"
 import { SignupForm } from "../types/types";
 
-// export const uploadImageToCloudinary = async (selectedFile: File) => {
-//   try {
-//     console.log('Selected file:', selectedFile)
-//     const formData = new FormData();
-//     formData.append('photo', selectedFile);
 
-//     const extractedTextResponse = await axios.post(`${VITE_BASE_URL}/api/image-upload`,
-//       formData
-//     )
-//     console.log('Extracted text:', extractedTextResponse.data)
-//     return extractedTextResponse.data
-//   }
-//   catch (error) {
-//     console.error('Failed to extract text from image', error)
-//     return error
-//   }
-// }
-
-export const extractTextFromImage = async (imageUrl: string) => {
+export const createCheating = async (formData:any) => {
   try {
-    const formData = new FormData();
-    formData.append('image_path', imageUrl);
 
-    const response = await axios.post(`${VITE_ML_URL}/extract`,
-      formData);
-    console.log('Extracted text:', response.data);
+    const response = await axios.post(`${VITE_BASE_URL}/api/cheatings/`, formData);
     return response.data;
   } catch (error) {
-    console.error('Failed to extract text from image', error);
-    return error;
+    console.log(error)
+    return null;
   }
 }
+
+export const getCheatings = async () => {
+    try {
+  
+      const response = await axios.get(`${VITE_BASE_URL}/api/cheatings/`);
+      return response.data;
+    } catch (error) {
+      console.log(error)
+      return null;
+    }
+  }
 
 export const getOtp = async (email: string) => {  
   try {

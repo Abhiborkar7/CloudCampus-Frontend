@@ -4,7 +4,7 @@ import { VITE_BASE_URL } from "../main";
 export const uploadImage = async (formData: FormData): Promise<string> => {
   try {
 
-    const response = await axios.post("/api/image-upload", formData);
+    const response = await axios.post(`${VITE_BASE_URL}/api/image-upload`, formData);
     return response.data.imageUrl; // Assuming the response contains { url: "image_url" }
   } catch (error) {
     console.error("Image upload error:", error);

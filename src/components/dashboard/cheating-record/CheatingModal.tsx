@@ -8,7 +8,9 @@ import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
 import { CheatingForm } from '../../../types/types';
-import { uploadImageToCloudinary } from '../../../services/uploadImage.service';
+import { uploadImage, uploadImageToCloudinary } from '../../../services/uploadImage.service';
+import { createCheating } from '../../../services/cheating.service';
+import { Description } from '@mui/icons-material';
 
 export const CheatingModal = () => {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -21,7 +23,6 @@ export const CheatingModal = () => {
     title: '',
     description: '',
     proof: '',
-    imageUrl: '',
   });
 
 
@@ -33,29 +34,40 @@ export const CheatingModal = () => {
     });
   };
 
-  const handleSubmit = () => {
-    console.log(formData);
+  const handleSubmit = async () => {
+    const form = {
+      studentId: "67b9087c24d4adf22ada711d",
+      title: formData.title,
+      description: formData.description,
+      proof: formData.proof
+    }    
+    await createCheating(form)
+    .then(res => {
+      console.log(res)
+    }) 
+    .catch(err=> {
+      console.log(err)
+    }) 
     setOpen(false);
   }
 
   const handleUploadImage = async () => {
     setLoading(true);
-    console.log('Selected File:', selectedFile);
     if (selectedFile) {
       try {
-        const response = await uploadImageToCloudinary(selectedFile);
-        console.log('Response:', response);
+        const fData = new FormData();
+        fData.append("photo", selectedFile)
+        const url = await uploadImage(fData);
         setFormData({
           ...formData,
-          imageUrl: response.secure_url
+          proof: url
         });
+        console.log("image uploaded ", url)
       } catch (error) {
         console.error('Error while uploading Image', error);
       }
     }
     setLoading(false);
-    console.log(formData);
-    // setOpen(false);
   };
 
 
@@ -162,11 +174,11 @@ export const CheatingModal = () => {
                       }
                     }}
                   />
-                  <Button type="submit" size="md" sx={{ alignSelf: 'flex-end', justifySelf: 'flex-end', my: 2, fontSize: '1rem' }} onClick={() => handleUploadImage()} >Add</Button>
+                  <Button size="md" sx={{ alignSelf: 'flex-end', justifySelf: 'flex-end', my: 2, fontSize: '1rem' }} onClick={() => handleUploadImage()} >Add</Button>
                 </Box>
               </FormControl>
             </Stack>
-            <Button type="submit" size="md" sx={{ my: 2, fontSize: '1rem' }} onClick={() => handleSubmit()} >Add</Button>
+            <Button type="submit" size="md" sx={{ my: 2, fontSize: '1rem' }} onClick={() => handleSubmit()} >Complaint</Button>
           </form>
 
         </Sheet>
