@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button, CircularProgress, Link, Modal, ModalClose } from '@mui/joy';
+import React, { useState } from 'react';
+import { Button, CircularProgress, Modal, ModalClose } from '@mui/joy';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
@@ -9,6 +9,7 @@ import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
 import { CheatingForm } from '../../../types/types';
 import { uploadImageToCloudinary } from '../../../services/uploadImage.service';
+import { createCheatingIncident } from '../../../services/cheating-record';
 
 export const CheatingModal = () => {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -35,6 +36,7 @@ export const CheatingModal = () => {
 
   const handleSubmit = () => {
     console.log(formData);
+    createCheatingIncident(formData);
     setOpen(false);
   }
 
@@ -47,14 +49,14 @@ export const CheatingModal = () => {
         console.log('Response:', response);
         setFormData({
           ...formData,
-          imageUrl: response.secure_url
+          imageUrl: response.imageUrl
         });
       } catch (error) {
         console.error('Error while uploading Image', error);
       }
     }
     setLoading(false);
-    console.log(formData);
+    // console.log(formData);
     // setOpen(false);
   };
 
@@ -134,7 +136,7 @@ export const CheatingModal = () => {
           <form
             onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
               event.preventDefault();
-              // handleSubmit();
+              handleSubmit();
             }}
           >
             <Stack spacing={2}>
@@ -162,11 +164,11 @@ export const CheatingModal = () => {
                       }
                     }}
                   />
-                  <Button type="submit" size="md" sx={{ alignSelf: 'flex-end', justifySelf: 'flex-end', my: 2, fontSize: '1rem' }} onClick={() => handleUploadImage()} >Add</Button>
+                  <Button size="md" sx={{ alignSelf: 'flex-end', justifySelf: 'flex-end', my: 2, fontSize: '1rem' }} onClick={() => handleUploadImage()} >Upload</Button>
                 </Box>
               </FormControl>
             </Stack>
-            <Button type="submit" size="md" sx={{ my: 2, fontSize: '1rem' }} onClick={() => handleSubmit()} >Add</Button>
+            <Button disabled={formData.imageUrl === ''} type="submit" size="md" sx={{ my: 2, fontSize: '1rem' }} >Add</Button>
           </form>
 
         </Sheet>

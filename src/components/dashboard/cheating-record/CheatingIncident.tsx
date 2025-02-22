@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { uploadImage, uploadImageToCloudinary } from '../../../services/uploadImage.service';
 import { CheatingModal } from './CheatingModal';
+import { get } from 'http';
+import { getCheatingIncidents } from '../../../services/cheating-record';
+import { CircularLoading } from '../../../App';
+import { useAuth } from '../../../context/AuthContext';
 // import { uploadImageToCloudinary } from '../../../services/auth.service';
 
 // Define the TypeScript interface for the cheating incident
@@ -40,171 +44,41 @@ const mockCheatingIncidents: CheatingIncident[] = [
 
 // React component to display the list of cheating incidents in a card layout
 const CheatingIncidentsList: React.FC = () => {
-  const [showPopup, setShowPopup] = useState(false);
+
+  const { loading, setLoading } = useAuth();
   const [incidents, setIncidents] = useState<CheatingIncident[]>(mockCheatingIncidents);
 
-  // Form state
-  const [studentName, setStudentName] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [proof, setProof] = useState('');
-  const [isUploading, setIsUploading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
 
+  const fetchCheatingIncidents = async () => {
+    setLoading(true);
+    try {
 
-
-  // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!proof) {
-      alert('Please upload an image first.');
-      return;
+      const response = await getCheatingIncidents();
+      setIncidents(response.data);
+    } catch (error) {
+      console.error('Failed to fetch cheating incidents', error);
     }
+    setLoading(false);
 
-    // Create a new cheating incident
-    const newIncident: CheatingIncident = {
-      student: { name: studentName },
-      title,
-      description,
-      proof,
-    };
-    console.log(newIncident)
+  }
 
-    // Add the new incident to the list
-    setIncidents([...incidents, newIncident]);
+  useEffect(() => {
+    fetchCheatingIncidents();
+  }, []);
 
-    // Reset form fields
-    setStudentName('');
-    setTitle('');
-    setDescription('');
-    setProof('');
-    setSelectedFile(null);
-
-    // Close the popup
-    setShowPopup(false);
-  };
-
-  // Handle image file selection
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedFile(file);
-    }
-  };
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Cheating Incidents Report</h1>
-        <button
-          onClick={() => setShowPopup(true)}
-          style={{ padding: '10px', borderRadius: '10px', backgroundColor: 'green', color: '#fff' }}
-        >
-          Add Cheating
-        </button>
-      </div>
+      {
 
-
+        loading && <CircularLoading />
+      }
       <CheatingModal />
-      {/* Popup for adding cheating details */}
-      {showPopup && (
-        <div
-          style={{
-            position: 'fixed',
-            top: '0',
-            left: '0',
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: '#fff',
-              padding: '20px',
-              borderRadius: '8px',
-              width: '600px',
-              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-            }}
-          >
-            <h2>Add Cheating Incident</h2>
-            <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: '10px' }}>
-                <label>Student Name:</label>
-                <input
-                  type="text"
-                  value={studentName}
-                  onChange={(e) => setStudentName(e.target.value)}
-                  required
-                  style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
-                />
-              </div>
-              <div style={{ marginBottom: '10px' }}>
-                <label>Title:</label>
-                <input
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                  style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
-                />
-              </div>
-              <div style={{ marginBottom: '10px' }}>
-                <label>Description:</label>
-                <textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                  style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
-                />
-              </div>
-              <div style={{ marginBottom: '10px' }}>
-                <label>Proof (Upload Image):</label>
-                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    style={{ flex: 1, padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
-                  />
-
-                </div>
-                {proof && (
-                  <p style={{ margin: '4px 0', fontSize: '14px', color: '#666' }}>
-                    <strong>Uploaded Image URL:</strong> {proof}
-                  </p>
-                )}
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-                <button
-                  type="button"
-                  onClick={() => setShowPopup(false)}
-                  style={{ padding: '8px 16px', borderRadius: '4px', border: '1px solid #ddd', backgroundColor: '#f2f2f2' }}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={!proof}
-                  style={{ padding: '8px 16px', borderRadius: '4px', backgroundColor: 'green', color: '#fff' }}
-                >
-                  Add
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       {/* List of cheating incidents */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {incidents.map((incident, index) => (
+        {incidents && incidents.length > 0 ? incidents.map((incident, index) => (
           <div
             key={index}
             style={{
@@ -235,7 +109,9 @@ const CheatingIncidentsList: React.FC = () => {
               </div>
             </div>
           </div>
-        ))}
+        )) : (
+          <p>No cheating incidents found.</p>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, CircularProgress, Link, Modal, ModalClose } from '@mui/joy';
+import { Button, Link, Modal, ModalClose } from '@mui/joy';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
@@ -10,13 +10,14 @@ import Stack from '@mui/joy/Stack';
 import { extractTextFromImage, getOtp, registerUser } from '../services/auth.service';
 import DropZone from './DropZone';
 import OTPInput from '../services/OtpInput';
-import {  SignupForm } from '../types/types';
+import { SignupForm } from '../types/types';
 import { uploadImageToCloudinary } from '../services/uploadImage.service';
+import { CircularLoading } from '../App';
 
 export const SignupModal = () => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [stepNumber, setStepNumber] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>('');
 
@@ -119,22 +120,22 @@ export const SignupModal = () => {
     catch (error) {
       console.error('Failed to send OTP', error);
     }
-    
+
     setStepNumber(4);
   }
 
   const registerThisUser = () => {
     console.log('Entered OTP:', enteredOtp);
     console.log('OTP:', otp);
-    if(enteredOtp != otp) {
+    if (enteredOtp != otp) {
 
       alert('Incorrect OTP. Please try again.');
     }
-    if(enteredOtp == otp) {
+    if (enteredOtp == otp) {
       registerUser(formData, imageUrl);
       console.log('Registering user:', formData);
     }
-    
+
   }
 
   return (
@@ -174,22 +175,7 @@ export const SignupModal = () => {
           <ModalClose variant="plain" sx={{ m: 1 }} />
 
           {loading && (
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                zIndex: 10
-              }}
-            >
-              <CircularProgress />
-            </Box>
+            <CircularLoading />
           )}
 
           {stepNumber === 1 &&
@@ -336,9 +322,9 @@ export const SignupModal = () => {
                   gap: 2,
                   py: 2
                 }}>
-              <OTPInput enteredOtp={enteredOtp} setEnteredOtp={setEnteredOtp} />
+                <OTPInput enteredOtp={enteredOtp} setEnteredOtp={setEnteredOtp} />
               </Box>
-            <Button onClick={registerThisUser} disabled={enteredOtp.length !== 6}>
+              <Button onClick={registerThisUser} disabled={enteredOtp.length !== 6}>
                 Verify and Continue
               </Button>
             </>}

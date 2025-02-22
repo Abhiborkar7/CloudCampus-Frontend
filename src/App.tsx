@@ -10,6 +10,7 @@ import CurrentElection from './components/dashboard/election/current-election/Cu
 import CampusFacilityBooking from './components/dashboard/facility-booking/CampusFacilityBooking';
 import Login from './auth/Login';
 import CheatingIncidentsList from './components/dashboard/cheating-record/CheatingIncident';
+import { Box, CircularProgress } from '@mui/joy';
 
 function App() {
   return (
@@ -50,3 +51,29 @@ function App() {
 }
 
 export default App;
+
+
+export const CircularLoading = () => {
+  return (
+    <Box
+      sx={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        backdropFilter: 'blur(10px)', // Adding glassmorphic effect
+        WebkitBackdropFilter: 'blur(10px)', // For Safari support
+        zIndex: 10,
+        borderRadius: '10px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  )
+} 

@@ -10,3 +10,13 @@ export const getAllComplaints = async () => {
     return error;
   }
 }
+
+// export const createComplaint = async (complaint: any) => {
+//   try {
+//     const response = await axios.post(`${VITE_BASE_URL}/api/complaints`, complaint);
+//     return response.data;
+//   } catch (error) {
+//     console.error('Failed to create complaint', error);
+//     return error;
+//   }
+// }
