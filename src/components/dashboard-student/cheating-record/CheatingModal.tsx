@@ -130,7 +130,7 @@ export const CheatingModal = () => {
               fontWeight: 'lg', mb: 2
             }}
           >
-            Check and Continue
+            Add Details
           </Typography>
           <br />
           <form

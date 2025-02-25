@@ -23,7 +23,7 @@ export default function CampusFacilityBooking() {
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
-      <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
+      <Box sx={{ display: 'flex'}}>
         <Box
           component="main"
           className="MainContent"
@@ -34,7 +34,7 @@ export default function CampusFacilityBooking() {
               md: 3,
             },
             pb: { xs: 2, sm: 2, md: 3 },
-            flex: 1,
+            // flex: 1,
             display: 'flex',
             flexDirection: 'column',
             minWidth: 0,
@@ -58,10 +58,10 @@ export default function CampusFacilityBooking() {
             <Button type="submit" onClick={() => { }}>Submit</Button>
           </div>
 
-          {/* <HourBookingComponent /> */}
 
 
         </Box>
+          <HourBookingComponent />
       </Box>
     </CssVarsProvider>
   );

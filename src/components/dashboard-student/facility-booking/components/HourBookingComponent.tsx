@@ -1,93 +1,74 @@
-import * as React from 'react';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Dayjs } from 'dayjs';
-import { Box, Button, Typography } from '@mui/material';
+import { useState } from "react";
 
-interface HourSlot {
-  hour: number;
-  booked: boolean;
-}
+const highlightedSlots = [
+  "10:00 AM - 11:00 AM",
+  "02:00 PM - 03:00 PM",
+  "08:00 PM - 09:00 PM"
+];
 
-export default function HourBookingComponent() {
-  const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(null);
-  const [hours, setHours] = React.useState<HourSlot[]>([]);
+const TimeTable: React.FC<{ timeSlots: string[] }> = ({ timeSlots }) => {
+  const [bookNewSlot, setBookNewSlot] = useState<string[]>([]);
 
-  // Initialize 24 hours for the selected date
-  const initializeHours = () => {
-    const hoursArray: HourSlot[] = [];
-    for (let i = 0; i < 24; i++) {
-      hoursArray.push({ hour: i, booked: false }); // Default: all hours are available
+  const handleSlotClick = (slot: string) => {
+    if (highlightedSlots.includes(slot)) {
+      return; // Do nothing for already booked slots
     }
-    setHours(hoursArray);
-  };
-
-  // Handle date selection
-  const handleDateChange = (date: Dayjs | null) => {
-    setSelectedDate(date);
-    initializeHours(); // Reset hours when a new date is selected
-  };
-
-  // Handle hour booking
-  const handleHourClick = (hour: number) => {
-    if (!selectedDate) return;
-
-    const updatedHours = hours.map((slot) =>
-      slot.hour === hour ? { ...slot, booked: !slot.booked } : slot
-    );
-    setHours(updatedHours);
-
-    console.log(
-      `Hour ${hour} on ${selectedDate.format('YYYY-MM-DD')} is now ${updatedHours[hour].booked ? 'booked' : 'available'
-      }`
+    
+    setBookNewSlot(prev => 
+      prev.includes(slot) 
+        ? prev.filter(s => s !== slot) // Remove slot if already selected
+        : [...prev, slot] // Add slot if not selected
     );
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ maxWidth: 400, margin: 'auto', padding: 2 }}>
-        <Typography variant="h5" gutterBottom>
-          Book a Time Slot
-        </Typography>
+    <div style={{ width: "300px", border: "1px solid white" }}>
+      {timeSlots.map((slot, i) => (
+        <div
+          key={i}
+          style={{
+            padding: "1px",
+            margin: "2px 0",
+            cursor: highlightedSlots.includes(slot) ? "not-allowed" : "pointer",
+            backgroundColor: highlightedSlots.includes(slot) 
+              ? "red" 
+              : bookNewSlot.includes(slot) 
+                ? "green" 
+                : "black",
+            color: "white",
+            textAlign: "center",
+          }}
+          onClick={() => handleSlotClick(slot)}
+        >
+          {slot}
+        </div>
+      ))}
+    </div>
+  );
+};
 
-        {/* Date Picker */}
-        <DatePicker
-          label="Select a date"
-          value={selectedDate}
-          onChange={handleDateChange}
-          sx={{ mb: 3 }}
-        />
+const timeSlots = [
+  "10:00 AM - 11:00 AM",
+  "11:00 AM - 12:00 PM",
+  "12:00 PM - 01:00 PM",
+  "01:00 PM - 02:00 PM",
+  "02:00 PM - 03:00 PM",
+  "03:00 PM - 04:00 PM",
+  "04:00 PM - 05:00 PM",
+  "05:00 PM - 06:00 PM",
+  "07:00 PM - 08:00 PM",
+  "08:00 PM - 09:00 PM",
+  "09:00 PM - 10:00 PM",
+  "10:00 PM - 11:00 PM",
+  "11:00 PM - 12:00 AM",
+  "12:00 AM - 01:00 AM",
+];
 
-        {/* Display 24 Hours */}
-        {selectedDate && (
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: 1,
-            }}
-          >
-            {hours.map((slot) => (
-              <Button
-                key={slot.hour}
-                variant="contained"
-                disabled={slot.booked}
-                onClick={() => handleHourClick(slot.hour)}
-                sx={{
-                  backgroundColor: slot.booked ? 'red' : 'primary.main',
-                  color: slot.booked ? 'white' : 'inherit',
-                  '&:hover': {
-                    backgroundColor: slot.booked ? 'darkred' : 'primary.dark',
-                  },
-                }}
-              >
-                {`${slot.hour}:00 - ${slot.hour + 1}:00`}
-              </Button>
-            ))}
-          </Box>
-        )}
-      </Box>
-    </LocalizationProvider>
+export default function HourBookingComponent() {
+  return (
+    <div style={{ padding: "20px", paddingLeft: "10rem" }}>
+      <h2 style={{ color: "white" }}>Time Slots</h2>
+      <TimeTable timeSlots={timeSlots} />
+    </div>
   );
 }

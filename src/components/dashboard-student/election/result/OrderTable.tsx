@@ -121,24 +121,7 @@ export default function OrderTable() {
 
   return (
     <React.Fragment>
-      <Box
-        className="SearchAndFilters-tabletUp"
-        sx={{
-          borderRadius: 'sm',
-          py: 2,
-          display: { xs: 'none', sm: 'flex' },
-          flexWrap: 'wrap',
-          gap: 1.5,
-          '& > *': {
-            minWidth: { xs: '120px', md: '160px' },
-          },
-        }}
-      >
-        <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search by Candidate Name</FormLabel>
-          <Input size="sm" placeholder="Search" startDecorator={<SearchIcon />} />
-        </FormControl>
-      </Box>
+
       <Sheet
         className="OrderTableContainer"
         variant="outlined"

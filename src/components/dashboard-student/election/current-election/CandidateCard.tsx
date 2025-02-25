@@ -38,46 +38,10 @@ const CandidateCard = () => {
         >
           Computer Science & Engineering
         </Typography>
-        <Sheet
-          sx={{
-            bgcolor: 'background.level1',
-            borderRadius: 'sm',
-            p: 1.5,
-            my: 1.5,
-            display: 'flex',
-            gap: 2,
-            '& > div': { flex: 1 },
-          }}
-        >
-          <div>
-            <Typography level="body-xs" sx={{ fontWeight: 'lg' }}>
-              Articles
-            </Typography>
-            <Typography sx={{ fontWeight: 'lg' }}>34</Typography>
-          </div>
-          <div>
-            <Typography level="body-xs" sx={{ fontWeight: 'lg' }}>
-              Followers
-            </Typography>
-            <Typography sx={{ fontWeight: 'lg' }}>980</Typography>
-          </div>
-          <div>
-            <Typography level="body-xs" sx={{ fontWeight: 'lg' }}>
-              Rating
-            </Typography>
-            <Typography sx={{ fontWeight: 'lg' }}>8.9</Typography>
-          </div>
-        </Sheet>
+       
         <Box>
           <p>Lorem ipsum dolor sit, amet sit, amesit, amer adipisicing elum.</p>
-        </Box>
-        <Box sx={{ display: 'flex', gap: 1.5, '& > button': { flex: 1 } }}>
-          <Button variant="outlined" color="neutral">
-            Chat
-          </Button>
-          <Button variant="solid" color="primary">
-            Follow
-          </Button>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam ratione nostrum maiores tempore, sit cupiditate commodi ea? Quidem eaque saepe necessitatibus ad, blanditiis esse asperiores obcaecati possimus tenetur! Distinctio, eius.
         </Box>
       </CardContent>
     </Card>

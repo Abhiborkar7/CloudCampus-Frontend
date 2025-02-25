@@ -2,28 +2,20 @@ import * as React from 'react';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
-import Card from '@mui/joy/Card';
-import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
 import IconButton from '@mui/joy/IconButton';
 import Input from '@mui/joy/Input';
-import LinearProgress from '@mui/joy/LinearProgress';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton, { listItemButtonClasses } from '@mui/joy/ListItemButton';
 import ListItemContent from '@mui/joy/ListItemContent';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-import Stack from '@mui/joy/Stack';
+import EmailIcon from '@mui/icons-material/Email'; 
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
-import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
-import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -83,13 +75,9 @@ const SidebarListItemButton = ({ to, icon, children, selected }: { to?: string, 
 export default function Sidebar() {
 
   const location = useLocation();
-  const navigate = useNavigate();
   const currentPath = location.pathname;
 
   const isPathMatch = (path: string) => currentPath === path;
-  // React.useEffect(() => {
-  //   closeSidebar();
-  // }, [location.pathname]);
 
   return (
     <Sheet
@@ -174,21 +162,6 @@ export default function Sidebar() {
         >
           {/* <ListItem>
             <SidebarListItemButton
-              to="#"
-              icon={<DashboardRoundedIcon />}
-              selected={isPathMatch('/dashboard')}
-            >
-              <DashboardRoundedIcon />
-              <ListItemContent>
-                <SidebarListItemButton to='current-election' >Current Elections</SidebarListItemButton>
-              </ListItemContent>
-            </SidebarListItemButton>
-          </ListItem> */}
-
-          <ListItem>
-            <SidebarListItemButton
-              // role="menuitem"
-              // component="a"
               selected={isPathMatch('/faculty/dashboard')}
               to="/faculty/dashboard"
               icon={<QuestionAnswerRoundedIcon />}
@@ -198,11 +171,8 @@ export default function Sidebar() {
               <ListItemContent>
                 <Typography level="title-sm"> Dashboard</Typography>
               </ListItemContent>
-              {/* <Chip size="sm" color="primary" variant="solid">
-                4
-              </Chip> */}
             </SidebarListItemButton>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem nested>
             <Toggler
@@ -223,25 +193,17 @@ export default function Sidebar() {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <SidebarListItemButton to='current-election' >Current Elections</SidebarListItemButton>
+                  <SidebarListItemButton to='create-election' >Create Election</SidebarListItemButton>
                 </ListItem>
                 <ListItem>
                   <SidebarListItemButton to='election-result'>Results</SidebarListItemButton>
                 </ListItem>
-                <ListItem>
-                  <SidebarListItemButton>Upcoming</SidebarListItemButton>
-                </ListItem>
-                <ListItem>
-                  <SidebarListItemButton>Instructions</SidebarListItemButton>
-                </ListItem>
               </List>
             </Toggler>
           </ListItem>
-
+{/* 
           <ListItem>
             <SidebarListItemButton
-              // role="menuitem"
-              // component="a"
               selected={isPathMatch('/faculty/messages')}
               to="/faculty/messages"
               icon={<QuestionAnswerRoundedIcon />}
@@ -251,18 +213,13 @@ export default function Sidebar() {
               <ListItemContent>
                 <Typography level="title-sm">Messages</Typography>
               </ListItemContent>
-              {/* <Chip size="sm" color="primary" variant="solid">
-                4
-              </Chip> */}
             </SidebarListItemButton>
-          </ListItem>
+          </ListItem> */}
 
 
 
           <ListItem>
             <SidebarListItemButton
-              // role="menuitem"
-              // component="a"
               selected={isPathMatch('/faculty/cheatings')}
               to="/faculty/cheatings"
               icon={<QuestionAnswerRoundedIcon />}
@@ -272,9 +229,6 @@ export default function Sidebar() {
               <ListItemContent>
                 <Typography level="title-sm">Cheating Records</Typography>
               </ListItemContent>
-              {/* <Chip size="sm" color="primary" variant="solid">
-                4
-              </Chip> */}
             </SidebarListItemButton>
           </ListItem>
 
@@ -291,7 +245,19 @@ export default function Sidebar() {
             </SidebarListItemButton>
           </ListItem>
 
-          <ListItem >
+          <ListItem>
+            <SidebarListItemButton
+              to='/faculty/applications'
+              selected={isPathMatch('/faculty/applications')}
+            >
+              <EmailIcon />
+              <ListItemContent>
+                <Typography level="title-sm">Applications</Typography>
+              </ListItemContent>
+            </SidebarListItemButton>
+          </ListItem>
+
+          {/* <ListItem >
             <SidebarListItemButton
               to='/faculty/facility-booking'
               selected={isPathMatch('/faculty/facility-booking')}
@@ -302,8 +268,8 @@ export default function Sidebar() {
               </ListItemContent>
             </SidebarListItemButton>
           </ListItem>
-        
-          <ListItem>
+         */}
+          {/* <ListItem>
             <SidebarListItemButton
               to='/faculty/profile'
               selected={isPathMatch('/faculty/profile')}
@@ -313,7 +279,7 @@ export default function Sidebar() {
                 <Typography level="title-sm">My profile</Typography>
               </ListItemContent>
             </SidebarListItemButton>
-          </ListItem>
+          </ListItem> */}
           <ListItem>
             <SidebarListItemButton
               to='/faculty/leave'
@@ -321,59 +287,14 @@ export default function Sidebar() {
             >
               <LogoutRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Leave</Typography>
+                <Typography level="title-sm">Student Leave</Typography>
               </ListItemContent>
             </SidebarListItemButton>
           </ListItem>
 
         </List>
-        <List
-          size="sm"
-          sx={{
-            mt: 'auto',
-            flexGrow: 0,
-            '--ListItem-radius': (theme) => theme.vars.radius.sm,
-            '--List-gap': '8px',
-            mb: 2,
-          }}
-        >
-          <ListItem>
-            <ListItemButton>
-              <SupportRoundedIcon />
-              Support
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <SettingsRoundedIcon />
-              Settings
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <Card
-          invertedColors
-          variant="soft"
-          color="warning"
-          size="sm"
-          sx={{ boxShadow: 'none' }}
-        >
-          <Stack
-            direction="row"
-            sx={{ justifyContent: 'space-between', alignItems: 'center' }}
-          >
-            <Typography level="title-sm">Used space</Typography>
-            <IconButton size="sm">
-              <CloseRoundedIcon />
-            </IconButton>
-          </Stack>
-          <Typography level="body-xs">
-            Your team has used 80% of your available space. Need more?
-          </Typography>
-          <LinearProgress variant="outlined" value={80} determinate sx={{ my: 1 }} />
-          <Button size="sm" variant="solid">
-            Upgrade plan
-          </Button>
-        </Card>
+      
+       
       </Box>
       <Divider />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>

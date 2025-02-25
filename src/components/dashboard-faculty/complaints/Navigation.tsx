@@ -17,8 +17,8 @@ import Typography from '@mui/joy/Typography';
 import IconButton from '@mui/joy/IconButton';
 import { closeComplainPane } from '../utils';
 
-export default function Navigation() {
-  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+export default function Navigation({ selectedIndex, setSelectedIndex }: { selectedIndex: number | null, setSelectedIndex: (index: number) => void }) {
+  // const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
@@ -49,7 +49,7 @@ export default function Navigation() {
 
   return (
     <List size="sm" sx={{ '--ListItem-radius': '8px', '--List-gap': '4px' }}>
-      <Box
+      {/* <Box
         sx={{
           display: 'flex',
           flexDirection: 'row',
@@ -98,7 +98,7 @@ export default function Navigation() {
         >
           <SearchRoundedIcon />
         </IconButton>
-      </Box>
+      </Box> */}
 
 
       <ListItem nested>
@@ -117,7 +117,7 @@ export default function Navigation() {
               <ListItemContent>All Complaints</ListItemContent>
             </ListItemButton>
           </ListItem>
-          <ListItem>
+          {/* <ListItem>
             <ListItemButton
               onClick={() => onOptionClick(1)}
               selected={selectedIndex === 1}
@@ -125,95 +125,12 @@ export default function Navigation() {
               <ListItemDecorator>
                 <OutboxRoundedIcon fontSize="small" />
               </ListItemDecorator>
-              <ListItemContent>My Complaints</ListItemContent>
+              <ListItemContent>My Applications</ListItemContent>
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
 
         </List>
       </ListItem>
-      {/* <ListItem nested sx={{ mt: 2 }}>
-        <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
-          Tags
-        </ListSubheader>
-        <List
-          aria-labelledby="nav-list-tags"
-          size="sm"
-          sx={{ '--ListItemDecorator-size': '32px' }}
-        >
-          <ListItem>
-            <ListItemButton
-              onClick={() => onOptionClick(5)}
-              selected={selectedIndex === 5}
-            >
-              <ListItemDecorator>
-                <Box
-                  sx={{
-                    width: '10px',
-                    height: '10px',
-                    borderRadius: '99px',
-                    bgcolor: 'primary.500',
-                  }}
-                />
-              </ListItemDecorator>
-              <ListItemContent>Academic Issues</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton
-              onClick={() => onOptionClick(6)}
-              selected={selectedIndex === 6}
-            >
-              <ListItemDecorator>
-                <Box
-                  sx={{
-                    width: '10px',
-                    height: '10px',
-                    borderRadius: '99px',
-                    bgcolor: 'danger.500',
-                  }}
-                />
-              </ListItemDecorator>
-              <ListItemContent>Safety and Security</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton
-              onClick={() => onOptionClick(7)}
-              selected={selectedIndex === 7}
-            >
-              <ListItemDecorator>
-                <Box
-                  sx={{
-                    width: '10px',
-                    height: '10px',
-                    borderRadius: '99px',
-                    bgcolor: 'warning.400',
-                  }}
-                />
-              </ListItemDecorator>
-              <ListItemContent>Miscellaneous</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton
-              onClick={() => onOptionClick(8)}
-              selected={selectedIndex === 8}
-            >
-              <ListItemDecorator>
-                <Box
-                  sx={{
-                    width: '10px',
-                    height: '10px',
-                    borderRadius: '99px',
-                    bgcolor: 'success.400',
-                  }}
-                />
-              </ListItemDecorator>
-              <ListItemContent>Facilities and Infrastructure</ListItemContent>
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </ListItem> */}
     </List>
   );
 }

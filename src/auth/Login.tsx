@@ -16,7 +16,8 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import { SignupModal } from './signupModal';
-import { loginUser } from '../services/auth.service';
+import { loginFaculty, loginUser } from '../services/auth.service';
+import { Navigate } from "react-router-dom";
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -30,7 +31,7 @@ interface SignInFormElement extends HTMLFormElement {
 async function loginAccount(data: { email: string; password: string; persistent: boolean }) {
   console.log('Logging in with:', data);
   try {
-    const response = await loginUser(data.email, data.password);
+    const response = await loginFaculty(data.email, data.password);
     const result = await response.data;
     console.log('Login successful:', result);
   } catch (error) { 
@@ -39,6 +40,14 @@ async function loginAccount(data: { email: string; password: string; persistent:
 }
 
 export default function Login() {
+
+  const token = localStorage.getItem("token");
+  const isAuthenticated = !!token;
+
+  if (isAuthenticated) {
+    return <Navigate to="/faculty/dashboard" replace />;
+  }
+
   return (
     <CssVarsProvider theme={customTheme} disableTransitionOnChange>
       <CssBaseline />
@@ -188,7 +197,7 @@ export default function Login() {
             'url(https://images.unsplash.com/photo-1622470190232-81df3782484b?q=80&w=1959&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundImage:
-              'url(https://images.unsplash.com/photo-1622470190232-81df3782484b?q=80&w=1959&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+              'url(https://www.sggs.ac.in/uploads/New%20folder/1.png)',
           },
         })}
       />

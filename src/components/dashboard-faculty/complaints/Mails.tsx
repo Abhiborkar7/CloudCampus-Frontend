@@ -8,15 +8,47 @@ import ListItemButton, { listItemButtonClasses } from '@mui/joy/ListItemButton';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import { toggleEmailContent } from '../utils';
 import { Complaint } from '../../../types/types';
+// export interface Application {
+//   _id: string;
+//   from: {
+//     _id: string;
+//     name: string;
+//     email: string;
+//   };
+//   title: string;
+//   to: {
+//     _id: string;
+//     email: string;
+//   }[];
+//   body: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   __v: number;
+// }
+
+export interface Application {
+  _id: string;
+  title: string;
+  complaintTo: string[]; // List of people the complaint is addressed to
+  description: string;
+  student: string | null; // Null if anonymous
+  keepAnonymousCount: number;
+  status: 'Pending' | 'Resolved' | 'In Progress'; // Add other possible statuses if needed
+  attachments: string[]; // Array of attachment URLs or file paths
+  createdAt: string; // ISO timestamp
+  updatedAt: string; // ISO timestamp
+  __v: number;
+}
+
 
 
 interface EmailListProps {
-  selectedComplaint: number;
-  setSelectedComplaint: (complaint: number) => void;
-  complaints: Complaint[];
+  selectedApplication: number;
+  setSelectedApplication: (complaint: number) => void;
+  applications: Application[];
 }
 
-export default function Mails({ complaints, setSelectedComplaint, selectedComplaint }: EmailListProps) {
+export default function Mails({ applications, setSelectedApplication, selectedApplication }: EmailListProps) {
 
   return (
     <List
@@ -27,11 +59,11 @@ export default function Mails({ complaints, setSelectedComplaint, selectedCompla
         },
       }}
     >
-      {complaints.map((item, index) => (
+      {applications && applications.map((item, index) => (
         <div key={index}>
-          <ListItem onClick={() => { setSelectedComplaint(index); toggleEmailContent();}}>
+          <ListItem onClick={() => { setSelectedApplication(index); toggleEmailContent();}}>
             <ListItemButton
-              {...(index === selectedComplaint && {
+              {...(index === selectedApplication && {
                 selected: true,
                 color: 'neutral',
               })}
@@ -42,7 +74,11 @@ export default function Mails({ complaints, setSelectedComplaint, selectedCompla
                   sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}
                 >
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    <Typography level="body-xs">{item.complaintTo}</Typography>
+                    {
+                      item.complaintTo.map((to) => (
+                        <Typography level="body-xs">{to}</Typography>
+                      ))
+                    }
                     <Box
                       sx={{
                         width: '8px',
@@ -52,7 +88,7 @@ export default function Mails({ complaints, setSelectedComplaint, selectedCompla
                     />
                   </Box>
                   <Typography level="body-xs" textColor="text.tertiary">
-                    {item.status}
+                    {new Date(item.createdAt).toLocaleString()}
                   </Typography>
                 </Box>
                 <div>

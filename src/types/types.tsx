@@ -44,10 +44,26 @@ export interface LeaveForm {
   title: string;
 }
 
-export  interface CreateLeave {
-    studentId: string;
-    mailTo: string;
-    startDate: Date;
-    endDate: Date;
-    title: string;
-  }
+export interface CreateLeave {
+  studentId: string;
+  mailTo: string;
+  startDate: Date;
+  endDate: Date;
+  title: string;
+}
+
+  export interface User {
+  _id: string;
+  registrationNo: string;
+  name: string;
+  idPhoto: string;
+  email: string;
+  password: string;
+  department: string;
+  dob: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  profilePhoto: string;
+  blockchainAddress: string;
+}

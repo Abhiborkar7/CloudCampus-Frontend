@@ -51,15 +51,16 @@ const CheatingIncidentsList: React.FC = () => {
 
 
   const fetchCheatingIncidents = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
 
       const response = await getCheatingIncidents();
-      setIncidents(response.data);
+      console.log('Cheating incidents:@@@@@@@', response);
+      setIncidents(response);
     } catch (error) {
       console.error('Failed to fetch cheating incidents', error);
     }
-    setLoading(false);
+    // setLoading(false);
 
   }
 
@@ -78,7 +79,7 @@ const CheatingIncidentsList: React.FC = () => {
 
       {/* List of cheating incidents */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {incidents && incidents.length > 0 ? incidents.map((incident, index) => (
+        {incidents ? incidents.map((incident, index) => (
           <div
             key={index}
             style={{
@@ -92,17 +93,17 @@ const CheatingIncidentsList: React.FC = () => {
             <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
               <img
                 src={incident.proof}
-                alt="Proof"
+                alt="Proof" 
                 style={{ width: '100px', height: '100px', borderRadius: '8px', objectFit: 'cover' }}
               />
               <div>
                 <h3 style={{ margin: '0', fontSize: '18px', color: '#333' }}>{incident.title}</h3>
                 <p style={{ margin: '4px 0', fontSize: '14px', color: '#666' }}>
-                  <strong>Student:</strong> {incident.student.name}
+                  <strong>Student:</strong> {incident?.student?.name}
                 </p>
-                <p style={{ margin: '4px 0', fontSize: '14px', color: '#666' }}>
+                {/* <p style={{ margin: '4px 0', fontSize: '14px', color: '#666' }}>
                   <strong>Caught By:</strong> {incident.caughtBy?.name}
-                </p>
+                </p> */}
                 <p style={{ margin: '4px 0', fontSize: '14px', color: '#666' }}>
                   {incident.description}
                 </p>

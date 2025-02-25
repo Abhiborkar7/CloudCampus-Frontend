@@ -4,7 +4,7 @@ import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
-import Chip from '@mui/joy/Chip';
+import EmailIcon from '@mui/icons-material/Email';
 import Divider from '@mui/joy/Divider';
 import IconButton from '@mui/joy/IconButton';
 import Input from '@mui/joy/Input';
@@ -32,6 +32,8 @@ import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils';
 import ErrorIcon from '@mui/icons-material/Error';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { getLoginUser } from '../../../services/auth.service';
+import { User } from '../../../types/types';
 
 function Toggler({
   defaultExpanded = false,
@@ -45,6 +47,7 @@ function Toggler({
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   }) => React.ReactNode;
 }) {
+
   const [open, setOpen] = React.useState(defaultExpanded);
   return (
     <React.Fragment>
@@ -91,6 +94,22 @@ export default function Sidebar() {
   // React.useEffect(() => {
   //   closeSidebar();
   // }, [location.pathname]);
+
+  const [profile, setProfile] = React.useState<User | null>(null);
+
+  React.useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await getLoginUser();
+        setProfile(response.student);
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+      } finally {
+      }
+    };
+    fetchProfile();
+  }, []);
+
 
   return (
     <Sheet
@@ -173,23 +192,8 @@ export default function Sidebar() {
             '--ListItem-radius': (theme) => theme.vars.radius.sm,
           }}
         >
-          {/* <ListItem>
-            <SidebarListItemButton
-              to="#"
-              icon={<DashboardRoundedIcon />}
-              selected={isPathMatch('/dashboard')}
-            >
-              <DashboardRoundedIcon />
-              <ListItemContent>
-                <SidebarListItemButton to='current-election' >Current Elections</SidebarListItemButton>
-              </ListItemContent>
-            </SidebarListItemButton>
-          </ListItem> */}
-
           <ListItem>
             <SidebarListItemButton
-              // role="menuitem"
-              // component="a"
               selected={isPathMatch('/student/dashboard')}
               to="/student/dashboard"
               icon={<QuestionAnswerRoundedIcon />}
@@ -199,9 +203,6 @@ export default function Sidebar() {
               <ListItemContent>
                 <Typography level="title-sm"> Dashboard</Typography>
               </ListItemContent>
-              {/* <Chip size="sm" color="primary" variant="solid">
-                4
-              </Chip> */}
             </SidebarListItemButton>
           </ListItem>
 
@@ -229,20 +230,12 @@ export default function Sidebar() {
                 <ListItem>
                   <SidebarListItemButton to='election-result'>Results</SidebarListItemButton>
                 </ListItem>
-                <ListItem>
-                  <SidebarListItemButton>Upcoming</SidebarListItemButton>
-                </ListItem>
-                <ListItem>
-                  <SidebarListItemButton>Instructions</SidebarListItemButton>
-                </ListItem>
               </List>
             </Toggler>
           </ListItem>
 
-          <ListItem>
+          {/* <ListItem>
             <SidebarListItemButton
-              // role="menuitem"
-              // component="a"
               selected={isPathMatch('/student/messages')}
               to="/student/messages"
               icon={<QuestionAnswerRoundedIcon />}
@@ -252,18 +245,13 @@ export default function Sidebar() {
               <ListItemContent>
                 <Typography level="title-sm">Messages</Typography>
               </ListItemContent>
-              {/* <Chip size="sm" color="primary" variant="solid">
-                4
-              </Chip> */}
             </SidebarListItemButton>
-          </ListItem>
+          </ListItem> */}
 
 
 
           <ListItem>
             <SidebarListItemButton
-              // role="menuitem"
-              // component="a"
               selected={isPathMatch('/student/cheatings')}
               to="/student/cheatings"
               icon={<QuestionAnswerRoundedIcon />}
@@ -282,19 +270,25 @@ export default function Sidebar() {
 
           <ListItem>
             <SidebarListItemButton
-              // role="menuitem"
-              // component="a"
               to='/student/complaints'
-              // onClick={() => {navigate('/student/complaints'), setComplaintsSelected(true)}}
               selected={isPathMatch('/student/complaints')}
             >
               <ErrorIcon />
               <ListItemContent>
                 <Typography level="title-sm">Complaints</Typography>
               </ListItemContent>
-              {/* <Chip size="sm" color="primary" variant="solid">
-                1
-              </Chip> */}
+            </SidebarListItemButton>
+          </ListItem>
+
+          <ListItem>
+            <SidebarListItemButton
+              to='/student/applications'
+              selected={isPathMatch('/student/applications')}
+            >
+              <EmailIcon />
+              <ListItemContent>
+                <Typography level="title-sm">Applications</Typography>
+              </ListItemContent>
             </SidebarListItemButton>
           </ListItem>
 
@@ -322,69 +316,27 @@ export default function Sidebar() {
           </ListItem>
 
         </List>
-        <List
-          size="sm"
-          sx={{
-            mt: 'auto',
-            flexGrow: 0,
-            '--ListItem-radius': (theme) => theme.vars.radius.sm,
-            '--List-gap': '8px',
-            mb: 2,
-          }}
-        >
-          <ListItem>
-            <ListItemButton>
-              <SupportRoundedIcon />
-              Support
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <SettingsRoundedIcon />
-              Settings
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <Card
-          invertedColors
-          variant="soft"
-          color="warning"
-          size="sm"
-          sx={{ boxShadow: 'none' }}
-        >
-          <Stack
-            direction="row"
-            sx={{ justifyContent: 'space-between', alignItems: 'center' }}
-          >
-            <Typography level="title-sm">Used space</Typography>
-            <IconButton size="sm">
-              <CloseRoundedIcon />
-            </IconButton>
-          </Stack>
-          <Typography level="body-xs">
-            Your team has used 80% of your available space. Need more?
-          </Typography>
-          <LinearProgress variant="outlined" value={80} determinate sx={{ my: 1 }} />
-          <Button size="sm" variant="solid">
-            Upgrade plan
-          </Button>
-        </Card>
       </Box>
       <Divider />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <Avatar
-          variant="outlined"
-          size="sm"
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-        />
-        <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">Siriwat K.</Typography>
-          <Typography level="body-xs">siriwatk@test.com</Typography>
+      {
+        profile &&
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <Avatar
+            variant="outlined"
+            size="sm"
+            src={profile.profilePhoto || profile.idPhoto}
+          />
+
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Typography level="title-sm">{ profile.name }</Typography>
+              <Typography level="body-xs">{profile.registrationNo}</Typography>
+          </Box>
+          <IconButton size="sm" variant="plain" color="neutral">
+            <LogoutRoundedIcon />
+          </IconButton>
         </Box>
-        <IconButton size="sm" variant="plain" color="neutral">
-          <LogoutRoundedIcon />
-        </IconButton>
-      </Box>
+      }
+
     </Sheet>
   );
 }

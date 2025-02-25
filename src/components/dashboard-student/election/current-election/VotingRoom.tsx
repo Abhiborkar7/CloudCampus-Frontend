@@ -8,8 +8,8 @@ import { VotingSectionModel } from './VotingSectionModel';
 
 
 export default function VotingRoom() {
-  const startDate = new Date(2025, 1, 15, 0, 0, 0);
-  const endDate = new Date(2025, 1, 22, 15, 0, 20);
+  const startDate = new Date(2025, 1, 22, 0, 0, 0);
+  const endDate = new Date(2025, 1, 25, 15, 0, 20);
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {

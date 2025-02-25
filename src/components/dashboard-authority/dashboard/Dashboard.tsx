@@ -7,49 +7,8 @@ import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import Link from '@mui/joy/Link';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import CandidateCard from './CandidateCard';
-import VotingRoom from './VotingRoom';
-import { fetchCurrentElection } from '../../../../services/elections.service';
 
-
-
-interface Candidate {
-  candidateId: string;
-  candidateName: string;
-  uid: string;
-  voteCount: string;
-}
-
-interface PositionResult {
-  positionId: string;
-  positionTitle: string;
-  candidates: Candidate[];
-}
-
-// interface Election {
-//   allPositionResults: PositionResult[];
-// }
-export default function CurrentElection() {
-
-  const [ongoingElections, setOngoingElections] = React.useState<PositionResult[]>([]);
-  React.useEffect(() => {
-    fetchOngoingElections();
-  }
-    , []);
-  const fetchOngoingElections = async () => {
-    try {
-      const response = await fetchCurrentElection();
-      console.log(response);
-      // if (response && response.data) {
-      //   console.log(response.data);
-      // } else {
-      //   console.error('No data found in the response');
-      // }
-      setOngoingElections(response);
-    } catch (error) {
-      console.error('Failed to fetch ongoing elections', error);
-    }
-  }
+const Dashboard = () => {
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
@@ -80,56 +39,19 @@ export default function CurrentElection() {
               mt: 2,
               mb: 1,
               fontWeight: 'bold',
-              fontSize: { xs: 'h4', sm: 'h3' },
+              fontSize: { xs: 'h1', sm: 'h1' },
             }}
-            level="h3" >
-            Candidates List
+            level="h1" >
+            Welcome
           </Typography>
-
-
-          <VotingRoom />
-
-
-          <div>
-            <Typography
-              sx={{
-                mt: 2,
-                mb: 1,
-                fontWeight: 'bold',
-                fontSize: { xs: 'h4', sm: 'h3' },
-              }}
-              level="h3" >
-              {/* {election.allPositionResults.positionTitle} */}
-            </Typography>
-
-            <Box sx={{
-              height: '100%',
-              width: '100%',
-              display: 'grid',
-              columnGap: 7,
-              rowGap: 7,
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              '@media (max-width: 600px)': {
-                gridTemplateColumns: 'repeat(1, 1fr)',
-              }
-            }}>
-              <CandidateCard />
-              <CandidateCard />
-              <CandidateCard />
-              <CandidateCard />
-              <CandidateCard />
-              <CandidateCard />
-              <CandidateCard />
-              <CandidateCard />
-
-            </Box>
-          </div>
 
         </Box>
       </Box>
     </CssVarsProvider>
-  );
+  )
 }
+
+export default Dashboard
 
 
 const Header = () => {

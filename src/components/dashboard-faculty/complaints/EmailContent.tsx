@@ -1,20 +1,27 @@
+import * as React from 'react';
 import Box from '@mui/joy/Box';
 import Chip from '@mui/joy/Chip';
 import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
+import Button from '@mui/joy/Button';
+import Snackbar from '@mui/joy/Snackbar';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Divider from '@mui/joy/Divider';
+import Avatar from '@mui/joy/Avatar';
 import Tooltip from '@mui/joy/Tooltip';
 
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import ForwardToInboxRoundedIcon from '@mui/icons-material/ForwardToInboxRounded';
 import FolderIcon from '@mui/icons-material/Folder';
-import { Complaint } from '../../../types/types';
+import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import ButtonStepper from './ButtonStepper';
+import { Application } from './Mails';
 
-export default function EmailContent({ complaint }: { complaint: Complaint }) {
-
-
-
+export default function EmailContent({ application }: { application: Application }) {
+  const [open, setOpen] = React.useState([false, false, false]);
 
   return (
     <Sheet
@@ -24,31 +31,26 @@ export default function EmailContent({ complaint }: { complaint: Complaint }) {
       <Box
         sx={{
           display: 'flex',
-          flexDirection: 'space-between',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          gap: 2,
           flexWrap: 'wrap',
-          transform: {
-            xs: 'translateX(calc(-100% * (var(--EmailContent-slideIn, 0) - 1)))',
-            sm: 'none',
-          },
-          transition: 'transform 0.4s, width 0.4s',
-          zIndex: 100,
-          width: '100%',
-          top: 52,
+          gap: 2,
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          {/* <Avatar
+            src="https://i.pravatar.cc/40?img=3"
+            srcSet="https://i.pravatar.cc/80?img=3"
+          /> */}
           <Box sx={{ ml: 2 }}>
-            <Typography level="title-sm" textColor="text.primary" sx={{ mb: 0.5 , fontSize: '1.5rem', fontWeight: 'bold'}}>
-              To {complaint.complaintTo}
+            <Typography level="title-sm" textColor="text.primary" sx={{ mb: 0.5 }}>
+              {application?.student}
             </Typography>
             <Typography level="body-xs" textColor="text.tertiary">
-              21 Oct 2022
+              {application?.createdAt}
             </Typography>
           </Box>
         </Box>
-          
       </Box>
       <Divider sx={{ mt: 2 }} />
       <Box
@@ -57,9 +59,8 @@ export default function EmailContent({ complaint }: { complaint: Complaint }) {
         <Typography
           level="title-lg"
           textColor="text.primary"
-          
         >
-          {complaint.title}
+          {application?.title}
         </Typography>
         <Box
           sx={{
@@ -76,49 +77,61 @@ export default function EmailContent({ complaint }: { complaint: Complaint }) {
               level="body-sm"
               sx={{ mr: 1, display: 'inline-block' }}
             >
-              To
+              {application?.student}
             </Typography>
-            <Tooltip size="sm" title="Copy email" variant="outlined">
+            {/* <Tooltip size="sm" title="Copy email" variant="outlined">
               <Chip size="sm" variant="soft" color="primary" onClick={() => { }}>
-                {complaint.complaintTo}
+                {application?.from.email}
               </Chip>
-            </Tooltip>
+            </Tooltip> */}
+            {/* <Tooltip size="sm" title="Copy email" variant="outlined">
+              <Box>
+                {
+                  application && application?.to.map((item) => (
+                    <Chip size="sm" variant="soft" color="primary">
+                      {item.email}
+                    </Chip>
+                  ))
+                }
+              </Box>
+            </Tooltip> */}
+          </div>
+          <div>
+            <Typography
+              component="span"
+              level="body-sm"
+              sx={{ mr: 1, display: 'inline-block' }}
+            >
+              {/* {application?.to.name} */}
+            </Typography>
           </div>
         </Box>
       </Box>
       <Divider />
       <Typography level="body-sm" sx={{ mt: 2, mb: 2 }}>
-        {complaint.description}
+        {/* {application?.description} */}
       </Typography>
       <Divider />
-      <Typography level="title-sm" sx={{ mt: 2, mb: 2 }}>
-        Attachments
-      </Typography>
-      <Box
-        sx={(theme) => ({
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 2,
-          '& > div': {
-            boxShadow: 'none',
-            '--Card-padding': '0px',
-            '--Card-radius': theme.vars.radius.sm,
-          },
-        })}
-      >
-        {
-          complaint.attachments?.map((attachment, index) => (
-            <Card key={index} variant="outlined">
-              <AspectRatio ratio="1" sx={{ minWidth: 80 }}>
-                <img
-                  src={attachment}
-                  alt="Attachment"
-                />
-              </AspectRatio>
-            </Card>
-          ))
-        }
-      </Box>
+      {/* <Box sx={{
+        display: 'flex',
+        gap: 1,
+        mt: 5,
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+      }}>
+        <ButtonStepper />
+      </Box> */}
+      {/* <Box sx={{
+        display: 'flex',
+        gap: 1,
+        mt: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Button onClick={{}} >
+        Approve
+      </Button>
+      </Box> */}
     </Sheet>
   );
 }

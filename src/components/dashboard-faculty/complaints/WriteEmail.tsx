@@ -12,6 +12,7 @@ import FormatColorTextRoundedIcon from '@mui/icons-material/FormatColorTextRound
 import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
 import InsertPhotoRoundedIcon from '@mui/icons-material/InsertPhotoRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
+import { Select } from '@mui/material';
 
 interface WriteEmailProps {
   open?: boolean;
@@ -46,7 +47,7 @@ const WriteEmail = React.forwardRef<HTMLDivElement, WriteEmailProps>(
         ]}
       >
         <Box sx={{ mb: 2 }}>
-          <Typography level="title-sm">New complaint</Typography>
+          <Typography level="title-sm">New Complaint</Typography>
           <ModalClose id="close-icon" onClick={onClose} />
         </Box>
         <Box
@@ -54,7 +55,10 @@ const WriteEmail = React.forwardRef<HTMLDivElement, WriteEmailProps>(
         >
           <FormControl>
             <FormLabel>To</FormLabel>
-            <Input placeholder="email@email.com" aria-label="Message" />
+            {/* <Select >
+              <Option value="1">Option 1</Option>
+              <Option value="2">Option 2</Option>
+            </Select> */}
           </FormControl>
 
           <Input placeholder="Subject" aria-label="Message" />

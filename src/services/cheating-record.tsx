@@ -3,7 +3,12 @@ import { VITE_BASE_URL } from "../main";
 
 export const createCheatingIncident = async (incident: any) => {
   try {
-    const response = await axios.post(`${VITE_BASE_URL}/api/cheatings`, incident);
+    const response = await axios.post(`${VITE_BASE_URL}/api/cheatings`, incident, {
+      withCredentials: true,    
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`, // Include token if required
+      },
+});
     console.log('Cheating incident created:', response.data);
     return response.data;
   } catch (error) {

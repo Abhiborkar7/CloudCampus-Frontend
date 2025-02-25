@@ -12,11 +12,16 @@ interface AuthContextType {
   setLoading: (loading: boolean) => void;
 }
 
+interface User {
+  email: string;
+  role: string;
+}
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
   // const login = (userData: User) => setUser(userData);
   // const logout = () => setUser(null);
 
