@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')!).render(
 )
 
 
-export const VITE_BASE_URL = "http://192.168.32.42:5000"
+export const VITE_BASE_URL = "http://localhost:5000"
 export const VITE_BLOCKCHAIN_URL = "http://192.168.40.63:5000"
 export const VITE_ML_URL = "http://192.168.40.63:5001"
 

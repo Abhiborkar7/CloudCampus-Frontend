@@ -44,3 +44,17 @@ export const createApplication = async (data: any) => {
   }
 }
 
+export const getAllSenders = async () => {
+  try {
+    const response = await axios.get(`${VITE_BASE_URL}/api/applications/senders`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    console.log('Senders::', response.data);
+    return response.data.faculties;
+  } catch (error) {
+    console.error('Error fetching senders:', error);
+    return error;
+  }
+}

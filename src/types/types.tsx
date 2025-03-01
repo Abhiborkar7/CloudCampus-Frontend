@@ -9,11 +9,10 @@ export interface SignupForm {
 }
 
 export interface CheatingForm {
-  studentName: string;
+  studentId: string;
   title: string;
   description: string;
-  proof: string;
-  imageUrl: string;
+  proof: string[];
 }
 
 export interface Complaint {
