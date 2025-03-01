@@ -16,7 +16,7 @@ import { closeEmailContent, toggleComplainPane, toggleEmailContent } from '../ut
 import EmailContent from './EmailContent';
 import { uploadImageToCloudinary } from '../../../services/uploadImage.service';
 import { Complaint } from '../../../types/types';
-import { getAllApplications, getMyApplications, getAllSenders } from '../../../services/application.service';
+import { getAllApplications, getMyApplications, getAllApplicationSenders } from '../../../services/application.service';
 
 export interface Application {
   _id: string;
@@ -53,7 +53,7 @@ export default function ApplicationPage() {
 
   const fetchSenders = async () => {
     try {
-      const response = await getAllSenders();
+      const response = await getAllApplicationSenders();
       console.log('Senders:', response);
       setSenders(response);
       return;
@@ -85,17 +85,6 @@ export default function ApplicationPage() {
       return error;
     }
   }
-  // const fetchMyApplications = async () => {
-  //   try {
-  //     const response = await getMyApplications();
-  //     console.log('Applications:', response);
-  //     setApplications(response);
-  //     return;
-  //   } catch (error) {
-  //     console.error('Failed to fetch applications:', error);
-  //     return error;
-  //   }
-  // }
   React.useEffect(() => {
     
     fetchApplications();

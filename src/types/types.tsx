@@ -17,7 +17,7 @@ export interface CheatingForm {
 
 export interface Complaint {
   title: string;
-  complaintTo: string;
+  complaintTo: string[];
   description: string;
   student: string;
   keepAnonymousCount?: number;

@@ -13,7 +13,9 @@ import { Complaint } from '../../../types/types';
 
 export default function EmailContent({ complaint }: { complaint: Complaint }) {
 
-
+  if (complaint === null) {
+    return <></>;
+  }
 
 
   return (
@@ -41,7 +43,13 @@ export default function EmailContent({ complaint }: { complaint: Complaint }) {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box sx={{ ml: 2 }}>
             <Typography level="title-sm" textColor="text.primary" sx={{ mb: 0.5 , fontSize: '1.5rem', fontWeight: 'bold'}}>
-              To {complaint.complaintTo}
+              To {
+                complaint.complaintTo.map((to, index) => (
+                  <Chip key={index} size="sm" variant="soft" color="primary" onClick={() => { }}>
+                    {to}
+                  </Chip>
+                ))
+              }
             </Typography>
             <Typography level="body-xs" textColor="text.tertiary">
               21 Oct 2022
@@ -80,7 +88,13 @@ export default function EmailContent({ complaint }: { complaint: Complaint }) {
             </Typography>
             <Tooltip size="sm" title="Copy email" variant="outlined">
               <Chip size="sm" variant="soft" color="primary" onClick={() => { }}>
-                {complaint.complaintTo}
+                {
+                  complaint.complaintTo.map((to, index) => (
+                    <Chip key={index} size="sm" variant="soft" color="primary" onClick={() => { }}>
+                      {to}
+                    </Chip>
+                  ))
+                }
               </Chip>
             </Tooltip>
           </div>

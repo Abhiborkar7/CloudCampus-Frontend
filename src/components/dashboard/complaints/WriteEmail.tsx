@@ -6,20 +6,57 @@ import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Textarea from '@mui/joy/Textarea';
 import Sheet from '@mui/joy/Sheet';
-import { IconButton, Input, Stack, Typography } from '@mui/joy';
+import { IconButton, Input, Option, Select, Stack, Typography } from '@mui/joy';
 
 import FormatColorTextRoundedIcon from '@mui/icons-material/FormatColorTextRounded';
 import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
 import InsertPhotoRoundedIcon from '@mui/icons-material/InsertPhotoRounded';
 import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
+import { Sender } from './ComplaintRoom';
+import { createComplaint } from '../../../services/complaints.service';
+// import { Select } from '@mui/material';
 
 interface WriteEmailProps {
   open?: boolean;
   onClose?: () => void;
+  senders?: Sender[] | null;
 }
 
 const WriteEmail = React.forwardRef<HTMLDivElement, WriteEmailProps>(
-  function WriteEmail({ open, onClose }, ref) {
+  function WriteEmail({ open, onClose, senders }, ref) {
+
+    const [formData, setFormData] = React.useState({
+      title: '',
+      body: '',
+      to: [] as string[],
+      file: null as File | null
+    });
+
+    const handleSubmit = async () => {
+      const data = new FormData();
+      data.append('title', formData.title);
+      data.append('body', formData.body);
+      formData.to.forEach(recipientId => { // Change to array
+        data.append('to[]', recipientId);
+      });
+      if (formData.file) {
+        data.append('file', formData.file);
+      }
+
+      try {
+        const response = await createComplaint(data);
+        console.log('Response:', response);
+      } catch (error) {
+        console.error('Error submitting complaint:', error);
+      }
+    };
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.files && event.target.files[0]) {
+        setFormData(prev => ({ ...prev, file: event.target.files![0] }));
+      }
+    };
+
     return (
       <Sheet
         ref={ref}
@@ -46,7 +83,7 @@ const WriteEmail = React.forwardRef<HTMLDivElement, WriteEmailProps>(
         ]}
       >
         <Box sx={{ mb: 2 }}>
-          <Typography level="title-sm">New complaint</Typography>
+          <Typography level="title-sm">New Application</Typography>
           <ModalClose id="close-icon" onClick={onClose} />
         </Box>
         <Box
@@ -54,14 +91,31 @@ const WriteEmail = React.forwardRef<HTMLDivElement, WriteEmailProps>(
         >
           <FormControl>
             <FormLabel>To</FormLabel>
-            <Input placeholder="email@email.com" aria-label="Message" />
+            <Select
+              value={formData.to[0]}
+              onChange={(_, value) => setFormData(prev => ({
+                ...prev,
+                to: Array.isArray(value) ? value.filter(Boolean) as string[] : value ? [value] : []
+              }))}
+            >
+              {
+                senders?.map((sender, index) => (
+                  <Option key={index} value={sender._id}>{sender.name}</Option>
+                ))
+              }
+            </Select>
           </FormControl>
 
-          <Input placeholder="Subject" aria-label="Message" />
+          <Input
+            placeholder="Title"
+            value={formData.title}
+            onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+          />
           <FormControl sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Textarea
-              placeholder="Type your message here…"
-              aria-label="Message"
+              placeholder="Write Application..."
+              value={formData.body}
+              onChange={(e) => setFormData(prev => ({ ...prev, body: e.target.value }))}
               minRows={8}
               endDecorator={
                 <Stack
@@ -77,23 +131,33 @@ const WriteEmail = React.forwardRef<HTMLDivElement, WriteEmailProps>(
                   }}
                 >
                   <div>
-                    <IconButton size="sm" variant="plain" color="neutral">
-                      <FormatColorTextRoundedIcon />
-                    </IconButton>
-                    <IconButton size="sm" variant="plain" color="neutral">
+                    {/* <IconButton size="sm" variant="plain" color="neutral">
+              <FormatColorTextRoundedIcon />
+            </IconButton> */}
+                    <IconButton
+                      component="label"
+                      size="sm"
+                      variant="plain"
+                      color="neutral"
+                    >
+                      <input
+                        type="file"
+                        hidden
+                        onChange={handleFileChange}
+                      />
                       <AttachFileRoundedIcon />
                     </IconButton>
-                    <IconButton size="sm" variant="plain" color="neutral">
-                      <InsertPhotoRoundedIcon />
-                    </IconButton>
-                    <IconButton size="sm" variant="plain" color="neutral">
-                      <FormatListBulletedRoundedIcon />
-                    </IconButton>
+                    {/* <IconButton size="sm" variant="plain" color="neutral">
+              <InsertPhotoRoundedIcon />
+            </IconButton>
+            <IconButton size="sm" variant="plain" color="neutral">
+              <FormatListBulletedRoundedIcon />
+            </IconButton> */}
                   </div>
                   <Button
                     color="primary"
                     sx={{ borderRadius: 'sm' }}
-                    onClick={onClose}
+                    onClick={handleSubmit}
                   >
                     Send
                   </Button>
@@ -111,5 +175,6 @@ const WriteEmail = React.forwardRef<HTMLDivElement, WriteEmailProps>(
     );
   },
 );
+
 
 export default WriteEmail;

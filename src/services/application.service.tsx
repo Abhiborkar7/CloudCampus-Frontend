@@ -37,6 +37,8 @@ export const createApplication = async (data: any) => {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     });
+    console.log('Data:', data);
+
     return response.data;
   } catch (error) {
     console.error('Error creating application:', error);
@@ -44,7 +46,7 @@ export const createApplication = async (data: any) => {
   }
 }
 
-export const getAllSenders = async () => {
+export const getAllApplicationSenders = async () => {
   try {
     const response = await axios.get(`${VITE_BASE_URL}/api/applications/senders`, {
       headers: {

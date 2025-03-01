@@ -3,7 +3,7 @@ import DashboardLayoutStudent from '../components/dashboard-student/DashboardLay
 import Dashboard from '../components/dashboard-student/dashboard/Dashboard';
 import MyProfile from '../components/dashboard-student/my-profile/MyProfile';
 import ChatRoom from '../components/dashboard-student/chat-room/ChatRoom';
-import ComplaintRoom from '../components/dashboard-student/complaints/ComplaintRoom';
+import ComplaintRoom from '../components/dashboard/complaints/ComplaintRoom';
 import CheatingIncidentsList from '../components/dashboard/cheating-record/CheatingIncident';
 import ApplicationPage from '../components/dashboard/applications/ApplicationPage';
 import CurrentElection from '../components/dashboard-student/election/current-election/CurrentElection';

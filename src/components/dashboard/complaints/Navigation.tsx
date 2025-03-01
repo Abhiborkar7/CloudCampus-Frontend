@@ -17,8 +17,7 @@ import Typography from '@mui/joy/Typography';
 import IconButton from '@mui/joy/IconButton';
 import { closeComplainPane } from '../utils';
 
-export default function Navigation() {
-  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+export default function Navigation({ selectedIndex, setSelectedIndex }: { selectedIndex: number | null, setSelectedIndex: (index: number) => void }) {
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
