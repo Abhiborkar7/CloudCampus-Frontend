@@ -9,11 +9,12 @@ import ApplicationPage from '../components/dashboard/applications/ApplicationPag
 import ResultPage from '../components/dashboard-faculty/election/result/ResultPage';
 import CreateElection from '../components/dashboard-faculty/election/create-election/CreateElection';
 import LeavePage from '../components/dashboard-faculty/leave/LeavePage';
+import DashboardLayout from '../components/dashboard/DashboardLayout';
 
 const FacultyRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<DashboardLayoutFaculty />}>
+      <Route path="/" element={<DashboardLayout />}>
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="profile" element={<MyProfile />} />

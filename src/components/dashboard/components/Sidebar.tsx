@@ -86,6 +86,7 @@ const SidebarListItemButton = ({ to, icon, children, selected }: { to?: string, 
 
 export default function Sidebar() {
 
+  const [role, setRole] = React.useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
@@ -94,6 +95,17 @@ export default function Sidebar() {
   // React.useEffect(() => {
   //   closeSidebar();
   // }, [location.pathname]);
+
+  const getBaseRoute = () => {
+    const path = currentPath.split('/');
+    setRole(path[1]);
+    return path.length > 1 ? path[1] : '';
+  };
+
+  React.useEffect(() => {
+    getBaseRoute();
+  }, []);
+
 
   const [profile, setProfile] = React.useState<User | null>(null);
 
@@ -192,19 +204,23 @@ export default function Sidebar() {
             '--ListItem-radius': (theme) => theme.vars.radius.sm,
           }}
         >
-          <ListItem>
-            <SidebarListItemButton
-              selected={isPathMatch('/student/dashboard')}
-              to="/student/dashboard"
-              icon={<QuestionAnswerRoundedIcon />}
 
-            >
-              <DashboardRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm"> Dashboard</Typography>
-              </ListItemContent>
-            </SidebarListItemButton>
-          </ListItem>
+          {
+            role && role === 'student' &&
+            <ListItem>
+              <SidebarListItemButton
+                selected={isPathMatch('/student/dashboard')}
+                to="/student/dashboard"
+                icon={<QuestionAnswerRoundedIcon />}
+
+              >
+                <DashboardRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm"> Dashboard</Typography>
+                </ListItemContent>
+              </SidebarListItemButton>
+            </ListItem>
+          }
 
           <ListItem nested>
             <Toggler
@@ -224,9 +240,18 @@ export default function Sidebar() {
               defaultExpanded={isPathMatch('/tasks')}
             >
               <List sx={{ gap: 0.5 }}>
-                <ListItem sx={{ mt: 0.5 }}>
-                  <SidebarListItemButton to='current-election' >Current Elections</SidebarListItemButton>
-                </ListItem>
+                {
+                  role && role === 'student-affairs-dean' &&
+                  <ListItem sx={{ mt: 0.5 }}>
+                    <SidebarListItemButton to='create-election' >Create Election</SidebarListItemButton>
+                  </ListItem>
+                }
+                {
+                  role && role === 'student' &&
+                  <ListItem sx={{ mt: 0.5 }}>
+                    <SidebarListItemButton to='current-election' >Current Elections</SidebarListItemButton>
+                  </ListItem>
+                }
                 <ListItem>
                   <SidebarListItemButton to='election-result'>Results</SidebarListItemButton>
                 </ListItem>
@@ -234,44 +259,52 @@ export default function Sidebar() {
             </Toggler>
           </ListItem>
 
-          {/* <ListItem>
-            <SidebarListItemButton
-              selected={isPathMatch('/student/messages')}
-              to="/student/messages"
-              icon={<QuestionAnswerRoundedIcon />}
 
-            >
-              <QuestionAnswerRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Messages</Typography>
-              </ListItemContent>
-            </SidebarListItemButton>
-          </ListItem> */}
+          {/* {
+            role && role === 'student' &&
+            <ListItem>
+              <SidebarListItemButton
+                selected={isPathMatch('/student/messages')}
+                to="/student/messages"
+                icon={<QuestionAnswerRoundedIcon />}
+
+              >
+                <QuestionAnswerRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Messages</Typography>
+                </ListItemContent>
+              </SidebarListItemButton>
+            </ListItem>
+          } */}
+          
 
 
 
-          <ListItem>
-            <SidebarListItemButton
-              selected={isPathMatch('/student/cheatings')}
-              to="/student/cheatings"
-              icon={<QuestionAnswerRoundedIcon />}
+          {
+            role && (role === 'student' || role === 'faculty') &&
+            <ListItem>
+              <SidebarListItemButton
+                selected={isPathMatch(`/${role}/cheatings`)}
+                to={`/${role}/cheatings`}
+                icon={<QuestionAnswerRoundedIcon />}
 
-            >
-              <QuestionAnswerRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Cheating Records</Typography>
-              </ListItemContent>
-              {/* <Chip size="sm" color="primary" variant="solid">
+              >
+                <QuestionAnswerRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Cheating Records</Typography>
+                </ListItemContent>
+                {/* <Chip size="sm" color="primary" variant="solid">
                 4
               </Chip> */}
-            </SidebarListItemButton>
-          </ListItem>
+              </SidebarListItemButton>
+            </ListItem>
+          }
 
 
           <ListItem>
             <SidebarListItemButton
-              to='/student/complaints'
-              selected={isPathMatch('/student/complaints')}
+              to={`/${role}/complaints`}
+              selected={isPathMatch(`/${role}/complaints`)}
             >
               <ErrorIcon />
               <ListItemContent>
@@ -282,8 +315,8 @@ export default function Sidebar() {
 
           <ListItem>
             <SidebarListItemButton
-              to='/student/applications'
-              selected={isPathMatch('/student/applications')}
+              to={`/${role}/applications`}
+              selected={isPathMatch(`/${role}/applications`)}
             >
               <EmailIcon />
               <ListItemContent>
@@ -292,28 +325,51 @@ export default function Sidebar() {
             </SidebarListItemButton>
           </ListItem>
 
-          <ListItem >
-            <SidebarListItemButton
-              to='/student/facility-booking'
-              selected={isPathMatch('/student/facility-booking')}
-            >
-              <BookmarkAddIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Facility Booking</Typography>
-              </ListItemContent>
-            </SidebarListItemButton>
-          </ListItem>
-          <ListItem>
-            <SidebarListItemButton
-              to='/student/profile'
-              selected={isPathMatch('/student/profile')}
-            >
-              <AccountBoxIcon />
-              <ListItemContent>
-                <Typography level="title-sm">My profile</Typography>
-              </ListItemContent>
-            </SidebarListItemButton>
-          </ListItem>
+          {
+            role && (role === 'student' || role === "secretary") &&
+            <ListItem >
+              <SidebarListItemButton
+                  to={`/${role}/facility-booking`}
+                  selected={isPathMatch(`/${role}/facility-booking`)}
+              >
+                <BookmarkAddIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Facility Booking</Typography>
+                </ListItemContent>
+              </SidebarListItemButton>
+            </ListItem>
+          }
+
+          {
+            role && role === 'student' &&
+            <ListItem>
+              <SidebarListItemButton
+                to='/student/profile'
+                selected={isPathMatch('/student/profile')}
+              >
+                <AccountBoxIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">My profile</Typography>
+                </ListItemContent>
+              </SidebarListItemButton>
+            </ListItem>
+          }
+
+          {
+            role && role === 'doctor' &&
+            <ListItem>
+              <SidebarListItemButton
+                to='/faculty/leave'
+                selected={isPathMatch('/faculty/leave')}
+              >
+                <LogoutRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Student Leave</Typography>
+                </ListItemContent>
+              </SidebarListItemButton>
+            </ListItem>
+          }
+
 
         </List>
       </Box>
@@ -328,8 +384,8 @@ export default function Sidebar() {
           />
 
           <Box sx={{ minWidth: 0, flex: 1 }}>
-            <Typography level="title-sm">{ profile.name }</Typography>
-              <Typography level="body-xs">{profile.registrationNo}</Typography>
+            <Typography level="title-sm">{profile.name}</Typography>
+            <Typography level="body-xs">{profile.registrationNo}</Typography>
           </Box>
           <IconButton size="sm" variant="plain" color="neutral">
             <LogoutRoundedIcon />

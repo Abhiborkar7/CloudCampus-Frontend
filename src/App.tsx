@@ -17,6 +17,10 @@ function App() {
           {/* Protected Routes */}
           <Route path="/student/*" element={<ProtectedRoute><StudentRoutes /></ProtectedRoute>} />
           <Route path="/faculty/*" element={<ProtectedRoute><FacultyRoutes /></ProtectedRoute>} />
+          <Route path="/student-affairs-dean/*" element={<ProtectedRoute><FacultyRoutes /></ProtectedRoute>} />
+          <Route path="/hod/*" element={<ProtectedRoute><FacultyRoutes /></ProtectedRoute>} />
+          <Route path="/coordinator/*" element={<ProtectedRoute><FacultyRoutes /></ProtectedRoute>} />
+          <Route path="/doctor/*" element={<ProtectedRoute><FacultyRoutes /></ProtectedRoute>} />
 
           {/* Catch-all Route */}
           <Route path="/*" element={<h1>404 - Not Found</h1>} />

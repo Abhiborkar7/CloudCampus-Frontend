@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import DashboardLayoutStudent from '../components/dashboard-student/DashboardLayoutStudent';
 import Dashboard from '../components/dashboard-student/dashboard/Dashboard';
-import MyProfile from '../components/dashboard-student/my-profile/MyProfile';
+import MyProfile from '../components/dashboard/my-profile/MyProfile';
 import ChatRoom from '../components/dashboard-student/chat-room/ChatRoom';
 import ComplaintRoom from '../components/dashboard/complaints/ComplaintRoom';
 import CheatingIncidentsList from '../components/dashboard/cheating-record/CheatingIncident';
@@ -9,11 +9,12 @@ import ApplicationPage from '../components/dashboard/applications/ApplicationPag
 import CurrentElection from '../components/dashboard-student/election/current-election/CurrentElection';
 import ResultPage from '../components/dashboard-student/election/result/ResultPage';
 import CampusFacilityBooking from '../components/dashboard-student/facility-booking/CampusFacilityBooking';
+import DashboardLayout from '../components/dashboard/DashboardLayout';
 
 const StudentRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<DashboardLayoutStudent />}>
+      <Route path="/" element={<DashboardLayout />}>
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="profile" element={<MyProfile />} />
