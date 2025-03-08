@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { CssVarsProvider, extendTheme, useColorScheme } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';
@@ -16,8 +15,10 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import { SignupModal } from './signupModal';
-import { loginFaculty, loginUser } from '../services/auth.service';
+import { loginUser } from '../services/auth.service';
 import { Navigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Autocomplete, Snackbar } from '@mui/joy';
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -28,29 +29,73 @@ interface SignInFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-async function loginAccount(data: { email: string; password: string; persistent: boolean }) {
-  console.log('Logging in with:', data);
-  try {
-    const response = await loginFaculty(data.email, data.password);
-    const result = await response.data;
-    console.log('Login successful:', result);
-  } catch (error) { 
-    console.error('Error during login:', error);
-  }
-}
 
 export default function Login() {
 
+  const [role, setRole] = useState<'students' | 'faculty' | 'student-authorities' | 'faculty-authorities'>("students");
   const token = localStorage.getItem("token");
   const isAuthenticated = !!token;
+  const [openFailedAlert, setOpenFailedAlert] = useState(false);
+  const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
 
   if (isAuthenticated) {
     return <Navigate to="/faculty/dashboard" replace />;
   }
 
+
+
+  async function loginAccount(data: { email: string; password: string; persistent: boolean }) {
+    console.log('Logging in with:', data);
+    try {
+      // let response, result;
+      const response = await loginUser(data.email, data.password, role);
+      if (response.status !== 200) {
+        console.log('Login failed:', response);
+        setOpenFailedAlert(true);
+      } else {
+        console.log('Login successful:', response);
+        setOpenSuccessAlert(true);
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  }
+
+
+
   return (
     <CssVarsProvider theme={customTheme} disableTransitionOnChange>
       <CssBaseline />
+
+      < Snackbar
+        autoHideDuration={3000}
+        open={openFailedAlert}
+        color={'danger'}
+        variant='solid'
+        onClose={(event, reason) => {
+          if (reason === 'clickaway') {
+            return;
+          }
+          setOpenFailedAlert(false);
+        }}
+      >
+        Login Failed
+      </Snackbar>
+      < Snackbar
+        autoHideDuration={3000}
+        open={openSuccessAlert}
+        color={'success'}
+        variant='solid'
+        onClose={(event, reason) => {
+          if (reason === 'clickaway') {
+            return;
+          }
+          setOpenFailedAlert(false);
+        }}
+      >
+        Login Succesful
+      </Snackbar>
+
       <GlobalStyles
         styles={{
           ':root': {
@@ -120,12 +165,37 @@ export default function Login() {
             }}
           >
             <Stack sx={{ gap: 4, mb: 2 }}>
+              <Typography component="h1" level="h3">
+                Login
+              </Typography>
               <Stack sx={{ gap: 1 }}>
-                <Typography component="h1" level="h3">
-                  Login
-                </Typography>
+                <Autocomplete
+                  placeholder="Role"
+                  options={[
+                    { label: 'Student', value: 'students' },
+                    { label: 'Faculty', value: 'faculty' },
+                    { label: 'Student Authority', value: 'student-authorities' },
+                    { label: 'Faculty Authority', value: 'faculty-authorities' },
+                  ]}
+                  onChange={(event, newValue) => {
+                    if (newValue) {
+                      setRole(newValue.value as 'students' | 'faculty' | 'student-authorities' | 'faculty-authorities');
+                    }
+                  }}
+                  value={
+                    role ? {
+                      label: role.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+                      value: role
+                    } : null
+                  }
+                  sx={{ width: '100%' }}
+                />
+              </Stack>
+              <Stack sx={{ gap: 1 }}>
+
                 <Typography level="body-sm">
-                  New Student?{' '}
+                  New {role === 'students' ? 'Student' : 'Faculty'}?
+                  {' '}
                   <SignupModal />
                 </Typography>
               </Stack>
@@ -208,9 +278,9 @@ export default function Login() {
 function ColorSchemeToggle(props: IconButtonProps) {
   const { onClick, ...other } = props;
   const { mode, setMode } = useColorScheme();
-  const [mounted, setMounted] = React.useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  React.useEffect(() => setMounted(true), []);
+  useEffect(() => setMounted(true), []);
 
   return (
     <IconButton
