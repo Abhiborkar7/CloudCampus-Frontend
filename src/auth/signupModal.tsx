@@ -17,7 +17,7 @@ import { CircularLoading } from '../App';
 export const SignupModal = () => {
   const [open, setOpen] = React.useState<boolean>(false);
   const [stepNumber, setStepNumber] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>('');
 

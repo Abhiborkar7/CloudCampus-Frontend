@@ -100,7 +100,7 @@ const WriteEmail = React.forwardRef<HTMLDivElement, WriteEmailProps>(
         >
           {
             senders?.map((sender, index) => (
-          <Option key={index} value={sender._id}>{sender.name}</Option>
+          <Option key={index} value={sender.email}>{sender.name}</Option>
             ))
           }
         </Select>

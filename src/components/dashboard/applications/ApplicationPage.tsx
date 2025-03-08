@@ -47,7 +47,7 @@ export default function ApplicationPage() {
   const [fileUrl, setFileUrl] = React.useState('');
   const [selectedApplication, setSelectedApplication] = React.useState(0);
   const [applications, setApplications] = React.useState<Application[]>([]);
-  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(0);
   const [senders, setSenders] = React.useState<Sender[] | null>([]);
 
 

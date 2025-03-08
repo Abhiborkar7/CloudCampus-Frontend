@@ -17,7 +17,7 @@ export const extractTextFromImage = async (imageUrl: string) => {
   }
 }
 
-export const getOtp = async (email: string) => {  
+export const getOtp = async (email: string) => {
   try {
     const response = await axios.post(`${VITE_BASE_URL}/api/send-otp`, {
       to: email
@@ -47,7 +47,7 @@ export const registerUser = async (formData: SignupForm, idPhoto: string) => {
         'Content-Type': 'application/json',
         'withCredentials': true
       },
-      
+
     });
 
     console.log('Account created:', response.data);
@@ -67,53 +67,22 @@ export const registerUser = async (formData: SignupForm, idPhoto: string) => {
   }
 };
 
-
-  export const loginUser = async (email: string, password: string) => {
-    try {
-      const jsonData = {
-        email,
-        password
-      };
-      const response = await axios.post(`${VITE_BASE_URL}/api/students/login`, jsonData ,{
-       headers: {
-        'Content-Type': 'application/json',
-        'withCredentials': true
-      },
-      });
-      const token = response.data.token; // Ensure your API returns `token`
-
-      if (token) {
-        localStorage.setItem('token', token);
-        document.cookie = `token=${token}; path=/`;
-        console.log('JWT Token saved to localStorage', token);
-      }
-
-      return response.data;
-    } catch (error) {
-      console.error('Failed to login', error);
-      return error;
-    }
-  }
-
-export const loginFaculty = async (email: string, password: string) => {
+export const loginUser = async (email: string, password: string, role: string) => {
   try {
     const jsonData = {
       email,
       password
     };
-    const response = await axios.post(`${VITE_BASE_URL}/api/faculty/login`, jsonData, {
+    const response = await axios.post(`${VITE_BASE_URL}/api/${role}/login`, jsonData, {
       headers: {
         'Content-Type': 'application/json',
         'withCredentials': true
       },
     });
-    const token = response.data.token;
-    const role = response.data.role;
+    const token = response.data.token; // Ensure your API returns `token`
 
     if (token) {
       localStorage.setItem('token', token);
-      localStorage.setItem('role', role);
-
       document.cookie = `token=${token}; path=/`;
       console.log('JWT Token saved to localStorage', token);
     }
@@ -125,16 +94,18 @@ export const loginFaculty = async (email: string, password: string) => {
   }
 }
 
-  export const getLoginUser = async () => {
-    try {
-      const response = await axios.get(`${VITE_BASE_URL}/api/students/me`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Failed to get user', error);
-      return error;
-    }
+
+
+export const getLoginUser = async () => {
+  try {
+    const response = await axios.get(`${VITE_BASE_URL}/api/students/me`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to get user', error);
+    return error;
   }
+}

@@ -45,3 +45,24 @@ faculty
     accept
     reject
     gerviance
+
+
+nsfw 2 img, vid
+liveleness detection - spoof
+text texraction ocr
+velgure text detection
+face and id face verification
+
+
+Roles
+
+  student
+  student authority
+    general-secratory
+  faculty
+  faculty authority
+    doctor
+    dean-sa
+    faculty coordinator
+    hod
+    director
