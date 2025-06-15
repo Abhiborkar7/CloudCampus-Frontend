@@ -15,7 +15,6 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import { SignupModal } from './signupModal';
-import { loginUser } from '../services/auth.service';
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { Autocomplete, Snackbar } from '@mui/joy';
@@ -33,36 +32,17 @@ interface SignInFormElement extends HTMLFormElement {
 
 export default function Login() {
 
-  const [role, setRole] = useState<'students' | 'faculty' | 'student-authorities' | 'faculty-authorities'>("students");
+  const [selectedRole, setSelectedRole] = useState<'student' | 'faculty' | 'student authority' | 'faculty authority'>("student");
   const token = localStorage.getItem("token");
-  const isAuthenticated = !!token;
-  const { loginAccount } = useAuth();
+  const { loginAccount, isAuthenticated, role } = useAuth();
+
 
   if (isAuthenticated) {
-    return <Navigate to="/faculty/dashboard" replace />;
-  }
-
-
-
-  // async function loginAccount(data: { email: string; password: string; persistent: boolean }) {
-  //   console.log('Logging in with:', data);
-  //   try {
-  //     // let response, result;
-  //     const response = await loginUser(data.email, data.password, role);
-  //     if (response.status != 200) {
-  //       console.log('Login failed:', response);
-  //       setOpenFailedAlert(true);
-  //     } else {
-  //       console.log('Login successful:', response);
-  //       setPosition(response.data.role);
-  //       localStorage.setItem('position', response.data.role);
-  //       setOpenSuccessAlert(true);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error during login:', error);
-  //   }
-  // }
-
+  if (role === "student") return <Navigate to="/student/dashboard" replace />;
+  if (role === "faculty") return <Navigate to="/faculty/dashboard" replace />;
+  if (role === "faculty authority") return <Navigate to="/faculty-authority/dashboard" replace />;
+  if (role === "student authority") return <Navigate to="/student-authority/dashboard" replace />;
+}
 
 
   return (
@@ -154,7 +134,7 @@ export default function Login() {
                   ]}
                   onChange={(event, newValue) => {
                     if (newValue) {
-                      setRole(newValue.value as 'students' | 'faculty' | 'student-authorities' | 'faculty-authorities');
+                      setSelectedRole(newValue.value as 'student' | 'faculty' | 'student authority' | 'faculty authority');
                     }
                   }}
                   value={
@@ -185,7 +165,7 @@ export default function Login() {
                     password: formElements.password.value,
                     persistent: formElements.persistent.checked,
                   };
-                  await loginAccount(data, role);
+                  await loginAccount(data, selectedRole);
                 }}
               >
                 <FormControl required>
