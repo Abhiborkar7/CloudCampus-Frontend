@@ -19,6 +19,7 @@ import { loginUser } from '../services/auth.service';
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { Autocomplete, Snackbar } from '@mui/joy';
+import { useAuth } from '../context/AuthContext';
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -35,8 +36,7 @@ export default function Login() {
   const [role, setRole] = useState<'students' | 'faculty' | 'student-authorities' | 'faculty-authorities'>("students");
   const token = localStorage.getItem("token");
   const isAuthenticated = !!token;
-  const [openFailedAlert, setOpenFailedAlert] = useState(false);
-  const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
+  const { loginAccount } = useAuth();
 
   if (isAuthenticated) {
     return <Navigate to="/faculty/dashboard" replace />;
@@ -44,22 +44,24 @@ export default function Login() {
 
 
 
-  async function loginAccount(data: { email: string; password: string; persistent: boolean }) {
-    console.log('Logging in with:', data);
-    try {
-      // let response, result;
-      const response = await loginUser(data.email, data.password, role);
-      if (response.status !== 200) {
-        console.log('Login failed:', response);
-        setOpenFailedAlert(true);
-      } else {
-        console.log('Login successful:', response);
-        setOpenSuccessAlert(true);
-      }
-    } catch (error) {
-      console.error('Error during login:', error);
-    }
-  }
+  // async function loginAccount(data: { email: string; password: string; persistent: boolean }) {
+  //   console.log('Logging in with:', data);
+  //   try {
+  //     // let response, result;
+  //     const response = await loginUser(data.email, data.password, role);
+  //     if (response.status != 200) {
+  //       console.log('Login failed:', response);
+  //       setOpenFailedAlert(true);
+  //     } else {
+  //       console.log('Login successful:', response);
+  //       setPosition(response.data.role);
+  //       localStorage.setItem('position', response.data.role);
+  //       setOpenSuccessAlert(true);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error during login:', error);
+  //   }
+  // }
 
 
 
@@ -67,34 +69,7 @@ export default function Login() {
     <CssVarsProvider theme={customTheme} disableTransitionOnChange>
       <CssBaseline />
 
-      < Snackbar
-        autoHideDuration={3000}
-        open={openFailedAlert}
-        color={'danger'}
-        variant='solid'
-        onClose={(event, reason) => {
-          if (reason === 'clickaway') {
-            return;
-          }
-          setOpenFailedAlert(false);
-        }}
-      >
-        Login Failed
-      </Snackbar>
-      < Snackbar
-        autoHideDuration={3000}
-        open={openSuccessAlert}
-        color={'success'}
-        variant='solid'
-        onClose={(event, reason) => {
-          if (reason === 'clickaway') {
-            return;
-          }
-          setOpenFailedAlert(false);
-        }}
-      >
-        Login Succesful
-      </Snackbar>
+     
 
       <GlobalStyles
         styles={{
@@ -210,7 +185,7 @@ export default function Login() {
                     password: formElements.password.value,
                     persistent: formElements.persistent.checked,
                   };
-                  await loginAccount(data);
+                  await loginAccount(data, role);
                 }}
               >
                 <FormControl required>

@@ -66,3 +66,18 @@ export interface CreateLeave {
   profilePhoto: string;
   blockchainAddress: string;
 }
+
+export interface Authority {
+  _id: string;
+  department: string;
+  email: string;
+  faculty: string;
+  password: string;
+  position: string;
+  role?: string;
+  signature: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  token?: string;
+}
