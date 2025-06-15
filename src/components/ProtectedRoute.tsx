@@ -1,17 +1,20 @@
-import React from "react";
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { ReactNode } from "react";
 
 interface ProtectedRouteProps {
-  children: React.ReactNode;
+  children: ReactNode;
+  allowedRoles: string[]; // e.g., ['student', 'faculty']
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  // const token = localStorage.getItem("token");
-  // const isAuthenticated = !!token;
+const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
+  const { isAuthenticated, role, loading } = useAuth();
 
-  // if (!isAuthenticated) {
-  //   return <Navigate to="/" replace />;
-  // }
+  if (loading) return <div>Loading...</div>;
+
+  if (!isAuthenticated) return <Navigate to="/" replace />;
+
+  if (!allowedRoles.includes(role || "")) return <h1>401 - Unauthorized</h1>;
 
   return <>{children}</>;
 };

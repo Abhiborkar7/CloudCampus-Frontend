@@ -51,7 +51,7 @@ export interface CreateLeave {
   title: string;
 }
 
-  export interface User {
+  export interface Student {
   _id: string;
   registrationNo: string;
   name: string;
@@ -67,17 +67,30 @@ export interface CreateLeave {
   blockchainAddress: string;
 }
 
-export interface Authority {
+export interface FacultyAuthority {
   _id: string;
-  department: string;
   email: string;
-  faculty: string;
   password: string;
   position: string;
-  role?: string;
-  signature: string;
-  createdAt: string;
-  updatedAt: string;
+  faculty: Faculty;
   __v: number;
-  token?: string;
+}
+
+export interface StudentAuthority {
+  _id: string;
+  email: string;
+  student: Student;
+  password: string;
+  position: string;
+  __v: number;
+}
+
+export interface Faculty {
+  _id: string;
+  registrationNo: string;
+  name: string;
+  email: string;
+  password: string;
+  department: string;
+  __v: number;
 }

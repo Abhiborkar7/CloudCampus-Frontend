@@ -83,11 +83,8 @@ export const loginUser = async (email: string, password: string, role: string) =
 
     if (token) {
       localStorage.setItem('token', token);
-      document.cookie = `token=${token}; path=/`;
-      console.log('JWT Token saved to localStorage', token);
     }
-
-    return response.data;
+    return response;
   } catch (error) {
     console.error('Failed to login', error);
     return error;

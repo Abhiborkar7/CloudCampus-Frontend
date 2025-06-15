@@ -1,70 +1,118 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Authority } from '../types/types';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { loginUser } from '../services/auth.service';
-// import { ROLES } from '../config/routesConfig';
-// import { User } from '../types/user.types';
-
-
+import { Student, StudentAuthority, FacultyAuthority, Faculty } from '../types/types';
 
 interface AuthContextType {
-  // user: User | null;
-  // login: (userData: User) => void;
-  // logout: () => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
-  postiton: string | null;
-  setPosition: (role: string) => void;
+  role: string | null;
+  setRole: (role: string) => void;
   openFailedAlert: boolean;
-  setOpenFailedAlert: (openFailedAlert: boolean) => void;
+  setOpenFailedAlert: (open: boolean) => void;
   openSuccessAlert: boolean;
-  setOpenSuccessAlert: (openSuccessAlert: boolean) => void;
-  loginAccount: (data: { email: string; password: string; persistent: boolean }, role: string) => void;
-}
-
-interface User {
-  email: string;
-  role: string;
+  setOpenSuccessAlert: (open: boolean) => void;
+  loginAccount: (
+    data: { email: string; password: string; persistent: boolean },
+    role: string
+  ) => Promise<void>;
+  logout: () => void;
+  isAuthenticated: boolean;
+  student: Student | null;
+  faculty: Faculty | null;
+  studentAuthority: StudentAuthority | null;
+  facultyAuthority: FacultyAuthority | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [student, setStudent] = useState<Student | null>(null);
+  const [faculty, setFaculty] = useState<Faculty | null>(null);
+  const [studentAuthority, setStudentAuthority] = useState<StudentAuthority | null>(null);
+  const [facultyAuthority, setFacultyAuthority] = useState<FacultyAuthority | null>(null);
   const [loading, setLoading] = useState(false);
-  const [postiton, setPosition] = useState<string | null>(null);
-  const [authority, setAuthority] = useState<Authority | null>(null);
-
+  const [role, setRole] = useState<string | null>(localStorage.getItem('position') || null);
   const [openFailedAlert, setOpenFailedAlert] = useState(false);
   const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
 
-
-  async function loginAccount(data: { email: string; password: string; persistent: boolean }, role: string) {
-    console.log('Logging in with:', data);
+  const loginAccount = async (
+    data: { email: string; password: string; persistent: boolean },
+    loginRole: string
+  ) => {
+    setLoading(true);
     try {
-      // let response, result;
-      const response = await loginUser(data.email, data.password, role);
-      if (response.status != 200) {
-        console.log('Login failed:', response);
+      const response = await loginUser(data.email, data.password, loginRole);
+
+      if (response.status !== 200) {
+        console.log("Login failed:", response.status);
         setOpenFailedAlert(true);
+        setIsAuthenticated(false);
       } else {
-        console.log('Login successful:', response);
-        setPosition(response.data.role);
-        localStorage.setItem('position', response.data.role);
+        const { role, faculty, authority, student, token } = response.data;
+
+        console.log("Login successful:", response);
+
+        setRole(role);
+        localStorage.setItem("position", role);
+        localStorage.setItem("token", token);
         setOpenSuccessAlert(true);
-        // setAuthority(response.data);
+        setIsAuthenticated(true);
+
+        if (role === "faculty") {
+          setFaculty(faculty);
+        } else if (role === "faculty authority") {
+          setFacultyAuthority(authority);
+        } else if (role === "student") {
+          setStudent(student);
+        } else if (role === "student authority") {
+          setStudentAuthority(authority);
+        }
       }
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error("Error during login:", error);
+      setOpenFailedAlert(true);
+      setIsAuthenticated(false);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("position");
+    setStudent(null);
+    setFaculty(null);
+    setStudentAuthority(null);
+    setFacultyAuthority(null);
+    setRole(null);
+    setIsAuthenticated(false);
+  };
+
+  useEffect(() => {
+    setIsAuthenticated(!!localStorage.getItem("token"));
+  }, []);
 
   return (
-    <AuthContext.Provider value={{
-      //  user, login, logout, 
-      loading, setLoading, postiton, setPosition,
-      openFailedAlert, setOpenFailedAlert, openSuccessAlert, setOpenSuccessAlert,
-      loginAccount
-    }}>
+    <AuthContext.Provider
+      value={{
+        loading,
+        setLoading,
+        role,
+        setRole,
+        openFailedAlert,
+        setOpenFailedAlert,
+        openSuccessAlert,
+        setOpenSuccessAlert,
+        loginAccount,
+        logout,
+        isAuthenticated,
+        student,
+        faculty,
+        studentAuthority,
+        facultyAuthority
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
