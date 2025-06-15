@@ -33,7 +33,7 @@ import { closeSidebar } from '../utils';
 import ErrorIcon from '@mui/icons-material/Error';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { getLoginUser } from '../../../services/auth.service';
-import { User } from '../../../types/types';
+import { Student } from '../../../types/types';
 
 function Toggler({
   defaultExpanded = false,
@@ -95,7 +95,7 @@ export default function Sidebar() {
   //   closeSidebar();
   // }, [location.pathname]);
 
-  const [profile, setProfile] = React.useState<User | null>(null);
+  const [profile, setProfile] = React.useState<Student | null>(null);
 
   React.useEffect(() => {
     const fetchProfile = async () => {
