@@ -1,6 +1,7 @@
 import axios from "axios"
 import { VITE_BASE_URL, VITE_ML_URL } from "../main"
 import { SignupForm } from "../types/types";
+import { Navigate } from "react-router-dom";
 
 export const extractTextFromImage = async (imageUrl: string) => {
   try {
@@ -90,6 +91,8 @@ export const loginUser = async (email: string, password: string, role: string) =
     return error;
   }
 }
+
+
 
 
 

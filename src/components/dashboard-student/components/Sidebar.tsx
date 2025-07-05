@@ -34,6 +34,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { getLoginUser } from '../../../services/auth.service';
 import { Student } from '../../../types/types';
+import { useAuth } from '../../../context/AuthContext';
 
 function Toggler({
   defaultExpanded = false,
@@ -70,6 +71,7 @@ function Toggler({
   );
 }
 
+
 const SidebarListItemButton = ({ to, icon, children, selected }: { to?: string, icon?: React.ReactNode, children: React.ReactNode, selected?: boolean }) => {
   const navigate = useNavigate();
 
@@ -89,16 +91,24 @@ export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
+  const {logout} = useAuth();
 
   const isPathMatch = (path: string) => currentPath === path;
   // React.useEffect(() => {
   //   closeSidebar();
   // }, [location.pathname]);
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   const [profile, setProfile] = React.useState<Student | null>(null);
 
   React.useEffect(() => {
     const fetchProfile = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
       try {
         const response = await getLoginUser();
         setProfile(response.student);
@@ -331,7 +341,7 @@ export default function Sidebar() {
             <Typography level="title-sm">{ profile.name }</Typography>
               <Typography level="body-xs">{profile.registrationNo}</Typography>
           </Box>
-          <IconButton size="sm" variant="plain" color="neutral">
+          <IconButton onClick={(handleLogout)} size="sm" variant="plain" color="neutral">
             <LogoutRoundedIcon />
           </IconButton>
         </Box>
