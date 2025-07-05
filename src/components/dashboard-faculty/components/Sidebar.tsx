@@ -24,6 +24,10 @@ import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils';
 import ErrorIcon from '@mui/icons-material/Error';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { useAuth } from '../../../context/AuthContext';
+
+
+
 function Toggler({
   defaultExpanded = false,
   renderToggle,
@@ -76,8 +80,15 @@ export default function Sidebar() {
 
   const location = useLocation();
   const currentPath = location.pathname;
+  const {logout} = useAuth();
+  const navigate = useNavigate();
 
   const isPathMatch = (path: string) => currentPath === path;
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <Sheet
@@ -307,7 +318,7 @@ export default function Sidebar() {
           <Typography level="title-sm">Siriwat K.</Typography>
           <Typography level="body-xs">siriwatk@test.com</Typography>
         </Box>
-        <IconButton size="sm" variant="plain" color="neutral">
+        <IconButton onClick={handleLogout} size="sm" variant="plain" color="neutral">
           <LogoutRoundedIcon />
         </IconButton>
       </Box>

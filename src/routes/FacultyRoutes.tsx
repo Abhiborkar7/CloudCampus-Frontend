@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import DashboardLayoutFaculty from '../components/dashboard-faculty/DashboardLayoutFaculty';
 import Dashboard from '../components/dashboard-faculty/dashboard/Dashboard';
 import MyProfile from '../components/dashboard-faculty/my-profile/MyProfile';
 import ChatRoom from '../components/dashboard-faculty/chat-room/ChatRoom';
@@ -9,12 +8,12 @@ import ApplicationPage from '../components/dashboard/applications/ApplicationPag
 import ResultPage from '../components/dashboard-faculty/election/result/ResultPage';
 import CreateElection from '../components/dashboard-faculty/election/create-election/CreateElection';
 import LeavePage from '../components/dashboard-faculty/leave/LeavePage';
-import DashboardLayout from '../components/dashboard/DashboardLayout';
+import DashboardLayoutFaculty from '../components/dashboard-faculty/DashboardLayoutFaculty';
 
 const FacultyRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<DashboardLayout />}>
+      <Route path="/" element={<DashboardLayoutFaculty />}>
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="profile" element={<MyProfile />} />
