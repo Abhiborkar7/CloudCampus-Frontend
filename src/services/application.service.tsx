@@ -1,5 +1,5 @@
 import axios from "axios";
-import { VITE_BASE_URL } from "../main";
+import { VITE_BASE_URL } from "../config";
 
 export const getAllApplications = async () => {
   try {

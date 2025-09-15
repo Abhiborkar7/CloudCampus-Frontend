@@ -8,6 +8,14 @@ export interface SignupForm {
   confirmPassword: string;
 }
 
+export interface LoginResponse {
+  role: string;
+  token: string;
+  student?: any;
+  faculty?: any;
+  authority?: any;
+}
+
 export interface CheatingForm {
   studentId: string;
   title: string;
@@ -94,3 +102,4 @@ export interface Faculty {
   department: string;
   __v: number;
 }
+

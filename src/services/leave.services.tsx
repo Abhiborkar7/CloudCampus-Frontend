@@ -1,6 +1,6 @@
 import axios from "axios";
 import { LeaveData } from "../types/types";
-import { VITE_BASE_URL } from "../main";
+import { VITE_BASE_URL } from "../config";
 
 export const createLeave = async (leaveData: LeaveData) => {
   try {
