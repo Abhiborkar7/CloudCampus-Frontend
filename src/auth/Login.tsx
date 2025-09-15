@@ -219,7 +219,7 @@ export default function Login() {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           backgroundImage:
-            'url(https://images.unsplash.com/photo-1622470190232-81df3782484b?q=80&w=1959&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)',
+            'url(https://www.sggs.ac.in/uploads/New%20folder/1.png)',
           [theme.getColorSchemeSelector('dark')]: {
             backgroundImage:
               'url(https://www.sggs.ac.in/uploads/New%20folder/1.png)',
