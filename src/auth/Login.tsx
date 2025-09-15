@@ -17,7 +17,8 @@ import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import { SignupModal } from './signupModal';
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
-import { Autocomplete, Snackbar } from '@mui/joy';
+import { Autocomplete } from '@mui/joy';
+import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -32,7 +33,7 @@ interface SignInFormElement extends HTMLFormElement {
 
 export default function Login() {
 
-  const [selectedRole, setSelectedRole] = useState<'student' | 'faculty' | 'student authority' | 'faculty authority'>("student");
+  const [selectedRole, setSelectedRole] = useState<'student' | 'faculty' | 'student authority' | 'faculty authority' | null>(null);
   const token = localStorage.getItem("token");
   const { loginAccount, isAuthenticated, role } = useAuth();
 
@@ -165,6 +166,10 @@ export default function Login() {
                     password: formElements.password.value,
                     persistent: formElements.persistent.checked,
                   };
+                  if(!selectedRole){
+                    toast.error('Please select a Role');
+                    return
+                  }
                   await loginAccount(data, selectedRole);
                 }}
               >

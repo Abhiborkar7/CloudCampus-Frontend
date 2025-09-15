@@ -1,8 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { loginUser } from "../services/auth.service";
 import { Student, StudentAuthority, FacultyAuthority, Faculty, LoginResponse } from "../types/types";
-import toast from "react-hot-toast";
-import { ErrorToast } from "../components/toast/ToastComponent";
 
 interface AuthContextType {
   loading: boolean;
@@ -27,10 +25,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [role, setRole] = useState<string | null>(localStorage.getItem("position") || null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!localStorage.getItem("token"));
 
- const loginAccount = async (
-    data: { email: string; password: string },
-    loginRole: string
-  ) => {
+  const loginAccount = async (data: { email: string; password: string }, loginRole: string) => {
     setLoading(true);
     try {
       const response: LoginResponse = await loginUser(data.email, data.password, loginRole);
@@ -42,27 +37,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.setItem("token", token || "");
       setIsAuthenticated(true);
 
+      // Set user data based on role
       if (userRole === "faculty") setFaculty(facultyData ?? null);
       else if (userRole === "faculty authority") setFacultyAuthority(authority ?? null);
       else if (userRole === "student") setStudent(studentData ?? null);
       else if (userRole === "student authority") setStudentAuthority(authority ?? null);
-
-      // Success toast
-      toast.custom((t) => <ErrorToast t={t} message="Login successful!" type="success" />, {
-        duration: 4000,
-        position: "top-right",
-      });
     } catch (err: any) {
       console.error("Login failed:", err);
       setIsAuthenticated(false);
-
-      const message = err?.response?.data?.message || err.message || "Login failed";
-
-      // Error toast
-      toast.custom((t) => <ErrorToast t={t} message={message} type="error" />, {
-        duration: 4000,
-        position: "top-right",
-      });
     } finally {
       setLoading(false);
     }

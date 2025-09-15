@@ -16,7 +16,7 @@ import { closeEmailContent, toggleComplainPane, toggleEmailContent } from '../ut
 import EmailContent from './EmailContent';
 import { uploadImageToCloudinary } from '../../../services/uploadImage.service';
 import { Complaint } from '../../../types/types';
-import { getAllApplications, getMyApplications, getAllApplicationSenders } from '../../../services/application.service';
+import { getFacultyApplications, getMyApplications, getAllApplicationSenders } from '../../../services/application.service';
 
 export interface Application {
   _id: string;
@@ -71,7 +71,7 @@ export default function ApplicationPage() {
     try {
       let response;
       if (selectedIndex === 0) {
-        response = await getAllApplications();
+        response = await getFacultyApplications();
       } else {
         response = await getMyApplications();
       }

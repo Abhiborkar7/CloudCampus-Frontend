@@ -30,19 +30,19 @@ axiosInstance.interceptors.request.use(
   (error: AxiosError) => Promise.reject(error)
 );
 
-// // Response interceptor
-// axiosInstance.interceptors.response.use(
-//   (response: AxiosResponse) => response,
-//   (error: AxiosError) => {
-//     if (error.response) {
-//       toast.error((error.response.data as any)?.message || "Something went wrong");
-//     } else if (error.request) {
-//       toast.error("No response from server");
-//     } else {
-//       toast.error(error.message);
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+// Response interceptor
+axiosInstance.interceptors.response.use(
+  (response: AxiosResponse) => response,
+  (error: AxiosError) => {
+    if (error.response) {
+      toast.error((error.response.data as any)?.message || "Something went wrong");
+    } else if (error.request) {
+      toast.error("No response from server");
+    } else {
+      toast.error(error.message);
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default axiosInstance;
