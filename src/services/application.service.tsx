@@ -3,7 +3,7 @@ import axiosInstance from "./axiosInstance";
 export const getAllApplications = async () => {
   try {
     const response = await axiosInstance.get("/api/applications/all");
-    return response.data.applications;
+    return response.data;
   } catch (error) {
     return error;
   }
@@ -21,7 +21,7 @@ export const getFacultyApplications = async () => {
 export const getMyApplications = async () => {
   try {
     const response = await axiosInstance.get("/api/applications/my-applications");
-    return response.data.applications;
+    return response.data;
   } catch (error) {
     return error;
   }
