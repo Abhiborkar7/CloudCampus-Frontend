@@ -80,7 +80,7 @@ export interface FacultyAuthority {
   email: string;
   password: string;
   position: string;
-  faculty: Faculty;
+  faculty: FacultySummary;
   __v: number;
 }
 
@@ -93,11 +93,14 @@ export interface StudentAuthority {
   __v: number;
 }
 
-export interface Faculty {
+export interface FacultySummary {
   _id: string;
-  registrationNo: string;
   name: string;
   email: string;
+}
+
+export interface Faculty extends FacultySummary {
+  registrationNo: string;
   password: string;
   department: string;
   __v: number;
