@@ -13,17 +13,14 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import EmailIcon from '@mui/icons-material/Email'; 
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils';
 import ErrorIcon from '@mui/icons-material/Error';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useAuth } from '../../../context/AuthContext';
 
 
@@ -231,8 +228,8 @@ export default function Sidebar() {
 
           <ListItem>
             <SidebarListItemButton
-              selected={isPathMatch('/faculty/cheatings')}
-              to="/faculty/cheatings"
+              selected={isPathMatch('/student-authority/cheatings')}
+              to="/student-authority/cheatings"
               icon={<QuestionAnswerRoundedIcon />}
 
             >
@@ -246,8 +243,8 @@ export default function Sidebar() {
 
           <ListItem>
             <SidebarListItemButton
-              to='/faculty/complaints'
-              selected={isPathMatch('/faculty/complaints')}
+              to='/student-authority/complaints'
+              selected={isPathMatch('/student-authority/complaints')}
             >
               <ErrorIcon />
               <ListItemContent>
@@ -258,8 +255,8 @@ export default function Sidebar() {
 
           <ListItem>
             <SidebarListItemButton
-              to='/faculty/applications'
-              selected={isPathMatch('/faculty/applications')}
+              to='/student-authority/applications'
+              selected={isPathMatch('/student-authority/applications')}
             >
               <EmailIcon />
               <ListItemContent>
@@ -293,8 +290,8 @@ export default function Sidebar() {
           </ListItem> */}
           <ListItem>
             <SidebarListItemButton
-              to='/faculty/leave'
-              selected={isPathMatch('/faculty/leave')}
+              to='/student-authority/leave'
+              selected={isPathMatch('/student-authority/leave')}
             >
               <LogoutRoundedIcon />
               <ListItemContent>
