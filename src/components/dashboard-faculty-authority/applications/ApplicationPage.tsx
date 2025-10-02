@@ -12,7 +12,7 @@ import WriteEmail from '../../dashboard/applications/WriteEmail';
 import EmailContent from '../../dashboard/applications/EmailContent';
 import { closeEmailContent } from '../utils';
 import { uploadImageToCloudinary } from '../../../services/uploadImage.service';
-import { getAllApplications, getMyApplications, getAllApplicationSenders } from '../../../services/application.service';
+import { getAllApplications, getFacultyApplications, getAllApplicationSenders } from '../../../services/application.service';
 import { Application, Sender } from '../../../types/application';
 
 
@@ -41,7 +41,7 @@ export default function ApplicationPage() {
     (async () => {
       try {
         const response =
-          selectedIndex === 0 ? await getAllApplications() : await getMyApplications();
+          selectedIndex === 0 ? await getAllApplications() : await getFacultyApplications();
           console.log(response);
         setApplications(response);
       } catch (error) {

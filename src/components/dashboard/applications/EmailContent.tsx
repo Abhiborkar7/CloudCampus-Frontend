@@ -8,6 +8,7 @@ import Divider from '@mui/joy/Divider';
 import Tooltip from '@mui/joy/Tooltip';
 import ButtonStepper from '../../dashboard/applications/ButtonStepper';
 import { Application } from '../../../types/application';
+import { useAuth } from '../../../context/AuthContext';
 
 // Label colors
 const labelColors: Record<string, string> = {
@@ -18,12 +19,10 @@ const labelColors: Record<string, string> = {
 };
 
 export default function EmailContent({ application }: { application: Application }) {
-  const [isFaculty, setIsFaculty] = React.useState<boolean>(false);
+  const { faculty, facultyAuthority, studentAuthority, role } = useAuth();
 
-  React.useEffect(() => {
-    const path = window.location.pathname;
-    setIsFaculty(path.includes('faculty'));
-  }, []);
+    const currentUserEmail =
+    faculty?.email || facultyAuthority?.email || studentAuthority?.email || null;
 
   // Determine if we should display reason
   const rejectedOrSentBack = application.to.filter(
@@ -129,7 +128,7 @@ export default function EmailContent({ application }: { application: Application
       </Box>
 
       {/* Faculty approve button */}
-      {isFaculty && (
+      {currentUserEmail === application.currentRecipient && (
         <Box sx={{ display: 'flex', gap: 1, mt: 5, alignItems: 'center', justifyContent: 'center' }}>
           <Button>Approve</Button>
         </Box>
