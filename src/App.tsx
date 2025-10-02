@@ -17,8 +17,8 @@ function App() {
           {/* Protected Routes */}
           <Route path="/student/*" element={<ProtectedRoute allowedRoles={["student"]}><StudentRoutes /></ProtectedRoute>} />
           <Route path="/faculty/*" element={<ProtectedRoute allowedRoles={["faculty"]}><FacultyRoutes /></ProtectedRoute>} />
-          <Route path="/student authority/*" element={<ProtectedRoute allowedRoles={["student authority"]}><StudentRoutes /></ProtectedRoute>} />
-          <Route path="/faculty authority/*" element={<ProtectedRoute allowedRoles={["faculty authority"]}><FacultyRoutes /></ProtectedRoute>} />
+          <Route path="/student-authority/*" element={<ProtectedRoute allowedRoles={["student authority"]}><StudentRoutes /></ProtectedRoute>} />
+          <Route path="/faculty-authority/*" element={<ProtectedRoute allowedRoles={["faculty authority"]}><FacultyRoutes /></ProtectedRoute>} />
           {/* <Route path="/coordinator/*" element={<ProtectedRoute><FacultyRoutes /></ProtectedRoute>} /> */}
           {/* <Route path="/doctor/*" element={<ProtectedRoute><FacultyRoutes /></ProtectedRoute>} /> */}
 

@@ -6,11 +6,11 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import CreateRoundedIcon from '@mui/icons-material/CreateRounded';
 
-import Layout from './Layout';
+import Layout from '../../dashboard/applications/Layout';
 import Navigation from './Navigation';
 import Mails from './Mails';
-import WriteEmail from './WriteEmail';
-import EmailContent from './EmailContent';
+import WriteEmail from '../../dashboard/applications/WriteEmail';
+import EmailContent from '../../dashboard/applications/EmailContent';
 
 import { closeEmailContent } from '../utils';
 import { uploadImageToCloudinary } from '../../../services/uploadImage.service';
@@ -20,7 +20,7 @@ import { Application, Sender } from '../../../types/application';
 export default function ApplicationPage() {
   const [open, setOpen] = React.useState(false);
   const [fileUrl, setFileUrl] = React.useState('');
-  const [selectedApplication, setSelectedApplication] = React.useState(0);
+  const [selectedApplication, setSelectedApplication] = React.useState<Application | null>(null);
   const [applications, setApplications] = React.useState<Application[]>([]);
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
   const [senders, setSenders] = React.useState<Sender[]>([]);
@@ -50,6 +50,15 @@ export default function ApplicationPage() {
       }
     })();
   }, [selectedIndex]);
+
+  // Set initial email as 0th 
+  React.useEffect(() => {
+    if (applications.length > 0) {
+      setSelectedApplication(applications[0]);
+    } else {
+      setSelectedApplication(null);
+    }
+  }, [applications]);
 
   // 🔹 File upload handler
   const handleFileUpload = async (file: File) => {
@@ -125,8 +134,8 @@ export default function ApplicationPage() {
             backgroundColor: 'var(--joy-palette-background-surface)',
           }}
         >
-          {applications.length > 0 && selectedApplication !== -1 ? (
-            <EmailContent application={applications[selectedApplication]} />
+          {selectedApplication ? (
+            <EmailContent application={selectedApplication} />
           ) : (
             <Box sx={{ p: 2, textAlign: 'center', color: 'text.tertiary' }}>
               No application selected
