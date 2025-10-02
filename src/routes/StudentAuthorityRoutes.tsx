@@ -10,7 +10,7 @@ import CreateElection from '../components/dashboard-student-authority/election/c
 import LeavePage from '../components/dashboard-student-authority/leave/LeavePage';
 import DashboardLayoutStudentAuthority from '../components/dashboard-student-authority/DashboardLayoutStudentAuthority';
 
-const FacultyRoutes = () => {
+const StudentAuthorityRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<DashboardLayoutStudentAuthority />}>
@@ -30,4 +30,4 @@ const FacultyRoutes = () => {
   );
 };
 
-export default FacultyRoutes;
+export default StudentAuthorityRoutes;

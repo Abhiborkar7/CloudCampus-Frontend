@@ -13,11 +13,9 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import EmailIcon from '@mui/icons-material/Email'; 
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ColorSchemeToggle from './ColorSchemeToggle';
@@ -246,8 +244,8 @@ export default function Sidebar() {
 
           <ListItem>
             <SidebarListItemButton
-              to='/faculty/complaints'
-              selected={isPathMatch('/faculty/complaints')}
+              to='/faculty-authority/complaints'
+              selected={isPathMatch('/faculty-authority/complaints')}
             >
               <ErrorIcon />
               <ListItemContent>
@@ -258,8 +256,8 @@ export default function Sidebar() {
 
           <ListItem>
             <SidebarListItemButton
-              to='/faculty/applications'
-              selected={isPathMatch('/faculty/applications')}
+              to='/faculty-authority/applications'
+              selected={isPathMatch('/faculty-authority/applications')}
             >
               <EmailIcon />
               <ListItemContent>
@@ -293,8 +291,8 @@ export default function Sidebar() {
           </ListItem> */}
           <ListItem>
             <SidebarListItemButton
-              to='/faculty/leave'
-              selected={isPathMatch('/faculty/leave')}
+              to='/faculty-authority/leave'
+              selected={isPathMatch('/faculty-authority/leave')}
             >
               <LogoutRoundedIcon />
               <ListItemContent>

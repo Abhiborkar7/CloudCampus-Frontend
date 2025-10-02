@@ -13,17 +13,14 @@ import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import EmailIcon from '@mui/icons-material/Email'; 
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils';
 import ErrorIcon from '@mui/icons-material/Error';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useAuth } from '../../../context/AuthContext';
 
 
