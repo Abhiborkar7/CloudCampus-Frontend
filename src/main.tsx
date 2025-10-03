@@ -1,20 +1,17 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import '@fontsource/inter';
-import { AuthProvider } from './context/AuthContext.tsx';
+// src/main.tsx or index.tsx
+import { Toaster } from "react-hot-toast";
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import { AuthProvider } from "./context/AuthContext";
 
-createRoot(document.getElementById('root')!).render(
-  // <StrictMode>
+createRoot(document.getElementById("root")!).render(
   <AuthProvider>
     <App />
+    <Toaster position="top-right" reverseOrder={false} />
   </AuthProvider>
-  // </StrictMode>,
-)
+);
 
 
-export const VITE_BASE_URL = "http://localhost:5000"
-export const VITE_BLOCKCHAIN_URL = "http://192.168.40.63:5000"
-export const VITE_ML_URL = "http://192.168.40.63:5001"
+
+
 

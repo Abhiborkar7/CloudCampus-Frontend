@@ -1,8 +1,10 @@
 import * as React from 'react';
 import Box, { BoxProps } from '@mui/joy/Box';
 import Sheet from '@mui/joy/Sheet';
+import IconButton from '@mui/joy/IconButton';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
+/* ---------- Root Layout ---------- */
 function Root(props: BoxProps) {
   return (
     <Box
@@ -23,6 +25,7 @@ function Root(props: BoxProps) {
   );
 }
 
+/* ---------- Sidebar (Navigation) ---------- */
 function SideNav(props: BoxProps) {
   return (
     <Box
@@ -37,7 +40,7 @@ function SideNav(props: BoxProps) {
           borderColor: 'divider',
           display: {
             xs: 'none',
-            sm: 'initial',
+            sm: 'block',
           },
         },
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
@@ -46,6 +49,7 @@ function SideNav(props: BoxProps) {
   );
 }
 
+/* ---------- Side Pane (Inbox, List, etc.) ---------- */
 function SidePane(props: BoxProps) {
   return (
     <Box
@@ -57,9 +61,9 @@ function SidePane(props: BoxProps) {
           borderRight: '1px solid',
           borderColor: 'divider',
           display: {
-            xs: 'initial',
+            xs: 'block',
             sm: 'none',
-            md: 'initial',
+            md: 'block',
           },
         },
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
@@ -68,6 +72,7 @@ function SidePane(props: BoxProps) {
   );
 }
 
+/* ---------- Main Content Area ---------- */
 function Main(props: BoxProps) {
   return (
     <Box
@@ -81,25 +86,28 @@ function Main(props: BoxProps) {
             xs: 'none',
             sm: 'block',
           },
+          overflowY: 'auto',
         },
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}
     />
   );
 }
-function SideDrawer(
-  props: BoxProps & { onClose: React.MouseEventHandler<HTMLDivElement> },
-) {
-  const { onClose, ...other } = props;
+
+/* ---------- Drawer (Mobile View) ---------- */
+interface SideDrawerProps extends BoxProps {
+  onClose: () => void;
+}
+
+function SideDrawer({ onClose, children, ...other }: SideDrawerProps) {
   return (
     <Box
       {...other}
       sx={[
-        { position: 'fixed', zIndex: 1200, width: '100%', height: '100%' },
+        { position: 'fixed', inset: 0, zIndex: 1200, bgcolor: 'rgba(0,0,0,0.3)' },
         ...(Array.isArray(other.sx) ? other.sx : [other.sx]),
       ]}
     >
-      
       <Sheet
         sx={{
           width: '100%',
@@ -107,32 +115,38 @@ function SideDrawer(
           p: 2,
           boxShadow: 'lg',
           bgcolor: 'background.surface',
+          position: 'relative',
         }}
       >
-        <Box
-          role="button"
+        {/* Close Button */}
+        <IconButton
           onClick={onClose}
-          sx={(theme) => ({
+          sx={{
             position: 'absolute',
-            top: 10,
-            right: 10,
+            top: 16,
+            right: 16,
             zIndex: 1,
-            transform: 'scale(1.5)', // Increase the size
-            transition: 'transform 0.2s',
-          })}
+            borderRadius: '50%',
+            boxShadow: 'sm',
+          }}
         >
           <CloseRoundedIcon />
-        </Box>
-        {props.children}
+        </IconButton>
+
+        {/* Drawer Content */}
+        {children}
       </Sheet>
     </Box>
   );
 }
 
-export default {
+/* ---------- Export as Layout Object ---------- */
+const Layout = {
   Root,
   SideNav,
   SidePane,
   SideDrawer,
   Main,
 };
+
+export default Layout;

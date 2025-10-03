@@ -1,144 +1,138 @@
 import * as React from 'react';
 import Box from '@mui/joy/Box';
 import Chip from '@mui/joy/Chip';
-import Card from '@mui/joy/Card';
-import CardOverflow from '@mui/joy/CardOverflow';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
-import Snackbar from '@mui/joy/Snackbar';
-import AspectRatio from '@mui/joy/AspectRatio';
 import Divider from '@mui/joy/Divider';
-import Avatar from '@mui/joy/Avatar';
 import Tooltip from '@mui/joy/Tooltip';
+import ButtonStepper from '../../dashboard/applications/ButtonStepper';
+import { Application } from '../../../types/application';
+import { useAuth } from '../../../context/AuthContext';
 
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import ForwardToInboxRoundedIcon from '@mui/icons-material/ForwardToInboxRounded';
-import FolderIcon from '@mui/icons-material/Folder';
-import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import ButtonStepper from './ButtonStepper';
-import { Application } from './Mails';
+// Label colors
+const labelColors: Record<string, string> = {
+  'Leave Request': '#4caf50',
+  'Library Access': '#ff9800',
+  'IT Support': '#2196f3',
+  default: '#9e9e9e',
+};
 
 export default function EmailContent({ application }: { application: Application }) {
-  const [open, setOpen] = React.useState([false, false, false]);
-  const [isFaculty, setIsFaculty] = React.useState<boolean>(false);
+  const { faculty, facultyAuthority, studentAuthority, role } = useAuth();
 
-  React.useEffect(() => {
-    const path = window.location.pathname;
-    setIsFaculty(path.includes('faculty'));
-  }, []);
+    const currentUserEmail =
+    faculty?.email || facultyAuthority?.email || studentAuthority?.email || null;
+
+  // Determine if we should display reason
+  const rejectedOrSentBack = application.to.filter(
+    (recipient) => ['rejected', 'sent back'].includes(recipient.status.toLowerCase()) && application.reason
+  );
 
   return (
-    <Sheet
-      variant="outlined"
-      sx={{ minHeight: 500, borderRadius: 'sm', p: 2, mb: 3 }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: 2,
-        }}
-      >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          {/* <Avatar
-            src="https://i.pravatar.cc/40?img=3"
-            srcSet="https://i.pravatar.cc/80?img=3"
-          /> */}
-          <Box sx={{ ml: 2 }}>
-            <Typography level="title-sm" textColor="text.primary" sx={{ mb: 0.5 }}>
-              {application?.from.name}
-            </Typography>
-            <Typography level="body-xs" textColor="text.tertiary">
-              {application?.createdAt}
-            </Typography>
-          </Box>
+    <Sheet variant="outlined" sx={{ minHeight: 500, borderRadius: 'sm', p: 2, mb: 3 }}>
+      {/* Header */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={{ ml: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+          {/* Label Dot */}
+          <Tooltip title={application.label} size="sm" variant="soft">
+            <Box
+              sx={{
+                width: 12,
+                height: 12,
+                borderRadius: '50%',
+                bgcolor: labelColors[application.label] ?? labelColors.default,
+              }}
+            />
+          </Tooltip>
+          <Typography level="title-sm" textColor="text.primary" sx={{ mb: 0.5 }}>
+            {application?.from.name}
+          </Typography>
         </Box>
+        <Typography level="body-xs" textColor="text.tertiary">
+          {new Date(application?.createdAt).toLocaleString()}
+        </Typography>
       </Box>
+
       <Divider sx={{ mt: 2 }} />
-      <Box
-        sx={{ py: 2, display: 'flex', flexDirection: 'column', alignItems: 'start' }}
-      >
-        <Typography
-          level="title-lg"
-          textColor="text.primary"
-        >
+
+      {/* Subject + Recipients */}
+      <Box sx={{ py: 2, display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
+        <Typography level="title-lg" textColor="text.primary">
           {application?.title}
         </Typography>
-        <Box
-          sx={{
-            mt: 1,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            flexWrap: 'wrap',
-          }}
-        >
-          <div>
-            <Typography
-              component="span"
-              level="body-sm"
-              sx={{ mr: 1, display: 'inline-block' }}
-            >
-              {application?.from.name}
+        <Box sx={{ mt: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          {/* From */}
+          <Box>
+            <Typography level="body-sm" sx={{ mr: 1, display: 'inline-block' }}>
+              From:
             </Typography>
             <Tooltip size="sm" title="Copy email" variant="outlined">
-              <Chip size="sm" variant="soft" color="primary" onClick={() => { }}>
+              <Chip size="sm" variant="soft" color="primary">
                 {application?.from.email}
               </Chip>
             </Tooltip>
-            <Tooltip size="sm" title="Copy email" variant="outlined">
-              <Box>
-                {
-                  application && application?.to.map((item) => (
-                    <Chip size="sm" variant="soft" color="primary">
-                      {item.email}
-                    </Chip>
-                  ))
-                }
-              </Box>
-            </Tooltip>
-          </div>
-          <div>
-            <Typography
-              component="span"
-              level="body-sm"
-              sx={{ mr: 1, display: 'inline-block' }}
-            >
-              {/* {application?.to.name} */}
+          </Box>
+
+          {/* To recipients */}
+          <Box>
+            <Typography level="body-sm" sx={{ mr: 1, display: 'inline-block' }}>
+              To:
             </Typography>
-          </div>
+            {application?.to?.map((item, idx) => (
+              <Tooltip key={idx} size="sm" title={`Status: ${item.status}`} variant="outlined">
+                <Chip
+                  size="sm"
+                  variant="soft"
+                  color={
+                    item.status === 'approved'
+                      ? 'success'
+                      : item.status === 'pending'
+                      ? 'warning'
+                      : 'neutral'
+                  }
+                  sx={{ mr: 1 }}
+                >
+                  {item.name}
+                </Chip>
+              </Tooltip>
+            ))}
+          </Box>
         </Box>
       </Box>
+
       <Divider />
-      <Typography level="body-sm" sx={{ mt: 2, mb: 2 }}>
+
+      {/* Body */}
+      <Typography level="body-sm" sx={{ mt: 2, mb: 2, whiteSpace: 'pre-line' }}>
         {application?.body}
       </Typography>
+
+      {/* Display reason if rejected or sent back */}
+      {rejectedOrSentBack.length > 0 && (
+        <Box sx={{ mt: 2, p: 2, bgcolor: 'background.level1', borderRadius: 'sm' }}>
+          <Typography level="body-sm" fontWeight="md" sx={{ mb: 1 }}>
+            Reason for rejection / sent back:
+          </Typography>
+          <Typography level="body-sm" sx={{ whiteSpace: 'pre-line' }}>
+            {application.reason}
+          </Typography>
+        </Box>
+      )}
+
       <Divider />
-      <Box sx={{
-        display: 'flex',
-        gap: 1,
-        mt: 5,
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-      }}>
-        <ButtonStepper />
+
+      {/* Progress bar */}
+      <Box sx={{ display: 'flex', gap: 1, mt: 5, alignItems: 'center', justifyContent: 'center' }}>
+        <ButtonStepper recipients={application.to} />
       </Box>
-      {
-        isFaculty && <Box sx={{
-        display: 'flex',
-        gap: 1,
-        mt: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <Button>
-          Approve
-        </Button>
-      </Box>}
+
+      {/* Faculty approve button */}
+      {currentUserEmail === application.currentRecipient && (
+        <Box sx={{ display: 'flex', gap: 1, mt: 5, alignItems: 'center', justifyContent: 'center' }}>
+          <Button>Approve</Button>
+        </Box>
+      )}
     </Sheet>
   );
 }

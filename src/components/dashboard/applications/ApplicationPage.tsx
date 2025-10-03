@@ -54,7 +54,6 @@ export default function ApplicationPage() {
   const fetchSenders = async () => {
     try {
       const response = await getAllApplicationSenders();
-      console.log('Senders:', response);
       setSenders(response);
       return;
     } catch (error) {

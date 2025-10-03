@@ -1,10 +1,12 @@
 import { Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './auth/Login';
 import { Box, CircularProgress } from '@mui/joy';
 import StudentRoutes from './routes/StudentRoutes';
 import FacultyRoutes from './routes/FacultyRoutes';
+import FacultyAuthorityRoutes from './routes/FacultyAuthorityRoutes';
+import StudentAuthorityRoutes from './routes/StudentAuthorityRoutes';
 
 function App() {
   return (
@@ -17,8 +19,8 @@ function App() {
           {/* Protected Routes */}
           <Route path="/student/*" element={<ProtectedRoute allowedRoles={["student"]}><StudentRoutes /></ProtectedRoute>} />
           <Route path="/faculty/*" element={<ProtectedRoute allowedRoles={["faculty"]}><FacultyRoutes /></ProtectedRoute>} />
-          <Route path="/student authority/*" element={<ProtectedRoute allowedRoles={["student authority"]}><StudentRoutes /></ProtectedRoute>} />
-          <Route path="/faculty authority/*" element={<ProtectedRoute allowedRoles={["faculty authority"]}><FacultyRoutes /></ProtectedRoute>} />
+          <Route path="/student-authority/*" element={<ProtectedRoute allowedRoles={["student authority"]}><StudentAuthorityRoutes /></ProtectedRoute>} />
+          <Route path="/faculty-authority/*" element={<ProtectedRoute allowedRoles={["faculty authority"]}><FacultyAuthorityRoutes /></ProtectedRoute>} />
           {/* <Route path="/coordinator/*" element={<ProtectedRoute><FacultyRoutes /></ProtectedRoute>} /> */}
           {/* <Route path="/doctor/*" element={<ProtectedRoute><FacultyRoutes /></ProtectedRoute>} /> */}
 

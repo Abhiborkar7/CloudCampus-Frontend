@@ -1,5 +1,5 @@
 import axios from "axios";
-import { VITE_BASE_URL, VITE_ML_URL } from "../main"
+import { VITE_BASE_URL } from "../config";
 
 // export const getAllComplaints = async () => {
 //   try {

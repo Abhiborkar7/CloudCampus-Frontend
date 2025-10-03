@@ -4,7 +4,7 @@ import MyProfile from '../components/dashboard/my-profile/MyProfile';
 import ChatRoom from '../components/dashboard-student/chat-room/ChatRoom';
 import ComplaintRoom from '../components/dashboard/complaints/ComplaintRoom';
 import CheatingIncidentsList from '../components/dashboard/cheating-record/CheatingIncident';
-import ApplicationPage from '../components/dashboard/applications/ApplicationPage';
+import ApplicationPage from '../components/dashboard-student/applications/ApplicationPage';
 import CurrentElection from '../components/dashboard-student/election/current-election/CurrentElection';
 import ResultPage from '../components/dashboard-student/election/result/ResultPage';
 import CampusFacilityBooking from '../components/dashboard-student/facility-booking/CampusFacilityBooking';

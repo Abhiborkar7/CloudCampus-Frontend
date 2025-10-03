@@ -1,20 +1,11 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { loginUser } from '../services/auth.service';
-import { Student, StudentAuthority, FacultyAuthority, Faculty } from '../types/types';
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { loginUser } from "../services/auth.service";
+import { Student, StudentAuthority, FacultyAuthority, Faculty, LoginResponse } from "../types/types";
 
 interface AuthContextType {
   loading: boolean;
-  setLoading: (loading: boolean) => void;
   role: string | null;
-  setRole: (role: string) => void;
-  openFailedAlert: boolean;
-  setOpenFailedAlert: (open: boolean) => void;
-  openSuccessAlert: boolean;
-  setOpenSuccessAlert: (open: boolean) => void;
-  loginAccount: (
-    data: { email: string; password: string; persistent: boolean },
-    role: string
-  ) => Promise<void>;
+  loginAccount: (data: { email: string; password: string }, role: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
   student: Student | null;
@@ -30,48 +21,29 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [faculty, setFaculty] = useState<Faculty | null>(null);
   const [studentAuthority, setStudentAuthority] = useState<StudentAuthority | null>(null);
   const [facultyAuthority, setFacultyAuthority] = useState<FacultyAuthority | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [role, setRole] = useState<string | null>(localStorage.getItem('position') || null);
-  const [openFailedAlert, setOpenFailedAlert] = useState(false);
-  const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+  const [loading, setLoading] = useState<boolean>(false);
+  const [role, setRole] = useState<string | null>(localStorage.getItem("position") || null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!localStorage.getItem("token"));
 
-  const loginAccount = async (
-    data: { email: string; password: string; persistent: boolean },
-    loginRole: string
-  ) => {
+  const loginAccount = async (data: { email: string; password: string }, loginRole: string) => {
     setLoading(true);
     try {
-      const response = await loginUser(data.email, data.password, loginRole);
+      const response: LoginResponse = await loginUser(data.email, data.password, loginRole);
 
-      if (response.status !== 200) {
-        console.log("Login failed:", response.status);
-        setOpenFailedAlert(true);
-        setIsAuthenticated(false);
-      } else {
-        const { role, faculty, authority, student, token } = response.data;
+      const { role: userRole, faculty: facultyData, authority, student: studentData, token } = response;
 
-        console.log("Login successful:", response);
+      setRole(userRole);
+      localStorage.setItem("position", userRole);
+      localStorage.setItem("token", token || "");
+      setIsAuthenticated(true);
 
-        setRole(role);
-        localStorage.setItem("position", role);
-        localStorage.setItem("token", token);
-        setOpenSuccessAlert(true);
-        setIsAuthenticated(true);
-
-        if (role === "faculty") {
-          setFaculty(faculty);
-        } else if (role === "faculty authority") {
-          setFacultyAuthority(authority);
-        } else if (role === "student") {
-          setStudent(student);
-        } else if (role === "student authority") {
-          setStudentAuthority(authority);
-        }
-      }
-    } catch (error) {
-      console.error("Error during login:", error);
-      setOpenFailedAlert(true);
+      // Set user data based on role
+      if (userRole === "faculty") setFaculty(facultyData ?? null);
+      else if (userRole === "faculty authority") setFacultyAuthority(authority ?? null);
+      else if (userRole === "student") setStudent(studentData ?? null);
+      else if (userRole === "student authority") setStudentAuthority(authority ?? null);
+    } catch (err: any) {
+      console.error("Login failed:", err);
       setIsAuthenticated(false);
     } finally {
       setLoading(false);
@@ -89,39 +61,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setIsAuthenticated(false);
   };
 
-  useEffect(() => {
-    setIsAuthenticated(!!localStorage.getItem("token"));
-  }, []);
-
   return (
     <AuthContext.Provider
-      value={{
-        loading,
-        setLoading,
-        role,
-        setRole,
-        openFailedAlert,
-        setOpenFailedAlert,
-        openSuccessAlert,
-        setOpenSuccessAlert,
-        loginAccount,
-        logout,
-        isAuthenticated,
-        student,
-        faculty,
-        studentAuthority,
-        facultyAuthority
-      }}
+      value={{ loading, role, loginAccount, logout, isAuthenticated, student, faculty, studentAuthority, facultyAuthority }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error("useAuth must be used within an AuthProvider");
   return context;
 };
+
+export default AuthProvider;
