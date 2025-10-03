@@ -32,8 +32,6 @@ import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils';
 import ErrorIcon from '@mui/icons-material/Error';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import { getLoginUser } from '../../../services/auth.service';
-import { Student } from '../../../types/types';
 import { useAuth } from '../../../context/AuthContext';
 
 function Toggler({
@@ -91,7 +89,7 @@ export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
-  const {logout} = useAuth();
+  const {logout,student} = useAuth();
 
   const isPathMatch = (path: string) => currentPath === path;
   // React.useEffect(() => {
@@ -103,23 +101,7 @@ export default function Sidebar() {
     navigate('/');
   };
 
-  const [profile, setProfile] = React.useState<Student | null>(null);
-
-  React.useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) return;
-      try {
-        const response = await getLoginUser();
-        setProfile(response.student);
-      } catch (error) {
-        console.error('Failed to fetch profile:', error);
-      } finally {
-      }
-    };
-    fetchProfile();
-  }, []);
-
+  const profile = student;
 
   return (
     <Sheet

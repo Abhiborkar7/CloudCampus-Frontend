@@ -78,10 +78,11 @@ export default function Sidebar() {
 
   const location = useLocation();
   const currentPath = location.pathname;
-  const {logout} = useAuth();
+  const {logout, facultyAuthority} = useAuth();
   const navigate = useNavigate();
 
   const isPathMatch = (path: string) => currentPath === path;
+  const profile = facultyAuthority;
 
   const handleLogout = () => {
     logout();
@@ -306,20 +307,24 @@ export default function Sidebar() {
        
       </Box>
       <Divider />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <Avatar
-          variant="outlined"
-          size="sm"
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-        />
-        <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">Siriwat K.</Typography>
-          <Typography level="body-xs">siriwatk@test.com</Typography>
+      {
+        profile &&
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <Avatar
+            variant="outlined"
+            size="sm"
+            src={ profile.faculty.profilePhoto }
+          />
+
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Typography level="title-sm">{ profile.faculty.name }</Typography>
+              <Typography level="body-xs">{profile.position}</Typography>
+          </Box>
+          <IconButton onClick={(handleLogout)} size="sm" variant="plain" color="neutral">
+            <LogoutRoundedIcon />
+          </IconButton>
         </Box>
-        <IconButton onClick={handleLogout} size="sm" variant="plain" color="neutral">
-          <LogoutRoundedIcon />
-        </IconButton>
-      </Box>
+        }
     </Sheet>
   );
 }
