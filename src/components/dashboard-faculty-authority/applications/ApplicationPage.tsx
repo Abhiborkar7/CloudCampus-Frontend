@@ -23,6 +23,7 @@ export default function ApplicationPage() {
   const [applications, setApplications] = React.useState<Application[]>([]);
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
   const [senders, setSenders] = React.useState<Sender[]>([]);
+  
 
   // 🔹 Fetch senders once
   React.useEffect(() => {

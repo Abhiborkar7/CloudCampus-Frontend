@@ -5,7 +5,7 @@ export const getAllApplications = async () => {
     const response = await axiosInstance.get("/api/applications/all");
     return response.data;
   } catch (error) {
-    return error;
+    throw error.response?.data?.message || error.message || 'Approval failed';
   }
 };
 
@@ -14,7 +14,7 @@ export const getFacultyApplications = async () => {
     const response = await axiosInstance.get("/api/applications/applications-for-approval");
     return response.data.applications;
   } catch (error) {
-    return error;
+    throw error.response?.data?.message || error.message || 'Approval failed';
   }
 };
 
@@ -23,26 +23,33 @@ export const getMyApplications = async () => {
     const response = await axiosInstance.get("/api/applications/my-applications");
     return response.data;
   } catch (error) {
-    return error;
+    throw error.response?.data?.message || error.message || 'Approval failed';
   }
 };
 
 export const createApplication = async (data: any) => {
   try {
     const response = await axiosInstance.post("/api/applications", data);
-    console.log("Data:", data);
     return response.data;
   } catch (error) {
-    return error;
+    throw error.response?.data?.message || error.message || 'Approval failed';
   }
 };
 
 export const getAllApplicationSenders = async () => {
   try {
     const response = await axiosInstance.get("/api/applications/senders");
-    console.log("Senders::", response.data);
     return response.data.faculties;
   } catch (error) {
-    return error;
+    throw error.response?.data?.message || error.message || 'Approval failed';
+  }
+};
+
+export const approveApplication = async (applicationId: string) => {
+  try {
+    const response = await axiosInstance.patch(`/api/applications/approve/${applicationId}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || error.message || 'Approval failed';
   }
 };
