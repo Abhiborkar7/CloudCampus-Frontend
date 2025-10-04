@@ -34,15 +34,13 @@ interface SignInFormElement extends HTMLFormElement {
 export default function Login() {
 
   const [selectedRole, setSelectedRole] = useState<'student' | 'faculty' | 'student authority' | 'faculty authority' | null>(null);
-  const token = localStorage.getItem("token");
   const { loginAccount, isAuthenticated, role } = useAuth();
-
 
   if (isAuthenticated) {
   if (role === "student") return <Navigate to="/student/dashboard" replace />;
   if (role === "faculty") return <Navigate to="/faculty/dashboard" replace />;
-  if (role === "faculty authority") return <Navigate to="/faculty-authority/dashboard" replace />;
-  if (role === "student authority") return <Navigate to="/student-authority/dashboard" replace />;
+  if (role === "faculty-authority") return <Navigate to="/faculty-authority/dashboard" replace />;
+  if (role === "student-authority") return <Navigate to="/student-authority/dashboard" replace />;
 }
 
 
