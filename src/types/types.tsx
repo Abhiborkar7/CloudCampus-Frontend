@@ -83,6 +83,7 @@ export interface FacultyAuthority {
   password: string;
   position: string;
   faculty: FacultySummary;
+  department: string;
   __v: number;
 }
 

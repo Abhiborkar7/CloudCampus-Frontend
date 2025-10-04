@@ -42,7 +42,6 @@ export default function ApplicationPage() {
       try {
         const response =
           selectedIndex === 0 ? await getAllApplications() : await getFacultyApplications();
-          console.log(response);
         setApplications(response);
       } catch (error) {
         console.error('Failed to fetch applications:', error);

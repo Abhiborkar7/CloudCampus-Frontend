@@ -102,6 +102,7 @@ export default function Sidebar() {
   };
 
   const profile = student;
+  console.log(profile);
 
   return (
     <Sheet

@@ -42,9 +42,9 @@ export default function Mails({
   const [labelMenuOpen, setLabelMenuOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const labels = Array.from(new Set(applications.map((app) => app.label))).sort();
+  const labels = Array.from(new Set(applications?.map((app) => app.label))).sort();
 
-  const filteredApplications = applications.filter((app) => {
+  const filteredApplications = applications?.filter((app) => {
     const statusMatch =
       statusFilter === 'All' ||
       app.to.some((recipient) => recipient.status.toLowerCase() === statusFilter.toLowerCase());

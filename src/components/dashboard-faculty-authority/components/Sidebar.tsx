@@ -279,29 +279,17 @@ export default function Sidebar() {
             </SidebarListItemButton>
           </ListItem>
          */}
-          {/* <ListItem>
+          <ListItem>
             <SidebarListItemButton
-              to='/faculty/profile'
-              selected={isPathMatch('/faculty/profile')}
+              to='/faculty-authority/profile'
+              selected={isPathMatch('/faculty-authority/profile')}
             >
               <AccountBoxIcon />
               <ListItemContent>
                 <Typography level="title-sm">My profile</Typography>
               </ListItemContent>
             </SidebarListItemButton>
-          </ListItem> */}
-          <ListItem>
-            <SidebarListItemButton
-              to='/faculty-authority/leave'
-              selected={isPathMatch('/faculty-authority/leave')}
-            >
-              <LogoutRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Student Leave</Typography>
-              </ListItemContent>
-            </SidebarListItemButton>
           </ListItem>
-
         </List>
       
        

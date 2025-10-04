@@ -75,8 +75,6 @@ export default function ApplicationPage() {
       } else {
         response = await getMyApplications();
       }
-      // response = await getAllApplications();
-      console.log('Applications:', response);
       setApplications(response);
       return;
     } catch (error) {
