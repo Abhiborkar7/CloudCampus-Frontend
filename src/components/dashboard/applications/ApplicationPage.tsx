@@ -75,8 +75,6 @@ export default function ApplicationPage() {
       } else {
         response = await getMyApplications();
       }
-      // response = await getAllApplications();
-      console.log('Applications:', response);
       setApplications(response);
       return;
     } catch (error) {
@@ -138,7 +136,7 @@ export default function ApplicationPage() {
         <Layout.Main>
           {
             applications && selectedApplication !== -1 && (
-              <EmailContent application={applications[selectedApplication]} />
+              <EmailContent application={applications[selectedApplication]} setApplications={setApplications} />
             )
           }
         </Layout.Main>

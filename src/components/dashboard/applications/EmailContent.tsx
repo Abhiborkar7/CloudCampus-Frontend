@@ -9,6 +9,8 @@ import Tooltip from '@mui/joy/Tooltip';
 import ButtonStepper from '../../dashboard/applications/ButtonStepper';
 import { Application } from '../../../types/application';
 import { useAuth } from '../../../context/AuthContext';
+import { approveApplication } from '../../../services/application.service';
+import toast from 'react-hot-toast';
 
 // Label colors
 const labelColors: Record<string, string> = {
@@ -18,7 +20,9 @@ const labelColors: Record<string, string> = {
   default: '#9e9e9e',
 };
 
-export default function EmailContent({ application }: { application: Application }) {
+
+export default function EmailContent({application,setApplications,}: {application: Application;setApplications: React.Dispatch<React.SetStateAction<Application[]>>;}){
+
   const { faculty, facultyAuthority, studentAuthority, role } = useAuth();
 
     const currentUserEmail =
@@ -28,6 +32,27 @@ export default function EmailContent({ application }: { application: Application
   const rejectedOrSentBack = application.to.filter(
     (recipient) => ['rejected', 'sent back'].includes(recipient.status.toLowerCase()) && application.reason
   );
+
+  const handleApprove = async () => {
+    toast.promise(
+      approveApplication(application._id)
+      .then((res) => {
+        // Update the state
+        setApplications((prev) =>
+          prev.map((app) =>
+            app._id === res.application._id ? res.application : app
+          )
+        );
+        return res.message; // this is used by toast.success
+      }),
+      {
+        loading: 'Approving...',
+        success: 'Application approved successfully!',
+        error: '',
+      }
+    );
+  };
+
 
   return (
     <Sheet variant="outlined" sx={{ minHeight: 500, borderRadius: 'sm', p: 2, mb: 3 }}>
@@ -130,7 +155,9 @@ export default function EmailContent({ application }: { application: Application
       {/* Faculty approve button */}
       {currentUserEmail === application.currentRecipient && (
         <Box sx={{ display: 'flex', gap: 1, mt: 5, alignItems: 'center', justifyContent: 'center' }}>
-          <Button>Approve</Button>
+          <Button onClick={handleApprove}>
+            Approve
+          </Button>
         </Box>
       )}
     </Sheet>

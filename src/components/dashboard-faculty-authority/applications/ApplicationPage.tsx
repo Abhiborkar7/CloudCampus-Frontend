@@ -23,6 +23,7 @@ export default function ApplicationPage() {
   const [applications, setApplications] = React.useState<Application[]>([]);
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
   const [senders, setSenders] = React.useState<Sender[]>([]);
+  
 
   // 🔹 Fetch senders once
   React.useEffect(() => {
@@ -42,7 +43,6 @@ export default function ApplicationPage() {
       try {
         const response =
           selectedIndex === 0 ? await getAllApplications() : await getFacultyApplications();
-          console.log(response);
         setApplications(response);
       } catch (error) {
         console.error('Failed to fetch applications:', error);

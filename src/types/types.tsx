@@ -63,16 +63,18 @@ export interface CreateLeave {
   _id: string;
   registrationNo: string;
   name: string;
-  idPhoto: string;
+  idPhoto?: string;
   email: string;
   password: string;
-  department: string;
-  dob: string;
+  department?: string;
+  dob?: string;
   createdAt: string;
   updatedAt: string;
   __v: number;
-  profilePhoto: string;
-  blockchainAddress: string;
+  profilePhoto?: string;
+  blockchainAddress?: string;
+  bloodGroup?: string,
+  address?:  string
 }
 
 export interface FacultyAuthority {
@@ -81,6 +83,7 @@ export interface FacultyAuthority {
   password: string;
   position: string;
   faculty: FacultySummary;
+  department: string;
   __v: number;
 }
 

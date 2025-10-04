@@ -43,11 +43,7 @@ const WriteEmail = React.forwardRef<HTMLDivElement, WriteEmailProps>(
       if (formData.file) {
         data.append('file', formData.file);
       }
-
-      console.log('Data:', formData);
-
       const response = await createApplication(data);
-      console.log('Response:', response);
     
     };
 
