@@ -19,6 +19,7 @@ import { Navigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { Autocomplete } from '@mui/joy';
 import toast from 'react-hot-toast';
+import { Select, Option } from '@mui/joy';
 import { useAuth } from '../context/AuthContext';
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -33,28 +34,33 @@ interface SignInFormElement extends HTMLFormElement {
 
 export default function Login() {
 
-  const [selectedRole, setSelectedRole] = useState<'student' | 'faculty' | 'student authority' | 'faculty authority' | null>(null);
+  const [selectedRole, setSelectedRole] = useState<'student' | 'faculty' | 'student-authority' | 'faculty-authority' | null>(null);
   const { loginAccount, isAuthenticated, role } = useAuth();
 
   if (isAuthenticated) {
-  if (role === "student") return <Navigate to="/student/dashboard" replace />;
-  if (role === "faculty") return <Navigate to="/faculty/dashboard" replace />;
-  if (role === "faculty-authority") return <Navigate to="/faculty-authority/dashboard" replace />;
-  if (role === "student-authority") return <Navigate to="/student-authority/dashboard" replace />;
-}
+    if (role === "student") return <Navigate to="/student/dashboard" replace />;
+    if (role === "faculty") return <Navigate to="/faculty/dashboard" replace />;
+    if (role === "faculty-authority") return <Navigate to="/faculty-authority/dashboard" replace />;
+    if (role === "student-authority") return <Navigate to="/student-authority/dashboard" replace />;
+  }
+
+  const roleOptions = [
+    { label: 'Student', value: 'student' },
+    { label: 'Faculty', value: 'faculty' },
+    { label: 'Student Authority', value: 'student-authority' },
+    { label: 'Faculty Authority', value: 'faculty-authority' },
+  ];
+
 
 
   return (
     <CssVarsProvider theme={customTheme} disableTransitionOnChange>
       <CssBaseline />
-
-     
-
       <GlobalStyles
         styles={{
           ':root': {
             '--Form-maxWidth': '800px',
-            '--Transition-duration': '0.4s', // set to `none` to disable transition
+            '--Transition-duration': '0.4s',
           },
         }}
       />
@@ -123,27 +129,23 @@ export default function Login() {
                 Login
               </Typography>
               <Stack sx={{ gap: 1 }}>
-                <Autocomplete
-                  placeholder="Role"
-                  options={[
-                    { label: 'Student', value: 'students' },
-                    { label: 'Faculty', value: 'faculty' },
-                    { label: 'Student Authority', value: 'student-authorities' },
-                    { label: 'Faculty Authority', value: 'faculty-authorities' },
-                  ]}
-                  onChange={(event, newValue) => {
-                    if (newValue) {
-                      setSelectedRole(newValue.value as 'student' | 'faculty' | 'student authority' | 'faculty authority');
-                    }
-                  }}
-                  value={
-                    role ? {
-                      label: role.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-                      value: role
-                    } : null
-                  }
-                  sx={{ width: '100%' }}
-                />
+                <FormControl required>
+                  <FormLabel>Role</FormLabel>
+                  <Select
+                    placeholder="Select role"
+                    value={selectedRole || ''}
+                    onChange={(_, newValue) => {
+                      setSelectedRole(newValue as 'student' | 'faculty' | 'student-authority' | 'faculty-authority');
+                    }}
+                  >
+                    <Option value="student">Student</Option>
+                    <Option value="faculty">Faculty</Option>
+                    <Option value="student-authority">Student Authority</Option>
+                    <Option value="faculty-authority">Faculty Authority</Option>
+                  </Select>
+                </FormControl>
+                  
+                
               </Stack>
               <Stack sx={{ gap: 1 }}>
 
