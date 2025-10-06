@@ -75,21 +75,37 @@ export const loginUser = async (
   role: string
 ): Promise<LoginResponse> => {
   try {
-    const response = await axiosInstance.post<LoginResponse>(`/api/${role}/login`, {
+    // Map frontend role to backend API route
+    let endpoint = '';
+    switch (role) {
+      case 'student':
+        endpoint = '/api/students/login';
+        break;
+      case 'faculty':
+        endpoint = '/api/faculty/login';
+        break;
+      case 'student-authority':
+        endpoint = '/api/student-authorities/login';
+        break;
+      case 'faculty-authority':
+        endpoint = '/api/faculty-authorities/login';
+        break;
+      default:
+        throw new Error('Invalid role selected');
+    }
+
+    const response = await axiosInstance.post<LoginResponse>(endpoint, {
       email,
       password,
     });
 
-    if (response.data.token) {
-      localStorage.setItem("token", response.data.token);
-    }
-
     return response.data;
   } catch (error: any) {
-    console.error("Failed to login", error);
-    throw new Error(error.response?.data?.message || "Login failed");
+    console.error('Failed to login', error);
+    throw new Error(error.response?.data?.message || 'Login failed');
   }
 };
+
 
 /**
  * Get currently logged-in student

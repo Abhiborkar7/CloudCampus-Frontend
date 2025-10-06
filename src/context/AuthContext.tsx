@@ -42,7 +42,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         else if (userRole === "student") setStudent(studentData ?? null);
         else if (userRole === "student-authority") setStudentAuthority(authority ?? null);
       } catch (err) {
-        console.error("Failed to fetch current user:", err);
         setIsAuthenticated(false);
         setRole(null);
         setStudent(null);
@@ -71,7 +70,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       else if (userRole === "student") setStudent(studentData ?? null);
       else if (userRole === "student-authority") setStudentAuthority(authority ?? null);
     } catch (err) {
-      console.error("Login failed:", err);
       setIsAuthenticated(false);
       setRole(null);
     } finally {
