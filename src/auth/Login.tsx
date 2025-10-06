@@ -15,10 +15,10 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import { SignupModal } from './signupModal';
-import { Navigate } from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Autocomplete } from '@mui/joy';
 import toast from 'react-hot-toast';
+import { Select, Option } from '@mui/joy';
 import { useAuth } from '../context/AuthContext';
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -30,31 +30,43 @@ interface SignInFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
+type RoleType = 'student' | 'faculty' | 'student-authority' | 'faculty-authority';
+
+const roleOptions: { label: string; value: RoleType }[] = [
+  { label: 'Student', value: 'student' },
+  { label: 'Faculty', value: 'faculty' },
+  { label: 'Student Authority', value: 'student-authority' },
+  { label: 'Faculty Authority', value: 'faculty-authority' },
+];
 
 export default function Login() {
-
-  const [selectedRole, setSelectedRole] = useState<'student' | 'faculty' | 'student authority' | 'faculty authority' | null>(null);
+  const [selectedRole, setSelectedRole] = useState<RoleType | null>(null);
   const { loginAccount, isAuthenticated, role } = useAuth();
 
   if (isAuthenticated) {
-  if (role === "student") return <Navigate to="/student/dashboard" replace />;
-  if (role === "faculty") return <Navigate to="/faculty/dashboard" replace />;
-  if (role === "faculty-authority") return <Navigate to="/faculty-authority/dashboard" replace />;
-  if (role === "student-authority") return <Navigate to="/student-authority/dashboard" replace />;
-}
+    if (role === 'student') return <Navigate to="/student/dashboard" replace />;
+    if (role === 'faculty') return <Navigate to="/faculty/dashboard" replace />;
+    if (role === 'faculty-authority') return <Navigate to="/faculty-authority/dashboard" replace />;
+    if (role === 'student-authority') return <Navigate to="/student-authority/dashboard" replace />;
+  }
 
+  const roleLabelMap: Record<RoleType, string> = {
+    student: 'Student',
+    faculty: 'Faculty',
+    'student-authority': 'Student Authority',
+    'faculty-authority': 'Faculty Authority',
+  };
+
+  const signupPrompt = selectedRole ? `New ${roleLabelMap[selectedRole]}?` : 'New user?';
 
   return (
     <CssVarsProvider theme={customTheme} disableTransitionOnChange>
       <CssBaseline />
-
-     
-
       <GlobalStyles
         styles={{
           ':root': {
             '--Form-maxWidth': '800px',
-            '--Transition-duration': '0.4s', // set to `none` to disable transition
+            '--Transition-duration': '0.4s',
           },
         }}
       />
@@ -83,10 +95,7 @@ export default function Login() {
             px: 2,
           }}
         >
-          <Box
-            component="header"
-            sx={{ py: 3, display: 'flex', justifyContent: 'space-between' }}
-          >
+          <Box component="header" sx={{ py: 3, display: 'flex', justifyContent: 'space-between' }}>
             <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
               <IconButton variant="soft" color="primary" size="sm">
                 <BadgeRoundedIcon />
@@ -95,12 +104,14 @@ export default function Login() {
             </Box>
             <ColorSchemeToggle />
           </Box>
+
           <Box
             component="main"
             sx={{
-              my: 'auto',
+              mt: 5,
+              mb: 2,
               py: 2,
-              pb: 5,
+              pb: 0,
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
@@ -122,38 +133,26 @@ export default function Login() {
               <Typography component="h1" level="h3">
                 Login
               </Typography>
-              <Stack sx={{ gap: 1 }}>
-                <Autocomplete
-                  placeholder="Role"
-                  options={[
-                    { label: 'Student', value: 'students' },
-                    { label: 'Faculty', value: 'faculty' },
-                    { label: 'Student Authority', value: 'student-authorities' },
-                    { label: 'Faculty Authority', value: 'faculty-authorities' },
-                  ]}
-                  onChange={(event, newValue) => {
-                    if (newValue) {
-                      setSelectedRole(newValue.value as 'student' | 'faculty' | 'student authority' | 'faculty authority');
-                    }
-                  }}
-                  value={
-                    role ? {
-                      label: role.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-                      value: role
-                    } : null
-                  }
-                  sx={{ width: '100%' }}
-                />
-              </Stack>
-              <Stack sx={{ gap: 1 }}>
 
-                <Typography level="body-sm">
-                  New {role === 'students' ? 'Student' : 'Faculty'}?
-                  {' '}
-                  <SignupModal />
-                </Typography>
+              <Stack sx={{ gap: 1 }}>
+                <FormControl required>
+                  <FormLabel>Role</FormLabel>
+                  <Select
+                    placeholder="Select role"
+                    value={selectedRole ?? ''}
+                    onChange={(_, newValue) => {
+                      setSelectedRole((newValue as RoleType) || null);
+                    }}
+                  >
+                    <Option value="student">Student</Option>
+                    <Option value="faculty">Faculty</Option>
+                    <Option value="student-authority">Student Authority</Option>
+                    <Option value="faculty-authority">Faculty Authority</Option>
+                  </Select>
+                </FormControl>
               </Stack>
             </Stack>
+
             <Stack sx={{ gap: 4, mt: 2 }}>
               <form
                 onSubmit={async (event: React.FormEvent<SignInFormElement>) => {
@@ -164,9 +163,9 @@ export default function Login() {
                     password: formElements.password.value,
                     persistent: formElements.persistent.checked,
                   };
-                  if(!selectedRole){
+                  if (!selectedRole) {
                     toast.error('Please select a Role');
-                    return
+                    return;
                   }
                   await loginAccount(data, selectedRole);
                 }}
@@ -179,14 +178,9 @@ export default function Login() {
                   <FormLabel>Password</FormLabel>
                   <Input type="password" name="password" />
                 </FormControl>
+
                 <Stack sx={{ gap: 4, mt: 2 }}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Checkbox size="sm" label="Remember me" name="persistent" />
                     <Link level="title-sm" href="#replace-with-a-link">
                       Forgot your password?
@@ -199,13 +193,23 @@ export default function Login() {
               </form>
             </Stack>
           </Box>
+
+          {/* FOOTER: Signup prompt moved here */}
           <Box component="footer" sx={{ py: 3 }}>
-            <Typography level="body-xs" sx={{ textAlign: 'center' }}>
-              © Cloud Campus {new Date().getFullYear()}
-            </Typography>
+            <Stack alignItems="center" spacing={1}>
+              <Typography level="body-sm">
+                {signupPrompt}{' '}
+                <SignupModal />
+              </Typography>
+
+              <Typography level="body-xs" sx={{ textAlign: 'center' }}>
+                © Cloud Campus {new Date().getFullYear()}
+              </Typography>
+            </Stack>
           </Box>
         </Box>
       </Box>
+
       <Box
         sx={(theme) => ({
           height: '100%',
@@ -221,11 +225,9 @@ export default function Login() {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          backgroundImage:
-            'url(https://www.sggs.ac.in/uploads/New%20folder/1.png)',
+          backgroundImage: 'url(https://www.sggs.ac.in/uploads/New%20folder/1.png)',
           [theme.getColorSchemeSelector('dark')]: {
-            backgroundImage:
-              'url(https://www.sggs.ac.in/uploads/New%20folder/1.png)',
+            backgroundImage: 'url(https://www.sggs.ac.in/uploads/New%20folder/1.png)',
           },
         })}
       />
@@ -259,15 +261,7 @@ function ColorSchemeToggle(props: IconButtonProps) {
 
 const customTheme = extendTheme({
   colorSchemes: {
-    light: {
-      palette: {
-        mode: 'light',
-      },
-    },
-    dark: {
-      palette: {
-        mode: 'dark',
-      },
-    },
+    light: { palette: { mode: 'light' } },
+    dark: { palette: { mode: 'dark' } },
   },
 });
