@@ -7,7 +7,7 @@ import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
 import Tooltip from '@mui/joy/Tooltip';
 import ButtonStepper from '../../dashboard/applications/ButtonStepper';
-import { Application } from '../../../types/application';
+import { ApplicationFormat } from '../../../types/application';
 import { useAuth } from '../../../context/AuthContext';
 import { approveApplication } from '../../../services/application.service';
 import toast from 'react-hot-toast';
@@ -21,7 +21,7 @@ const labelColors: Record<string, string> = {
 };
 
 
-export default function EmailContent({application,setApplications,}: {application: Application;setApplications: React.Dispatch<React.SetStateAction<Application[]>>;}){
+export default function EmailContent({application,setApplications,}: {application: ApplicationFormat;setApplications: React.Dispatch<React.SetStateAction<Application[]>>;}){
 
   const { faculty, facultyAuthority, studentAuthority, role } = useAuth();
 
@@ -51,6 +51,12 @@ export default function EmailContent({application,setApplications,}: {applicatio
         error: '',
       }
     );
+  };
+
+  const handleSendBack = async () => {
+  };
+
+  const handleReject = async () => {
   };
 
 
@@ -154,11 +160,17 @@ export default function EmailContent({application,setApplications,}: {applicatio
 
       {/* Faculty approve button */}
       {currentUserEmail === application.currentRecipient && (
-        <Box sx={{ display: 'flex', gap: 1, mt: 5, alignItems: 'center', justifyContent: 'center' }}>
-          <Button onClick={handleApprove}>
-            Approve
-          </Button>
-        </Box>
+          <Box sx={{ display: 'flex', gap: 1, mt: 5, alignItems: 'center', justifyContent: 'center' }}>
+            <Button onClick={handleApprove}>
+              Approve
+            </Button>
+            <Button onClick={handleSendBack} color='warning'>
+              Send Back to Applicant
+            </Button>
+            <Button onClick={handleReject} color='danger'>
+              Reject
+            </Button>
+          </Box>
       )}
     </Sheet>
   );

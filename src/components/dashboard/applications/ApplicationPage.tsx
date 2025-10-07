@@ -3,50 +3,24 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import { FocusTrap } from '@mui/base/FocusTrap';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
-import Typography from '@mui/joy/Typography';
 import Button from '@mui/joy/Button';
-import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import CreateRoundedIcon from '@mui/icons-material/CreateRounded';
 import Layout from './Layout';
 import Navigation from './Navigation';
 import Mails from './Mails';
 import WriteEmail from './WriteEmail';
-import { IconButton, Stack } from '@mui/joy';
-import { closeEmailContent, toggleComplainPane, toggleEmailContent } from '../utils';
+import { closeEmailContent } from '../utils';
 import EmailContent from './EmailContent';
 import { uploadImageToCloudinary } from '../../../services/uploadImage.service';
-import { Complaint } from '../../../types/types';
 import { getAllApplications, getMyApplications, getAllApplicationSenders } from '../../../services/application.service';
+import { ApplicationFormat, Sender} from '../../../types/application';
 
-export interface Application {
-  _id: string;
-  from: {
-    _id: string;
-    name: string;
-    email: string;
-  };
-  title: string;
-  to: {
-    _id: string;
-    email: string;
-  }[];
-  body: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
-export interface Sender {
-  _id: string;
-  name: string;
-  email: string;
-}
 
 export default function ApplicationPage() {
   const [open, setOpen] = React.useState(false);
   const [fileUrl, setFileUrl] = React.useState('');
-  const [selectedApplication, setSelectedApplication] = React.useState(0);
-  const [applications, setApplications] = React.useState<Application[]>([]);
+  const [selectedApplication, setSelectedApplication] = React.useState<ApplicationFormat | null>(null);
+  const [applications, setApplications] = React.useState<ApplicationFormat[]>([]);
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(0);
   const [senders, setSenders] = React.useState<Sender[] | null>([]);
 
@@ -83,7 +57,6 @@ export default function ApplicationPage() {
     }
   }
   React.useEffect(() => {
-    
     fetchApplications();
   }, [selectedIndex]);
 
@@ -134,11 +107,9 @@ export default function ApplicationPage() {
           <Mails applications={applications} selectedApplication={selectedApplication} setSelectedApplication={setSelectedApplication} />
         </Layout.SidePane>
         <Layout.Main>
-          {
-            applications && selectedApplication !== -1 && (
-              <EmailContent application={applications[selectedApplication]} setApplications={setApplications} />
-            )
-          }
+          {selectedApplication && (
+            <EmailContent application={selectedApplication} setApplications={setApplications} />
+        )}
         </Layout.Main>
       </Layout.Root>
     </CssVarsProvider>

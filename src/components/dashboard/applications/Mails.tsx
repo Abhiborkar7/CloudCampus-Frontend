@@ -11,9 +11,8 @@ import MenuItem from '@mui/joy/MenuItem';
 import Checkbox from '@mui/joy/Checkbox';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { ClickAwayListener } from '@mui/base';
-
 import { toggleEmailContent } from '../utils';
-import { Application } from '../../../types/application';
+import { ApplicationFormat } from '../../../types/application';
 
 // Status filters
 const statusFilters = ['All', 'approved', 'pending', 'sent back', 'rejected'] as const;
@@ -27,9 +26,9 @@ const labelColors: Record<string, string> = {
 };
 
 interface EmailListProps {
-  selectedApplication: Application | null;
-  setSelectedApplication: (app: Application | null) => void;
-  applications: Application[];
+  selectedApplication: ApplicationFormat | null;
+  setSelectedApplication: (app: ApplicationFormat | null) => void;
+  applications: ApplicationFormat[];
 }
 
 export default function Mails({
