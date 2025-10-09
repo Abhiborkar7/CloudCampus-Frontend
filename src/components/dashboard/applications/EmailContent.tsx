@@ -1,16 +1,14 @@
 import * as React from 'react';
-import Box from '@mui/joy/Box';
-import Chip from '@mui/joy/Chip';
-import Sheet from '@mui/joy/Sheet';
-import Typography from '@mui/joy/Typography';
-import Button from '@mui/joy/Button';
+
 import Divider from '@mui/joy/Divider';
 import Tooltip from '@mui/joy/Tooltip';
 import ButtonStepper from '../../dashboard/applications/ButtonStepper';
 import { ApplicationFormat } from '../../../types/application';
 import { useAuth } from '../../../context/AuthContext';
-import { approveApplication } from '../../../services/application.service';
+import { approveApplication, rejectApplication } from '../../../services/application.service';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
+import { Sheet, Typography, Box, Button, FormControl, FormLabel, Textarea, Chip } from '@mui/joy';
 
 // Label colors
 const labelColors: Record<string, string> = {
@@ -24,6 +22,9 @@ const labelColors: Record<string, string> = {
 export default function EmailContent({application,setApplications,}: {application: ApplicationFormat;setApplications: React.Dispatch<React.SetStateAction<Application[]>>;}){
 
   const { faculty, facultyAuthority, studentAuthority, role } = useAuth();
+  const [openRejectDialog, setOpenRejectDialog] = useState(false);
+  const [rejectReason, setRejectReason] = useState("");
+
 
     const currentUserEmail =
     faculty?.email || facultyAuthority?.email || studentAuthority?.email || null;
@@ -56,7 +57,39 @@ export default function EmailContent({application,setApplications,}: {applicatio
   const handleSendBack = async () => {
   };
 
-  const handleReject = async () => {
+  const handleReject = async (reason:string) => {
+    toast.promise(
+      rejectApplication(application._id, reason).then(() => {
+        
+        setApplications((prev) =>
+          prev.map((app) => {
+            if (app._id !== application._id) return app;
+
+            const updatedTo = app.to.map((recipient: ApplicationFormat["to"][number]) => {
+              if (recipient.authority === currentUserEmail) {
+                return {
+                  ...recipient,
+                  status: 'rejected',
+                };
+              }
+              return recipient;
+            });
+
+            return {
+              ...app,
+              to: updatedTo,
+              reason: reason ?? "",
+              isApproved: false,
+            };
+          })
+        );
+      }),
+      {
+        loading: 'Rejecting...',
+        success: 'Application rejected successfully!',
+        error: '',
+      }
+    );
   };
 
 
@@ -118,9 +151,11 @@ export default function EmailContent({application,setApplications,}: {applicatio
                   color={
                     item.status === 'approved'
                       ? 'success'
-                      : item.status === 'pending'
+                      : item.status === 'returned back to applicant'
                       ? 'warning'
-                      : 'neutral'
+                      : item.status === 'rejected'
+                      ? 'danger'
+                      :'neutral'
                   }
                   sx={{ mr: 1 }}
                 >
@@ -159,7 +194,7 @@ export default function EmailContent({application,setApplications,}: {applicatio
       </Box>
 
       {/* Faculty approve button */}
-      {currentUserEmail === application.currentRecipient && (
+      {currentUserEmail === application.currentRecipient && application.status === 'pending' && (
           <Box sx={{ display: 'flex', gap: 1, mt: 5, alignItems: 'center', justifyContent: 'center' }}>
             <Button onClick={handleApprove}>
               Approve
@@ -167,11 +202,69 @@ export default function EmailContent({application,setApplications,}: {applicatio
             <Button onClick={handleSendBack} color='warning'>
               Send Back to Applicant
             </Button>
-            <Button onClick={handleReject} color='danger'>
+            <Button  onClick={() => setOpenRejectDialog(true)} color='danger'>
               Reject
             </Button>
           </Box>
       )}
+
+      {/* Reject Reason Dialog */}
+      {openRejectDialog && (
+        <Sheet
+          variant="outlined"
+          sx={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            p: 3,
+            borderRadius: 2,
+            zIndex: 9999,
+            bgcolor: 'background.body',
+            boxShadow: 4,
+          }}
+        >
+          <Typography level="title-md" sx={{ mb: 2 }}>
+            Enter Reason for Rejection
+          </Typography>
+        
+          <FormControl>
+            <FormLabel>Reason</FormLabel>
+            <Textarea
+              minRows={3}
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              placeholder="Enter reason..."
+            />
+          </FormControl>
+        
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 1 }}>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setOpenRejectDialog(false);
+                setRejectReason('');
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="solid"
+              color="danger"
+              onClick={() => {
+                handleReject(rejectReason);
+                setOpenRejectDialog(false);
+                setRejectReason('');
+              }}
+              disabled={!rejectReason.trim()}
+            >
+              Submit
+            </Button>
+          </Box>
+        </Sheet>
+      )}
+
     </Sheet>
   );
 }
