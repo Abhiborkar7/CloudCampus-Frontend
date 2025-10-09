@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Box from '@mui/joy/Box';
 import List from '@mui/joy/List';
 import ListSubheader from '@mui/joy/ListSubheader';
 import ListItem from '@mui/joy/ListItem';
@@ -8,13 +7,6 @@ import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListItemContent from '@mui/joy/ListItemContent';
 import InboxRoundedIcon from '@mui/icons-material/InboxRounded';
 import OutboxRoundedIcon from '@mui/icons-material/OutboxRounded';
-import DraftsRoundedIcon from '@mui/icons-material/DraftsRounded';
-import AssistantPhotoRoundedIcon from '@mui/icons-material/AssistantPhotoRounded';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import { Input } from '@mui/joy';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import Typography from '@mui/joy/Typography';
-import IconButton from '@mui/joy/IconButton';
 import { closeComplainPane } from '../utils';
 
 export default function Navigation({ selectedIndex, setSelectedIndex }: { selectedIndex: number | null, setSelectedIndex: (index: number) => void }) {

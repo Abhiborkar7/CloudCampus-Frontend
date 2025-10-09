@@ -15,13 +15,13 @@ import EmailContent from '../../dashboard/applications/EmailContent';
 import { closeEmailContent } from '../utils';
 import { uploadImageToCloudinary } from '../../../services/uploadImage.service';
 import { getAllApplications, getMyApplications, getAllApplicationSenders } from '../../../services/application.service';
-import { Application, Sender } from '../../../types/application';
+import { ApplicationFormat, Sender } from '../../../types/application';
 
 export default function ApplicationPage() {
   const [open, setOpen] = React.useState(false);
   const [fileUrl, setFileUrl] = React.useState('');
-  const [selectedApplication, setSelectedApplication] = React.useState<Application | null>(null);
-  const [applications, setApplications] = React.useState<Application[]>([]);
+  const [selectedApplication, setSelectedApplication] = React.useState<ApplicationFormat | null>(null);
+  const [applications, setApplications] = React.useState<ApplicationFormat[]>([]);
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
   const [senders, setSenders] = React.useState<Sender[]>([]);
 
@@ -135,7 +135,7 @@ export default function ApplicationPage() {
           }}
         >
           {selectedApplication ? (
-            <EmailContent application={selectedApplication} />
+            <EmailContent application={selectedApplication} setApplications={setApplications} />
           ) : (
             <Box sx={{ p: 2, textAlign: 'center', color: 'text.tertiary' }}>
               No application selected

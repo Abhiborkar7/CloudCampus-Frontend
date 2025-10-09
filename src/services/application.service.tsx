@@ -11,7 +11,7 @@ export const getAllApplications = async () => {
 
 export const getFacultyApplications = async () => {
   try {
-    const response = await axiosInstance.get("/api/applications/applications-for-approval");
+    const response = await axiosInstance.get("/api/applications/my-authority-applications");
     return response.data.applications;
   } catch (error) {
     throw error.response?.data?.message || error.message || 'Approval failed';
@@ -51,5 +51,14 @@ export const approveApplication = async (applicationId: string) => {
     return response.data;
   } catch (error) {
     throw error.response?.data?.message || error.message || 'Approval failed';
+  }
+};
+
+export const rejectApplication = async (applicationId: string, reason: string) => {
+  try {
+    const response = await axiosInstance.patch(`/api/applications/reject/${applicationId}`, { reason });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || error.message || 'Rejection failed';
   }
 };

@@ -1,4 +1,4 @@
-export interface Application {
+export interface ApplicationFormat {
   _id: string;
   from: {
     _id: string;
@@ -23,12 +23,13 @@ export interface Application {
   reason?: string;
   file?: string;
   priority?: string;
-  isApproved: boolean;
+  isApproved?: boolean;
   createdAt: string;
   updatedAt: string;
   __v: number;
   currentRecipient?: string;
   label?: string;
+  status?: 'pending' | 'approved' | 'rejected' | 'returned back to applicant' | string;
 }
 
 export interface Sender {

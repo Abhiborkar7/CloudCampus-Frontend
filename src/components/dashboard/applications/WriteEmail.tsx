@@ -7,12 +7,8 @@ import FormLabel from '@mui/joy/FormLabel';
 import Textarea from '@mui/joy/Textarea';
 import Sheet from '@mui/joy/Sheet';
 import { IconButton, Input, Option, Select, Stack, Typography } from '@mui/joy';
-
-import FormatColorTextRoundedIcon from '@mui/icons-material/FormatColorTextRounded';
 import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
-import InsertPhotoRoundedIcon from '@mui/icons-material/InsertPhotoRounded';
-import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
-import { Sender } from './ApplicationPage';
+import { Sender } from '../../../types/application';
 import { createApplication } from '../../../services/application.service';
 // import { Select } from '@mui/material';
 
