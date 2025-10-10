@@ -5,7 +5,7 @@ import Tooltip from '@mui/joy/Tooltip';
 import ButtonStepper from '../../dashboard/applications/ButtonStepper';
 import { ApplicationFormat } from '../../../types/application';
 import { useAuth } from '../../../context/AuthContext';
-import { approveApplication, rejectApplication } from '../../../services/application.service';
+import { approveApplication, rejectApplication, sendBackApplication} from '../../../services/application.service';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { Sheet, Typography, Box, Button, FormControl, FormLabel, Textarea, Chip } from '@mui/joy';
@@ -22,8 +22,9 @@ const labelColors: Record<string, string> = {
 export default function EmailContent({application,setApplications,}: {application: ApplicationFormat;setApplications: React.Dispatch<React.SetStateAction<Application[]>>;}){
 
   const { faculty, facultyAuthority, studentAuthority, role } = useAuth();
-  const [openRejectDialog, setOpenRejectDialog] = useState(false);
-  const [rejectReason, setRejectReason] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [actionType, setActionType] = useState<'reject' | 'sendBack' | null>(null);
+  const [Reason, setReason] = useState("");
 
 
     const currentUserEmail =
@@ -54,8 +55,7 @@ export default function EmailContent({application,setApplications,}: {applicatio
     );
   };
 
-  const handleSendBack = async () => {
-  };
+
 
   const handleReject = async (reason:string) => {
     toast.promise(
@@ -79,6 +79,7 @@ export default function EmailContent({application,setApplications,}: {applicatio
               ...app,
               to: updatedTo,
               reason: reason ?? "",
+              status: 'rejected',
               isApproved: false,
             };
           })
@@ -92,6 +93,42 @@ export default function EmailContent({application,setApplications,}: {applicatio
     );
   };
 
+  // Todo : send back testing 
+  const handleSendBack = async (reason:string) => {
+    toast.promise(
+      sendBackApplication(application._id, reason).then(() => {
+        
+        setApplications((prev) =>
+          prev.map((app) => {
+            if (app._id !== application._id) return app;
+
+            const updatedTo = app.to.map((recipient: ApplicationFormat["to"][number]) => {
+              if (recipient.authority === currentUserEmail) {
+                return {
+                  ...recipient,
+                  status: 'returned back to applicant',
+                };
+              }
+              return recipient;
+            });
+
+            return {
+              ...app,
+              to: updatedTo,
+              reason: reason ?? "",
+              status: 'returned back to applicant',
+              isApproved: false,
+            };
+          })
+        );
+      }),
+      {
+        loading: 'Sending Back to Applicant...',
+        success: 'Application sent back successfully!',
+        error: '',
+      }
+    );
+  };
 
   return (
     <Sheet variant="outlined" sx={{ minHeight: 500, borderRadius: 'sm', p: 2, mb: 3 }}>
@@ -199,17 +236,26 @@ export default function EmailContent({application,setApplications,}: {applicatio
             <Button onClick={handleApprove}>
               Approve
             </Button>
-            <Button onClick={handleSendBack} color='warning'>
+            <Button 
+              onClick={() => {
+                setActionType('sendBack');
+                setOpenDialog(true);
+              }} color='warning'>
               Send Back to Applicant
             </Button>
-            <Button  onClick={() => setOpenRejectDialog(true)} color='danger'>
+            <Button  
+              onClick={() => {
+                setActionType('reject');
+                setOpenDialog(true);
+              }} 
+              color='danger'>
               Reject
             </Button>
           </Box>
       )}
 
       {/* Reject Reason Dialog */}
-      {openRejectDialog && (
+      {openDialog && (
         <Sheet
           variant="outlined"
           sx={{
@@ -226,15 +272,17 @@ export default function EmailContent({application,setApplications,}: {applicatio
           }}
         >
           <Typography level="title-md" sx={{ mb: 2 }}>
-            Enter Reason for Rejection
+            {actionType === 'reject'
+              ? 'Enter Reason for Rejection'
+              : 'Enter Reason for Sending Back'}
           </Typography>
         
           <FormControl>
             <FormLabel>Reason</FormLabel>
             <Textarea
               minRows={3}
-              value={rejectReason}
-              onChange={(e) => setRejectReason(e.target.value)}
+              value={Reason}
+              onChange={(e) => setReason(e.target.value)}
               placeholder="Enter reason..."
             />
           </FormControl>
@@ -243,21 +291,26 @@ export default function EmailContent({application,setApplications,}: {applicatio
             <Button
               variant="outlined"
               onClick={() => {
-                setOpenRejectDialog(false);
-                setRejectReason('');
+                setOpenDialog(false);
+                setReason('');
               }}
             >
               Cancel
             </Button>
             <Button
               variant="solid"
-              color="danger"
+              color={actionType === 'reject' ? 'danger' : 'warning'}
               onClick={() => {
-                handleReject(rejectReason);
-                setOpenRejectDialog(false);
-                setRejectReason('');
+                if(actionType === 'reject'){
+                  handleReject(Reason);
+                }
+                else{
+                  handleSendBack(Reason);
+                }
+                setOpenDialog(false);
+                setReason('');
               }}
-              disabled={!rejectReason.trim()}
+              disabled={!Reason.trim()}
             >
               Submit
             </Button>

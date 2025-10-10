@@ -62,3 +62,12 @@ export const rejectApplication = async (applicationId: string, reason: string) =
     throw error.response?.data?.message || error.message || 'Rejection failed';
   }
 };
+
+export const sendBackApplication = async (applicationId: string, reason: string) => {
+  try {
+    const response = await axiosInstance.patch(`/api/applications/send-back/${applicationId}`, { reason });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || error.message || 'Rejection failed';
+  }
+};
