@@ -230,8 +230,8 @@ export default function Sidebar() {
 
           <ListItem>
             <SidebarListItemButton
-              selected={isPathMatch('/faculty/cheatings')}
-              to="/faculty/cheatings"
+              selected={isPathMatch('/faculty-authority/cheatings')}
+              to="/faculty-authority/cheatings"
               icon={<QuestionAnswerRoundedIcon />}
 
             >

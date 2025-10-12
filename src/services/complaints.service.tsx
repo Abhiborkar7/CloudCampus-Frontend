@@ -1,72 +1,39 @@
-import axios from "axios";
-import { VITE_BASE_URL } from "../config";
-
-// export const getAllComplaints = async () => {
-//   try {
-//     const response = await axios.get(`${VITE_BASE_URL}/api/complaints`);
-//     return response.data;
-//   } catch (error) {
-//     console.error('Failed to get complaints', error);
-//     return error;
-//   }
-// }
+import axiosInstance from "./axiosInstance";
 
 export const getAllComplaints = async () => {
   try {
-    const response = await axios.get(`${VITE_BASE_URL}/api/complaints`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    const response = await axiosInstance.get(`/api/complaints/`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching applications:', error);
-    return error;
+    throw error.response?.data?.message || error.message || 'Approval failed';
   }
 }
 
 export const getMyComplaints = async () => {
   try {
-    const response = await axios.get(`${VITE_BASE_URL}/api/complaints`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    const response = await axiosInstance.get(`/api/complaints/`);
     console.log('Complaints:', response.data);
     return response.data.applications;
   } catch (error) {
-    console.error('Error fetching applications:', error);
-    return error;
+    throw error.response?.data?.message || error.message || 'Approval failed';
   }
 }
 
 export const createComplaint = async (complaint: any) => {
   try {
-    const response = await axios.post(`${VITE_BASE_URL}/api/complaints`, complaint, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    const response = await axiosInstance.post(`/api/complaints`, complaint);
     return response.data;
   } catch (error) {
-    console.error('Failed to create complaint', error);
-    return error;
+    throw error.response?.data?.message || error.message || 'Approval failed';
   }
 }
 
 
 export const getAllComplaintSenders = async () => {
   try {
-    const response = await axios.get(`${VITE_BASE_URL}/api/complaints/senders`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-    console.log('Senders::', response.data);
+    const response = await axiosInstance.get(`/api/complaints/senders`);
     return response.data.faculties;
   } catch (error) {
-    console.error('Error fetching senders:', error);
-    return error;
+    throw error.response?.data?.message || error.message || 'Approval failed';
   }
 }
