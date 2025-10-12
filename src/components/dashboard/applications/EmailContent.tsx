@@ -31,9 +31,7 @@ export default function EmailContent({application,setApplications,}: {applicatio
     faculty?.email || facultyAuthority?.email || studentAuthority?.email || null;
 
   // Determine if we should display reason
-  const rejectedOrSentBack = application.to.filter(
-    (recipient) => ['rejected', 'sent back'].includes(recipient.status.toLowerCase()) && application.reason
-  );
+  const rejectedOrSentBack = application.status === 'rejected' || application.status === 'returned back to applicant';
 
   const handleApprove = async () => {
     toast.promise(
@@ -212,7 +210,7 @@ export default function EmailContent({application,setApplications,}: {applicatio
       </Typography>
 
       {/* Display reason if rejected or sent back */}
-      {rejectedOrSentBack.length > 0 && (
+      {rejectedOrSentBack && (
         <Box sx={{ mt: 2, p: 2, bgcolor: 'background.level1', borderRadius: 'sm' }}>
           <Typography level="body-sm" fontWeight="md" sx={{ mb: 1 }}>
             Reason for rejection / sent back:

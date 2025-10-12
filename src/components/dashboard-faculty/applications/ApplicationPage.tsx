@@ -7,7 +7,7 @@ import Button from '@mui/joy/Button';
 import CreateRoundedIcon from '@mui/icons-material/CreateRounded';
 import Layout from '../../dashboard/applications/Layout';
 import Navigation from './Navigation';
-import Mails from './Mails';
+import Mails from '../../dashboard/applications/Mails';
 import WriteEmail from '../../dashboard/applications/WriteEmail';
 import EmailContent from '../../dashboard/applications/EmailContent';
 import { closeEmailContent } from '../utils';

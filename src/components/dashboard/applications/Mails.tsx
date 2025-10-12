@@ -15,7 +15,7 @@ import { toggleEmailContent } from '../utils';
 import { ApplicationFormat } from '../../../types/application';
 
 // Status filters
-const statusFilters = ['All', 'approved', 'pending', 'sent back', 'rejected'] as const;
+const statusFilters = ['All', 'approved', 'pending', 'returned back to applicant', 'rejected'] as const;
 
 // Label colors
 const labelColors: Record<string, string> = {
@@ -46,7 +46,8 @@ export default function Mails({
   const filteredApplications = applications.filter((app) => {
     const statusMatch =
       statusFilter === 'All' ||
-      app.to.some((recipient) => recipient.status.toLowerCase() === statusFilter.toLowerCase());
+      app.status?.trim().toLowerCase() === statusFilter.trim().toLowerCase();
+
 
     const labelMatch =
       labelFilter.length === 0 || labelFilter.includes(app.label);
@@ -147,10 +148,10 @@ export default function Mails({
       >
         {filteredApplications.length > 0 ? (
           filteredApplications.map((item) => (
-            <React.Fragment key={item._id}>
+            <Box key={item._id}>
               <ListItem
                 onClick={() => {
-                  setSelectedApplication(item); // pass the actual application object
+                  setSelectedApplication(item);
                   toggleEmailContent();
                 }}
               >
@@ -176,7 +177,7 @@ export default function Mails({
                         })}
                       </Typography>
                     </Box>
-
+                      
                     {/* Label + Title */}
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
                       <Box
@@ -189,7 +190,7 @@ export default function Mails({
                       />
                       <Typography level="title-sm">{item.title}</Typography>
                     </Box>
-
+                      
                     {/* Body preview */}
                     <Typography
                       level="body-sm"
@@ -208,7 +209,7 @@ export default function Mails({
                 </ListItemButton>
               </ListItem>
               <ListDivider sx={{ m: 0 }} />
-            </React.Fragment>
+            </Box>
           ))
         ) : (
           <Typography level="body-sm" textColor="text.tertiary" sx={{ p: 2, textAlign: 'center' }}>
