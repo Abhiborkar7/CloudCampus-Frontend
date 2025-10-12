@@ -29,7 +29,7 @@ export interface ApplicationFormat {
   __v: number;
   currentRecipient?: string;
   label?: string;
-  status?: 'pending' | 'approved' | 'rejected' | 'returned back to applicant' | string;
+  status: 'pending' | 'approved' | 'rejected' | 'returned back to applicant' | string;
 }
 
 export interface Sender {
